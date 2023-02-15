@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="width:520px;height:190px" viewBox="0 0 520 190">
+    <defs>
+        <mask id="mask">
+            <rect x="0" y="0" width="520px" height="190px" fill="white"></rect>
+            <circle cx="455" cy="50" r="8" stroke="#000000" stroke-width="3" fill="black"></circle>
+        </mask>
+    </defs>
+    <g>
+        <path d="M65,50 L65,50 L130,50 L195,100 L260,100 L325,100 L390,50 L455,50" stroke="#000000" fill="none" stroke-width="3" style="mask:url(#mask)"></path>
+    </g>
+    <g>
+        <circle id="node0" cx="65" cy="50" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node1" cx="130" cy="50" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node2" cx="195" cy="100" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node3" cx="260" cy="100" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node4" cx="325" cy="100" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node5" cx="390" cy="50" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+        <circle id="node6" cx="455" cy="50" r="8" stroke="#000000" stroke-width="3" fill="#000000"></circle>
+    </g>
+    <g>
+        <text x="65" y="160" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:1.8em;font-weight:bold"> </text>
+        <text x="130" y="160" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:1.8em;font-weight:bold"> </text>
+        <text x="195" y="160" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:1.8em;font-weight:bold"> </text>
+        <text x="260" y="60" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:3.5em;font-weight:bold">(>_&lt;)</text>
+        <text x="325" y="160" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:1.8em;font-weight:bold"> </text>
+        <text x="390" y="160" fill="#000000" text-anchor="middle" style="font-family:Noto Serif JP;font-size:1.8em;font-weight:bold"> </text>
+    </g>
+</svg>
