@@ -11,12 +11,66 @@ import Link from 'next/link'
 // import { useRouter } from 'next/router'
 import { PropaneSharp } from '@mui/icons-material';
 
+const { fit } = require('furigana');
 
+import FuriganaWord from './furiganaWord';
 
 
 import {useState} from "react"
 
 
+// NOTE NO COMPLETE
+// TODO add all tags 
+let entryTags = {
+    'adj-f': 'noun or verb acting prenominally',
+    'adj-i': 'adjective (keiyoushi)',
+    'adj-ix': 'adjective (keiyoushi) - yoi/ii class',
+    'adj-kari': "'kari' adjective (archaic)",
+    'adj-ku': "'ku' adjective (archaic)",
+    'adj-na': 'adjectival nouns or quasi-adjectives (keiyodoshi)',
+    'adj-nari': 'archaic/formal form of na-adjective',
+    'adj-no': 'nouns which may take the genitive case particle \'no\'',
+    'adj-pn': 'pre-noun adjectival (rentaishi)',
+    'adj-shiku': "'shiku' adjective (archaic)",
+    'adj-t': "'taru' adjective",
+    'adv': 'adverb (fukushi)',
+    'adv-to': "adverb taking the 'to' particle",
+    'aux': 'auxiliary',
+    'aux-adj': 'auxiliary adjective',
+    'aux-v': 'auxiliary verb',
+    'conj': 'conjunction',
+    'cop': 'copula',
+    'ctr': 'counter',
+    'exp': 'expressions (phrases, clauses, etc.)',
+    'int': 'interjection (kandoushi)',
+    'n': 'noun (common) (futsuumeishi)',
+    'n-adv': 'adverbial noun (fukushitekimeishi)',
+    'n-pr': 'proper noun',
+    'n-pref': 'noun, used as a prefix',
+    'n-suf': 'noun, used as a suffix',
+    'n-t': 'noun (temporal) (jisoumeishi)',
+    'num': 'numeric',
+    'pn': 'pronoun',
+    'pref': 'prefix',
+    'prt': 'particle',
+    'suf': 'suffix',
+    'unc': 'unclassified',
+    'v-unspec': 'verb unspecified',
+    'v1': 'Ichidan verb',
+    'v1-s': 'Ichidan verb - kureru special class',
+    'v2a-s': "Nidan verb with 'u' ending (archaic)",
+    'v2b-k': "Nidan verb (upper class) with 'bu' ending (archaic)",
+    'v2b-s': "Nidan verb (lower class) with 'bu' ending (archaic)",
+    'v2d-k': "Nidan verb (upper class) with 'dzu' ending (archaic)",
+    'v2d-s': "Nidan verb (lower class) with 'dzu' ending (archaic)",
+    'v2g-k': "Nidan verb (upper class) with 'gu' ending (archaic)",
+    'v2g-s': "Nidan verb (lower class) with 'gu' ending (archaic)",
+    'v2h-k': "Nidan verb (upper class) with 'hu/fu' ending (archaic)",
+    'v2h-s': "Nidan verb (lower class) with 'hu/fu' ending (archaic)",
+    'v2k-k': "Nidan verb (upper class) with 'ku' ending (archaic)",
+    'v2k-s': "Nidan verb (lower class) with 'ku' ending (archaic)",
+    'v2m-k': "Nidan verb (upper class) with 'mu"
+}
 
 interface entryInfo {
   kanji: any[]
@@ -50,8 +104,21 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             for(let j = 0; j < definitions[i].gloss.length; j++){
 
                 if(definitions[i].gloss[j].lang == "eng"){
+                    
+                    console.log("What up", definitions[i].partOfSpeech)
+
+
+                    // fit(definitions[i].gloss[j].text, 'にのまえしゃちょうとつなしせんせい')
+                    
                     definitionElements.push(
-                        <p>{`${(i+1) * (j+1)}. `}{definitions[i].gloss[j].text}</p>
+                        <div>
+                            <p>
+                                {definitions[i].partOfSpeech.map( (value:string) => entryTags[value]).toString()}
+                            </p>
+
+                            <p>{definitions[i].partOfSpeech}</p>
+                            <p>{`${(i+1) * (j+1)}. `}{definitions[i].gloss[j].text}</p>
+                        </div>
                     )
                 }
             }
@@ -70,6 +137,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
                 if(translation[i].translation[j].lang == "eng"){
                     definitionElements.push(
+                        // <p>{translation[i].translation[j].type}</p>
                         <p>{`${(i+1) * (j+1)}. `}{translation[i].translation[j].text}</p>
                     )
                 }
@@ -84,11 +152,11 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
         <div className="flex w-full border-b border-gray-300">
             {/* Used to  */}
             <div className="flex flex-col w-1/4">
-                {createWordElement(kanji, kana)}
+                {/* {createWordElement(kanji, kana)} */}
+                <FuriganaWord kanji={kanji.length > 0 ? kanji[0].text : null} kana={kana[0].text}/>
             </div>
             <div className="flex flex-col w-3/4">
                 {definitionElements}
-                
             </div>
         </div>
     )

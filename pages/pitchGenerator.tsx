@@ -36,10 +36,10 @@ export default function Home() {
             <ul>
               <li className="flex" style={{marginBottom: "0.75em"}}>
                 <Tooltip title="Attributation" placement="left">
-                  <AttributionIcon fontSize="large" style={{width: "2rem"}}/>
+                  <AttributionIcon className=" mr-2" fontSize="large" style={{width: "2rem"}}/>
                 </Tooltip>
 
-                <p className="mr-2">
+                <p className="align-middle mr-2">
                   Make sure to include both the current website URL as well the site's creator "Caleb Landry" in the content the diagram is to be used in.
                 </p>
 
@@ -48,10 +48,10 @@ export default function Home() {
               <li className="flex">
                 <Tooltip title="Share-Alike" placement="left">
                   {/* <img src={ShareAlikeSVG} style={{width: "1.4em", height: "100%", paddingLeft: "0.18em", userSelect: "none"}}/> */}
-                  <Image width="0.5em" height="0.5em" src={ShareAlikeSVG} alt="Picture of the author"/>  
+                  <Image className="ml-0.5 mr-2" width={28} height={28} src={ShareAlikeSVG} alt="Picture of the author"/>  
                 </Tooltip>
 
-                <p className="mr-2">
+                <p className=" align-middle mr-2">
                   Any derivation of the diagrams created using the pitch generator must also be distributed under the same license specified here.
                 </p>
                 

@@ -66,7 +66,8 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
         <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
       </Head>
       {/* className={styles.main} */}
-      <main className="flex flex-col content-center w-3/4">
+      <main className={styles.main}> 
+      {/* "flex flex-col content-center w-3/4" */}
           <SearchBar query={query}/>
           {
             JSON.stringify(entries) == '[]' ?

@@ -71,6 +71,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"190px"}}
             viewBox={`0 0 ${svgWidth} 190`}>
+                <text fill-opacity="0%">Created by Hatsuon website. Caleb Landry</text>
                 <defs>
                     <mask id="mask" maskUnits="userSpaceOnUse">
                         {/* Rectangle element states where we can see the element */}

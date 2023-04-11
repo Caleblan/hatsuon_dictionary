@@ -12,19 +12,21 @@ import Button from '@mui/material/Button';
 //Icons
 import { Menu } from '@mui/icons-material';
 
+import links from "../../links.json"
+
 
 export default function Header() {
     
     return (
         <nav className="w-full flex items-center mx-4 my-4">
             <div className="w-1/2 flex text-3xl">
-                <Link href="/">Hatsuon</Link>
+                <Link href={links.internalLinks.pitchGenerator}>Hatsuon</Link>
             </div>
             <div className="w-1/2 flex justify-end space-around">
 
                 <div className="md:visible invisible flex gap-x-4">
-                    <Link href="/dictionary">Dictionary</Link>
-                    <Link href="/pitchGenerator">Pitch Accent Diagram Generator</Link>
+                    {/* <Link href="/dictionary">Dictionary</Link> */}
+                    <Link href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
                 </div>
                 <Button className="md:invisible visible">
                     <SvgIcon>

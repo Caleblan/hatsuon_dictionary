@@ -4,7 +4,8 @@ import Head from 'next/head'
 import { CookiesProvider } from "react-cookie";
 
 // Custom Components
-import Header from '../components/Header'
+import Header from '../components/Header/Header'
+import Footer from '../components/Footer/Footer';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Header/>
       <Component {...pageProps} />
+      <Footer/>
     </CookiesProvider>
   )
 }

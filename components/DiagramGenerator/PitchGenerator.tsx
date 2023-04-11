@@ -1,5 +1,5 @@
+// React/MUI
 import { useState , useRef, useMemo } from "react"
-
 import {FileDownloadOutlined, SettingsOutlined} from '@mui/icons-material';
 import {TextField, IconButton, Tooltip} from '@mui/material';
 
@@ -14,7 +14,6 @@ import CompactDiagram from "../PitchDiagrams/CompactDiagram";
 
 import { saveAs } from 'file-saver';
 import * as ReactDOMServer from 'react-dom/server';
-
 
 const buttonStyle = "flex justify-end";
 
