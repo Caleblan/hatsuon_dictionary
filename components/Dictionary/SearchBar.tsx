@@ -21,8 +21,8 @@ export default function DictionaryEntry(props:input): JSX.Element {
     const [query, setQuery] = useState<string>(props.query == null ? "": props.query);
 
     return (
-        <form action="/api/searchDictionary" method="get">
-            <TextField label="Enter Text Here" defaultValue={query} autoFocus={true} onChange={event => setQuery(event.target.value)}/>
+        <form className="flex justify-center items-center mb-8" action="/api/searchDictionary" method="get">
+            <TextField className="w-full" label="Enter Text Here" defaultValue={query} autoFocus={true} onChange={event => setQuery(event.target.value)}/>
 
             <Link href={
               // Go back to dictionary homepage if nothing entered

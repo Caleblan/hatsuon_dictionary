@@ -149,14 +149,16 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     // console.log(definitionElements1)
     
     return (
-        <div className="flex w-full border-b border-gray-300">
+        <div className="w-full flex mb-4 border-b border-gray-300">
             {/* Used to  */}
-            <div className="flex flex-col w-1/4">
-                {/* {createWordElement(kanji, kana)} */}
-                <FuriganaWord kanji={kanji.length > 0 ? kanji[0].text : null} kana={kana[0].text}/>
-            </div>
-            <div className="flex flex-col w-3/4">
-                {definitionElements}
+            <div className="mb-4">
+                <div className="flex flex-col w-1/4 px-4">
+                    {/* {createWordElement(kanji, kana)} */}
+                    <FuriganaWord kanji={kanji.length > 0 ? kanji[0].text : null} kana={kana[0].text}/>
+                </div>
+                <div className="flex flex-col w-3/4">
+                    {definitionElements}
+                </div>
             </div>
         </div>
     )

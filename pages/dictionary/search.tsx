@@ -66,42 +66,46 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
         <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
       </Head>
       {/* className={styles.main} */}
-      <main className={styles.main}> 
+      <main className="w-full flex flex-col items-center"> 
       {/* "flex flex-col content-center w-3/4" */}
-          <SearchBar query={query}/>
-          {
-            JSON.stringify(entries) == '[]' ?
-              "Nothing is found" + entries.length:
+          <div className="w-3/4">
 
-              // Create entry for each dictionary result returned from database.
-              entries.map((entry:any) => 
-              (
-                <DictionaryEntry entryInfo={entry} language="eng"
-                  // diagrams={}
-                  
-                  
-                //   {Object.entries(entry.accents).map((accentCategory) => (
-                //     // For each accent category
-                //     accentCategory[1].map((accent:number) => (
-                //       // <CompactDiagram 
-                //       //   mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
-                //       //   pattern = {[accent]}
-                //       // />
-                //       <DotDiagram
-                //         mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
-                //         pitchPattern = {accent}
-                //         color="black"
-                //       />
-                //       )
-                //     )
-                //   )
-                // )}
-                />
+            <SearchBar query={query}/>
+            {
+              JSON.stringify(entries) == '[]' ?
+                "Nothing is found" + entries.length:
+
+                // Create entry for each dictionary result returned from database.
+                entries.map((entry:any) => 
+                (
+                  <DictionaryEntry entryInfo={entry} language="eng"
+                    // diagrams={}
+                    
+                    
+                  //   {Object.entries(entry.accents).map((accentCategory) => (
+                  //     // For each accent category
+                  //     accentCategory[1].map((accent:number) => (
+                  //       // <CompactDiagram 
+                  //       //   mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
+                  //       //   pattern = {[accent]}
+                  //       // />
+                  //       <DotDiagram
+                  //         mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
+                  //         pitchPattern = {accent}
+                  //         color="black"
+                  //       />
+                  //       )
+                  //     )
+                  //   )
+                  // )}
+                  />
+                )
               )
-            )
-          }
-          <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>
+            }
+            <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>
+          </div>
       </main>
+      
     </>
   )
 }
