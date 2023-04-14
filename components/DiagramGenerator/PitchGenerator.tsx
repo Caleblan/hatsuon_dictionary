@@ -209,6 +209,7 @@ export default function PitchGenerator() {
                 {pitchDiagram}
                 
                 {/* <div className="w-full flex justify-end bottom-0 left-0 "> */}
+                <Tooltip title="Diagram Type" placement="right">
                     <ToggleButtonGroup className="sticky z-2 bottom-2 right-2 left-2"
                         color="standard"
                         value={diagramType}
@@ -218,6 +219,7 @@ export default function PitchGenerator() {
                         <ToggleButton value="Dot" textColor="#ffffff" selectedColor="#ffffff">Dot</ToggleButton>
                         <ToggleButton value="Compact" textColor="#ffffff" selectedColor="#ffffff">Compact</ToggleButton>
                     </ToggleButtonGroup>
+                </Tooltip>
                 {/* </div> */}
             </div>
 
