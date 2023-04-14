@@ -2,21 +2,17 @@
 import Image from 'next/image'
 // import { Inter } from '@next/font/google'
 // import styles from '../../styles/Home.module.css'
-import { IconButton, TextField} from '@mui/material';
+import { IconButton} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Router from 'next/router'
 
 import Link from 'next/link'
-// import { useRouter } from 'next/router'
-import { PropaneSharp } from '@mui/icons-material';
+
 
 const { fit } = require('furigana');
 
-import FuriganaWord from './furiganaWord';
-
-
-import {useState} from "react"
+import FuriganaWord from './FuriganaWord';
 
 
 // NOTE NO COMPLETE
@@ -81,7 +77,7 @@ interface entryInfo {
 
 
 
-export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}) {
+export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
     const {kanji, kana} = entryInfo;
 

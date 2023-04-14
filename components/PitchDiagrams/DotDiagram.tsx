@@ -6,7 +6,7 @@ interface props {
     color:string
 }
 
-export default function DotDiagram({mora, pitchPattern, color} : props) {
+export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Element{
 
     //Diagram settings
     const nodeDistance: number = 65;

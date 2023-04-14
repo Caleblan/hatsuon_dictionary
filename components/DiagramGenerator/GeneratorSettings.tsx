@@ -5,7 +5,7 @@ import { BlockPicker} from 'react-color';
 interface props {
     downloadFormat: string
     color: string,
-    downloadDimensions: {width:string, height:string},
+    downloadDimensions: {width:number, height:number},
     changeFileFormat: any,
     changeColor: any,
     changeDownloadDimensions: any
@@ -16,7 +16,7 @@ export default function GeneratorSettings(props: props) {
     const {downloadFormat, color, downloadDimensions, changeFileFormat, changeColor, changeDownloadDimensions} = props;
 
     //Default color options provided by blockpicker
-    const colors = ["#000000", "#FFFFFF", "#DC143C", "#00CD00", "#FF8C00", "#009ACD"];
+    const colors: string[] = ["#000000", "#FFFFFF", "#DC143C", "#00CD00", "#FF8C00", "#009ACD"];
 
     return (
         // style={{backgroundColor: "#EFEFEF", border: "2px solid black", width: "100%", borderRadius: "0.3em", display: "flex", margin: "0 0 1em 0"}}
@@ -48,7 +48,7 @@ export default function GeneratorSettings(props: props) {
 
                 </div>
             
-                {/*  */}
+                {/* Color Picker */}
                 {/* style={{margin: "0.75em 0.75em 0.5em 0", height: "100%", display: "flex", justifyContent: "center", flexGrow: "2"}} */}
                 <div className="h-full w-1/2 min-w-max">
                     <BlockPicker width="100%" triangle="hide" color={color} colors={colors} onChange={(color:any, event:any) => 

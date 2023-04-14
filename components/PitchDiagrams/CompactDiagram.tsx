@@ -6,11 +6,10 @@ interface props {
     color:string
 }
 
-export default function CompactDiagram({mora, pitchPattern, color} : props) {
+export default function CompactDiagram({mora, pitchPattern, color} : props): JSX.Element {
 
     //Diagram settings
     const nodeDistance: number = 80;
-    const nodeRadius: number = 8;
     const primaryColor: string = color;
 
     /**

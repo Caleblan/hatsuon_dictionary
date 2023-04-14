@@ -5,7 +5,7 @@ interface furigana {
   kana: string
 }
 
-export default function FuriganaWord({kanji, kana}: furigana) {
+export default function FuriganaWord({kanji, kana}: furigana): JSX.Element {
     
     console.log("We are here")
 
