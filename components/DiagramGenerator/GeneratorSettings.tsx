@@ -40,10 +40,10 @@ export default function GeneratorSettings(props: props) {
                         </Select>
                     </FormControl>
 
-                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} inputProps={{autoFocus: true}} 
+                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} 
                         onChange={event => changeDownloadDimensions(() => {return {width: event.target.value, height: downloadDimensions.height}})}/>
 
-                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height} inputProps={{autoFocus: true}} 
+                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height}
                         onChange={event => changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: event.target.value}})}/>
 
                 </div>

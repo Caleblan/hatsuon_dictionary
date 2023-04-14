@@ -16,6 +16,8 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
     //Used to mask path behind last node which has transparent center.
     let mask: JSX.Element | null = null;
 
+    console.log("Mora", mora)
+
     /**
      * Draws a pitch diagram based on the inputed text and pitch pattern.
      * @returns An SVG JSX element of the pitch diagram.
@@ -24,13 +26,11 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
             
         const nodes: JSX.Element[] = createNodes(pitchPattern);
 
-        console.log(pitchPattern, "Pitch Pattern")
-
         //Only draw line if more than a single node.
         if(pitchPattern.length > 1) {
         
             //Move point to first node.
-            let pathString = `M${nodes[0].props.cx},${nodes[0].props.cy}`;
+            let pathString: string = `M${nodes[0].props.cx},${nodes[0].props.cy}`;
             
             //Create a path connecting all nodes together.
             for(let i = 1; i < nodes.length; i++)
@@ -69,8 +69,8 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
         }
 
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"190px"}}
-            viewBox={`0 0 ${svgWidth} 190`}>
+            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"180px"}}
+            viewBox={`0 0 ${svgWidth} 180`}>
                 <text fill-opacity="0%">Created by Hatsuon website. Caleb Landry</text>
                 <defs>
                     <mask id="mask" maskUnits="userSpaceOnUse">

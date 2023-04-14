@@ -1,7 +1,9 @@
 // React/MUI
 import { useState , useRef, useMemo } from "react"
 import {FileDownloadOutlined, SettingsOutlined} from '@mui/icons-material';
-import {TextField, IconButton, Tooltip} from '@mui/material';
+import {TextField, IconButton, ToggleButton as MuiToggleButton, 
+        ToggleButtonGroup,Tooltip} from '@mui/material';
+import { styled } from "@mui/material/styles";
 
 import toMora from '../../lib/moraParser';
 
@@ -16,6 +18,14 @@ import { saveAs } from 'file-saver';
 import * as ReactDOMServer from 'react-dom/server';
 
 const buttonStyle = "flex justify-end";
+
+// Change ToggleButtom Color
+const ToggleButton = styled(MuiToggleButton)(({ textColor, backgroundColor }) => ({
+    "&.Mui-selected, &.Mui-selected:hover": {
+      color: textColor,
+      backgroundColor: backgroundColor
+    }
+  }));
 
 export default function PitchGenerator() {
   
@@ -40,14 +50,26 @@ export default function PitchGenerator() {
     // Used to store state of whether pitchaccent pattern is valid
     const [errorValue, changeErrorValue] = useState<boolean>(false);
 
+    // Used to keep current state of diagram type selector
+    const [diagramType, setDiagramType] = useState<string>('Dot');
+
     //Used so we can access Pitch Diagram SVG from DOM for use when downloading
     const diagramContainer = useRef(null);
 
     //Used to store pitchDiagram generator
     const pitchDiagram: JSX.Element = useMemo(() => {
-        return <DotDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
-    }, [diagramText, pitchPattern, color]);
+        return diagramType === 'Dot' ?
+            <DotDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
+            : <CompactDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
+    }, [diagramText, pitchPattern, color, diagramType]);
 
+
+    const changeDiagramType = (
+      event: React.MouseEvent<HTMLElement>,
+      newAlignment: string,
+    ) => {
+      setDiagramType(newAlignment);
+    };
 
     function downloadAsSVG(): void {
         
@@ -185,6 +207,18 @@ export default function PitchGenerator() {
             {/* Diagram Display */}
             <div className = "w-full h-full overflow-x-auto overflow-y-hidden bg-[#cececec2] border-2 border-black rounded-md" ref={diagramContainer}>
                 {pitchDiagram}
+                
+                {/* <div className="w-full flex justify-end bottom-0 left-0 "> */}
+                    <ToggleButtonGroup className="sticky z-2 bottom-2 right-2 left-2"
+                        color="standard"
+                        value={diagramType}
+                        exclusive
+                        onChange={(event: React.MouseEvent<HTMLElement>, newAlignment:string) => {setDiagramType(newAlignment)}}
+                        aria-label="Platform">
+                        <ToggleButton value="Dot" textColor="#ffffff" selectedColor="#ffffff">Dot</ToggleButton>
+                        <ToggleButton value="Compact" textColor="#ffffff" selectedColor="#ffffff">Compact</ToggleButton>
+                    </ToggleButtonGroup>
+                {/* </div> */}
             </div>
 
             {/* Diagram options box */}
