@@ -1,5 +1,4 @@
 
-import { Inter } from '@next/font/google'
 import styles from '../../styles/Home.module.css'
 import { IconButton, TextField} from '@mui/material';
 import {useState, useEffect} from "react"
