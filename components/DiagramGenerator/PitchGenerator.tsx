@@ -84,51 +84,51 @@ export default function PitchGenerator(): JSX.Element {
      */
     function downloadAsPNG(): void {
 
-        // if(diagramContainer.current === null){
-        //     throw new Error("Diagram conatiner doesn't exist")
-        // }
+        if(diagramContainer.current === null){
+            throw new Error("Diagram conatiner doesn't exist")
+        }
 
-        // type Props = {
-        //     children?: React.ReactNode
-        // };
+        type Props = {
+            children?: React.ReactNode
+        };
 
-        // // //Get diagram DOM Element.
-        // const svg: JSX.Element = diagramContainer.current.children[0];
+        // //Get diagram DOM Element.
+        const svg = diagramContainer.current.children[0];
 
 
-        // // const svg: React.FC<Props> = ({children}) => {return children}
+        // const svg: React.FC<Props> = ({children}) => {return children}
 
-        // //Set for firefox as svg needs stying in both style and height/width attributes.
-        // svg.setAttribute("width", downloadDimensions.width);
-        // svg.setAttribute("height", downloadDimensions.height);
+        //Set for firefox as svg needs stying in both style and height/width attributes.
+        svg.setAttribute("width", String(downloadDimensions.width));
+        svg.setAttribute("height", String(downloadDimensions.height));
     
-        // let image: HTMLImageElement = new Image();
+        let image: HTMLImageElement = new Image();
         
-        // //Turn svg image into a string.
-        // const SVGDiagramString: string = new XMLSerializer().serializeToString(svg);
-        // //Turn SVG diagram string into base64 string.
-        // const base64SVG: string = window.btoa(decodeURIComponent(encodeURIComponent(SVGDiagramString)));
+        //Turn svg image into a string.
+        const SVGDiagramString: string = new XMLSerializer().serializeToString(svg);
+        //Turn SVG diagram string into base64 string.
+        const base64SVG: string = window.btoa(decodeURIComponent(encodeURIComponent(SVGDiagramString)));
         
-        // image.src = `data:image/svg+xml;base64,${base64SVG}`;
+        image.src = `data:image/svg+xml;base64,${base64SVG}`;
     
-        // image.onload = () => {
-        //     //Create canvas and draw to it.
-        //     let canvas: HTMLCanvasElement = document.createElement('canvas');
-        //     //Get width and height and make canvas is proper size.
-        //     canvas.width = downloadDimensions.width;
-        //     canvas.height = downloadDimensions.height;
-        //     let context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+        image.onload = () => {
+            //Create canvas and draw to it.
+            let canvas: HTMLCanvasElement = document.createElement('canvas');
+            //Get width and height and make canvas is proper size.
+            canvas.width = downloadDimensions.width;
+            canvas.height = downloadDimensions.height;
+            let context: CanvasRenderingContext2D | null = canvas.getContext('2d');
             
-        //     if(context) {
-        //         context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
-        //         //Download image.
-        //         canvas.toBlob(blob => {saveAs(blob, `${diagramText}_pitch_diagram.png`)});
-        //     }
-        //     else {
-        //         throw new Error("Context is not found when downloading pitch accent diagram")
-        //     }
+            if(context) {
+                context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
+                //Download image.
+                canvas.toBlob( (blob: Blob | null) => {if(blob) saveAs(blob, `${diagramText}_pitch_diagram.png`)});
+            }
+            else {
+                throw new Error("Context is not found when downloading pitch accent diagram")
+            }
 
-        // }
+        }
     }
 
     /**
