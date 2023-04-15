@@ -3,8 +3,6 @@ import styles from '../styles/Home.module.css'
 import { IconButton, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function Home() {
   return (
     <>
