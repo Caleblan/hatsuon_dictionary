@@ -48,7 +48,7 @@ export default function Home() {
                 </Tooltip>
 
                 <p className="align-middle mr-2">
-                  Make sure to include both the current website URL as well the site's creator "Caleb Landry" in the content the diagram is to be used in.
+                  Make sure to include both the current website URL as well the site&apos;s creator &quot;Caleb Landry&quot; in the content the diagram is to be used in.
                 </p>
 
               </li>

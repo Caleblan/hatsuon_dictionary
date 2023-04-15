@@ -1,5 +1,5 @@
 // React/MUI
-import { useState , useRef, useMemo } from "react"
+import { useState , useRef, useMemo, ReactNode } from "react"
 import {FileDownloadOutlined, SettingsOutlined} from '@mui/icons-material';
 import {TextField, IconButton, ToggleButton as MuiToggleButton, 
         ToggleButtonGroup,Tooltip} from '@mui/material';
@@ -18,10 +18,10 @@ import CompactDiagram from "../PitchDiagrams/CompactDiagram";
 const buttonStyle: string = "flex justify-end";
 
 // Change ToggleButtom Color
-const ToggleButton = styled(MuiToggleButton)(({ textColor, backgroundColor }) => ({
+const ToggleButton = styled(MuiToggleButton)(({ color /*, backgroundColor*/ }) => ({
     "&.Mui-selected, &.Mui-selected:hover": {
-      color: textColor,
-      backgroundColor: backgroundColor
+      color: color,
+    //   backgroundColor: backgroundColor
     }
   }));
 
@@ -52,7 +52,7 @@ export default function PitchGenerator(): JSX.Element {
     const [diagramType, setDiagramType] = useState<string>('Dot');
 
     //Used so we can access Pitch Diagram SVG from DOM for use when downloading
-    const diagramContainer = useRef<JSX.Element | null>(null);
+    const diagramContainer = useRef<HTMLDivElement | null>(null);
 
     //Used to store pitchDiagram generator
     const pitchDiagram: JSX.Element = useMemo(() => {
@@ -84,45 +84,51 @@ export default function PitchGenerator(): JSX.Element {
      */
     function downloadAsPNG(): void {
 
-        if(diagramContainer.current === null){
-            throw new Error("Diagram conatiner doesn't exist")
-            return
-        }
+        // if(diagramContainer.current === null){
+        //     throw new Error("Diagram conatiner doesn't exist")
+        // }
 
-        //Get diagram DOM Element.
-        const svg : any | null = diagramContainer.current.children[0];
+        // type Props = {
+        //     children?: React.ReactNode
+        // };
 
-        //Set for firefox as svg needs stying in both style and height/width attributes.
-        svg.setAttribute("width", downloadDimensions.width);
-        svg.setAttribute("height", downloadDimensions.height);
+        // // //Get diagram DOM Element.
+        // const svg: JSX.Element = diagramContainer.current.children[0];
+
+
+        // // const svg: React.FC<Props> = ({children}) => {return children}
+
+        // //Set for firefox as svg needs stying in both style and height/width attributes.
+        // svg.setAttribute("width", downloadDimensions.width);
+        // svg.setAttribute("height", downloadDimensions.height);
     
-        let image: HTMLImageElement = new Image();
+        // let image: HTMLImageElement = new Image();
         
-        //Turn svg image into a string.
-        const SVGDiagramString: string = new XMLSerializer().serializeToString(svg);
-        //Turn SVG diagram string into base64 string.
-        const base64SVG: string = window.btoa(decodeURIComponent(encodeURIComponent(SVGDiagramString)));
+        // //Turn svg image into a string.
+        // const SVGDiagramString: string = new XMLSerializer().serializeToString(svg);
+        // //Turn SVG diagram string into base64 string.
+        // const base64SVG: string = window.btoa(decodeURIComponent(encodeURIComponent(SVGDiagramString)));
         
-        image.src = `data:image/svg+xml;base64,${base64SVG}`;
+        // image.src = `data:image/svg+xml;base64,${base64SVG}`;
     
-        image.onload = () => {
-            //Create canvas and draw to it.
-            let canvas: HTMLCanvasElement = document.createElement('canvas');
-            //Get width and height and make canvas is proper size.
-            canvas.width = downloadDimensions.width;
-            canvas.height = downloadDimensions.height;
-            let context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+        // image.onload = () => {
+        //     //Create canvas and draw to it.
+        //     let canvas: HTMLCanvasElement = document.createElement('canvas');
+        //     //Get width and height and make canvas is proper size.
+        //     canvas.width = downloadDimensions.width;
+        //     canvas.height = downloadDimensions.height;
+        //     let context: CanvasRenderingContext2D | null = canvas.getContext('2d');
             
-            if(context) {
-                context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
-                //Download image.
-                canvas.toBlob(blob => {saveAs(blob, `${diagramText}_pitch_diagram.png`)});
-            }
-            else {
-                throw new Error("Context is not found when downloading pitch accent diagram")
-            }
+        //     if(context) {
+        //         context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
+        //         //Download image.
+        //         canvas.toBlob(blob => {saveAs(blob, `${diagramText}_pitch_diagram.png`)});
+        //     }
+        //     else {
+        //         throw new Error("Context is not found when downloading pitch accent diagram")
+        //     }
 
-        }
+        // }
     }
 
     /**
@@ -225,8 +231,8 @@ export default function PitchGenerator(): JSX.Element {
                         exclusive
                         onChange={(event: React.MouseEvent<HTMLElement>, newAlignment:string) => {setDiagramType(newAlignment)}}
                         aria-label="Platform">
-                        <ToggleButton value="Dot" textColor="#ffffff" selectedColor="#ffffff">Dot</ToggleButton>
-                        <ToggleButton value="Compact" textColor="#ffffff" selectedColor="#ffffff">Compact</ToggleButton>
+                        <ToggleButton value="Dot" /*selectedColor="#ffffff"*/>Dot</ToggleButton>
+                        <ToggleButton value="Compact" /*selectedColor="#ffffff"*/>Compact</ToggleButton>
                     </ToggleButtonGroup>
                 </Tooltip>
                 {/* </div> */}

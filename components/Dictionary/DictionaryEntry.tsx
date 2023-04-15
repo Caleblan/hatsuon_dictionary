@@ -17,7 +17,7 @@ import FuriganaWord from './FuriganaWord';
 
 // NOTE NO COMPLETE
 // TODO add all tags 
-let entryTags = {
+let entryTags: any = {
     'adj-f': 'noun or verb acting prenominally',
     'adj-i': 'adjective (keiyoushi)',
     'adj-ix': 'adjective (keiyoushi) - yoi/ii class',

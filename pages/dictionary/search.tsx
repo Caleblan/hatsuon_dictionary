@@ -59,6 +59,8 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
 
   //TODO when pressing the back button in browser, must put old text into Textfield
 
+  let key = 0;
+
   return (
     <>
       <Head>
@@ -78,7 +80,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
                 // Create entry for each dictionary result returned from database.
                 entries.map((entry:any) => 
                 (
-                  <DictionaryEntry entryInfo={entry} language="eng"
+                  <DictionaryEntry key={key++} entryInfo={entry} language="eng"
                     // diagrams={}
                     
                     

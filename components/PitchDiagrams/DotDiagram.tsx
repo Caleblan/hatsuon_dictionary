@@ -26,6 +26,8 @@ export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Ele
             
         const nodes: JSX.Element[] = createNodes(pitchPattern);
 
+        let path: JSX.Element | null = null;
+
         //Only draw line if more than a single node.
         if(pitchPattern.length > 1) {
         
@@ -42,7 +44,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Ele
             //TODO path make a better solution for mask on path
             // new Set(pitchPattern).size != 1 ? {mask: "url(#mask)"} : {}
 
-            var path : JSX.Element = (
+            path = (
                 <path d={pathString} stroke={primaryColor} fill= "none" strokeWidth="3" mask="url(#mask)"/>
             );
         }
@@ -80,7 +82,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Ele
                         {mask}
                     </mask>
                 </defs>
-                <g>{path}</g>
+                {path ? path : <></>}
                 <g>{nodes}</g>
                 <g>{text}</g>
             </svg>
