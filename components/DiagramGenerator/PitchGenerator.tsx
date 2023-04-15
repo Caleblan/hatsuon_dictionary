@@ -88,15 +88,8 @@ export default function PitchGenerator(): JSX.Element {
             throw new Error("Diagram conatiner doesn't exist")
         }
 
-        type Props = {
-            children?: React.ReactNode
-        };
-
-        // //Get diagram DOM Element.
+        //Get diagram DOM Element.
         const svg = diagramContainer.current.children[0];
-
-
-        // const svg: React.FC<Props> = ({children}) => {return children}
 
         //Set for firefox as svg needs stying in both style and height/width attributes.
         svg.setAttribute("width", String(downloadDimensions.width));
@@ -122,7 +115,7 @@ export default function PitchGenerator(): JSX.Element {
             if(context) {
                 context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
                 //Download image.
-                canvas.toBlob( (blob: Blob | null) => {if(blob) saveAs(blob, `${diagramText}_pitch_diagram.png`)});
+                canvas.toBlob((blob: Blob | null) => {if(blob) saveAs(blob, `${diagramText}_pitch_diagram.png`)});
             }
             else {
                 throw new Error("Context is not found when downloading pitch accent diagram")
