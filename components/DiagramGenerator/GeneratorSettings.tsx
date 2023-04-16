@@ -40,7 +40,7 @@ export default function GeneratorSettings(props: props) {
                         </Select>
                     </FormControl>
 
-                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} InputProps={{inputProps: { min: 0 }}}
+                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} InputLabelProps={{ shrink: true }} 
                         onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                             // Prevents negative numbers
                             const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
@@ -49,7 +49,7 @@ export default function GeneratorSettings(props: props) {
                             changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
                         }/>
 
-                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height}
+                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height} InputLabelProps={{ shrink: true }} 
                         onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                             // Prevents negative numbers
                             const value: string = event.target.value.match(/^[0-9]+$/) == null ? 

@@ -181,12 +181,12 @@ export default function PitchGenerator(): JSX.Element {
             <div className="flex flex-wrap items-center w-full h-full gap-x-4 gap-y-3">
                 
                 {/* Input textfield */}
-                <TextField className="grow-[2]" label="Input text" onChange={event => changeText(event.target.value)}
-                placeholder="Ex. はつおん" autoFocus={true}/>
+                <TextField className="grow-[2]" label="Input text" onChange={event => changeText(event.target.value)} 
+                placeholder="Ex. はつおん" autoFocus={true} InputLabelProps={{ shrink: true }}/>
             
                 {/* Pitch Pattern textfield */}
-                <TextField className="grow-[2]" label="Pitch Pattern" helperText={errorValue ? "Text field contains invalid characters.": null}
-                placeholder="Ex. 0111 or lhhh" error={errorValue} onChange={event => inputPattern(event.target.value)}/>
+                <TextField className="grow-[2]" label="Pitch Pattern" helperText={errorValue ? "Text field contains invalid characters.": null}  
+                error={errorValue} placeholder="Ex. 01111 or lhhhh" InputLabelProps={{ shrink: true }} onChange={event => inputPattern(event.target.value)}/>
 
 {/* onChange={() => changePitch((event:any) => Number(event.target.value))} */}
                 
