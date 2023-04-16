@@ -40,11 +40,23 @@ export default function GeneratorSettings(props: props) {
                         </Select>
                     </FormControl>
 
-                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} 
-                        onChange={event => changeDownloadDimensions(() => {return {width: event.target.value, height: downloadDimensions.height}})}/>
+                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} InputProps={{inputProps: { min: 0 }}}
+                        onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                            // Prevents negative numbers
+                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                            (event.target.value = String(0))
+                            : event.target.value = String(Number(event.target.value))
+                            changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
+                        }/>
 
                     <TextField type="number" label="Height" defaultValue={downloadDimensions.height}
-                        onChange={event => changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: event.target.value}})}/>
+                        onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                            // Prevents negative numbers
+                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                                (event.target.value = String(0))
+                                : event.target.value = String(Number(event.target.value))
+                            changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0}})}
+                        }/>
 
                 </div>
             
