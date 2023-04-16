@@ -20,7 +20,7 @@ export default function CompactDiagram({mora, pitchPattern, color} : props): JSX
 
         let text: JSX.Element[] = [];
 
-        console.log(pitchPattern)
+        // console.log(pitchPattern)
 
         //TODO find better way to place text.
         for(let i = 0; i < mora.length; i++) {

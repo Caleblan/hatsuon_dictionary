@@ -16,8 +16,6 @@ export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Ele
     //Used to mask path behind last node which has transparent center.
     let mask: JSX.Element | null = null;
 
-    console.log("Mora", mora)
-
     /**
      * Draws a pitch diagram based on the inputed text and pitch pattern.
      * @returns An SVG JSX element of the pitch diagram.
