@@ -39,7 +39,7 @@ export default function CompactDiagram({mora, pitchPattern, color} : props): JSX
         //Move point to first node.
         let pathString: string = `M${nodeDistance-nodeDistance/4},${pitchPattern[0] == 2 ? low : high}`;
         
-        var finalDistance = 0
+        var finalDistance: number = 0
 
         //Create a path connecting all nodes together.
         for(let i = 1; i < pitchPattern.length; i++)
@@ -55,9 +55,9 @@ export default function CompactDiagram({mora, pitchPattern, color} : props): JSX
             <path d={pathString} stroke={primaryColor} fill= "none" strokeWidth="4"/>
         );
 
-
-        let svgWidth: number = text.length > 0 && text[text.length-1].props.x + nodeDistance > finalDistance ? 
-            text[text.length-1].props.x + nodeDistance : finalDistance
+        let svgWidth: number = text.length > 0 && text[text.length-1].props.x + nodeDistance > finalDistance 
+            ? text[text.length-1].props.x + nodeDistance 
+            : finalDistance
 
         return (
             <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"180px"}}

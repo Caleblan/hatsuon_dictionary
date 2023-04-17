@@ -33,7 +33,7 @@ export default function PitchGenerator(): JSX.Element {
     //State for diagram pitch pattern.
     const [pitchPattern, changePitch] = useState<number[]>([]);
 
-    //Used to keep track of selected color
+    //Used to keep track of selected color for diagram
     const [color, changeDiagramColor] = useState<string>("#000000");
 
     //Used to enable/disable diagram settings.
@@ -45,10 +45,7 @@ export default function PitchGenerator(): JSX.Element {
     //Used to store dimensions of download.
     const [downloadDimensions, changeDownloadDimensions] = useState<{width: number, height:number}>({width: 500, height: 250});
 
-    // Used to store state of whether pitchaccent pattern is valid
-    const [errorValue, changeErrorValue] = useState<boolean>(false);
-
-    // Used to keep current state of diagram type selector
+    // Used to keep current state of diagram type selector.
     const [diagramType, setDiagramType] = useState<string>('Dot');
 
     //Used so we can access Pitch Diagram SVG from DOM for use when downloading
@@ -66,8 +63,8 @@ export default function PitchGenerator(): JSX.Element {
      * Allows the download of the diagram as a PNG when called by a click event from the download button.
      * ASSUMPTION: download format is set to PNG in diagram settings selector
      */
-    function downloadAsSVG(): void {
-        
+    function downloadAsSVG(): void 
+    {    
         //TODO change size of svg attributes and styling to match dimensions input.
         
         //Convert pitch accent DOM
@@ -82,8 +79,8 @@ export default function PitchGenerator(): JSX.Element {
      * Allows the download of the diagram as a PNG when called by a click event from the download button.
      * ASSUMPTION: download format is set to PNG in diagram settings selector
      */
-    function downloadAsPNG(): void {
-
+    function downloadAsPNG(): void 
+    {
         if(diagramContainer.current === null){
             throw new Error("Diagram conatiner doesn't exist")
         }
@@ -140,38 +137,14 @@ export default function PitchGenerator(): JSX.Element {
     }
 
     /**
-     * Parses the pitch pattern inputted by user in Pitch Pattern Field.
-     * Checks to see if the input is of the correct format (0/1's and/or l/h) (case-insensitve).
-     * Notifies user that input is invalid if Pitch Pattern text fails requirments.
+     * Parses the pitch pattern inputted by user in Pitch Pattern Field into a valid pattern.
      * @param pattern Pitch Accent pattern inputted by user in Pitch Pattern textfield.
      */
-    function inputPattern(pattern:string): void {
-        
-        //Case insensitive regex
-        const regex: RegExp = new RegExp("[^01０１lｌhｈ]+", "i");
+    function inputPattern(pattern:string): void 
+    {
         //Used to check if we are not using 0 or 1.
         const regexSwitch: RegExp = new RegExp("[0０lｌ]", "i");
-
-        //If string doesnt match, set error value
-        if(regex.test(pattern)){
-            changeErrorValue(() => true);
-            return;
-        }
-
-        // Set pitch pattern input box to non-error
-        changeErrorValue(() => false);
-
-        let parsedPattern: number[] = [];
-
-        //Change all non 0/1 characters into 0/1's.
-        for (const char of pattern) 
-        {    
-            //Values inverted to make diagram creation easier. 2 is low node, 1 is high node
-            parsedPattern.push(regexSwitch.test(char) ? 2 : 1);
-        }
-
-        changePitch(() => parsedPattern);
-
+        changePitch(() => pattern.split("").map( (char:string) => regexSwitch.test(char) ? 2 : 1));
     }
 
     return (
@@ -181,14 +154,20 @@ export default function PitchGenerator(): JSX.Element {
             <div className="flex flex-wrap items-center w-full h-full gap-x-4 gap-y-3">
                 
                 {/* Input textfield */}
-                <TextField className="grow-[2]" label="Input text" onChange={event => changeText(event.target.value)} 
-                placeholder="Ex. はつおん" autoFocus={true} InputLabelProps={{ shrink: true }}/>
+                <TextField className="grow-[2]" label="Input text" 
+                placeholder="Ex. はつおん" InputLabelProps={{ shrink: true }} autoFocus={true}
+                onChange={event => changeText(event.target.value)} />
             
                 {/* Pitch Pattern textfield */}
-                <TextField className="grow-[2]" label="Pitch Pattern" helperText={errorValue ? "Text field contains invalid characters.": null}  
-                error={errorValue} placeholder="Ex. 01111 or lhhhh" InputLabelProps={{ shrink: true }} onChange={event => inputPattern(event.target.value)}/>
-
-{/* onChange={() => changePitch((event:any) => Number(event.target.value))} */}
+                <TextField className="grow-[2]" label="Pitch Pattern"
+                placeholder="Ex. 01111 or lhhhh" InputLabelProps={{ shrink: true }} 
+                onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                    // Prevents negative numbers
+                    const value: string = event.target.value.match(/[^01０１lｌLhｈH]+/) != null ? 
+                    (event.target.value = event.target.value.replace(/[^01０１lｌLhｈH]+/, ''))
+                    : event.target.value;
+                    inputPattern(value);
+                }}/>
                 
                 {/* Diagram Buttons */}
                 <div className="flex gap-x-1">
