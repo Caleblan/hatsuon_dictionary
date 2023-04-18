@@ -159,7 +159,7 @@ export default function PitchGenerator(): JSX.Element {
             
                 {/* Pitch Pattern textfield */}
                 <TextField className="grow-[2]" label="Pitch Pattern"
-                placeholder="Ex. 01111 or lhhhh" InputLabelProps={{ shrink: true }} 
+                placeholder="Ex. 01111 or lhhhh" InputProps={{spellCheck: false}} InputLabelProps={{ shrink: true }} 
                 onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                     // Prevents negative numbers
                     const value: string = event.target.value.match(/[^01０１lｌLhｈH]+/) != null ? 
