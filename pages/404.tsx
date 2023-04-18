@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import styles from '../../styles/Home.module.css'
 import { IconButton, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -26,9 +25,9 @@ export default function NotFoundPage(props: any) {
         
         
         <p>404</p>
-        <Image width="50%" height="50%" src={MissingPageImage}></Image>
+        <Image alt="A sad pitch diagram guy shrugging :(" width={30} height={15} src={MissingPageImage}></Image>
         <p>
-            Oops! Seems like the page you are looking for doesn't exist.
+            Oops! Seems like the page you are looking for doesn&apos;t exist.
             Try typing the link again or go the <Link href="/"> home page</Link>
         </p>
     </main>

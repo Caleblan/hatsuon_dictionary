@@ -27,8 +27,16 @@ export default function Home() {
             <PitchGenerator/>
 
             <p>
-              This software is aimed at helping both Japanese language educators and learners to study Pitch Accent. 
-              Following this, I have tried to make the license as open as possible.
+              This software allows users to create pitch accent diagrams which can be used in educational content.
+              To begin creating the Pitch Accent Diagrams, start by entering the word you want to display in the
+              input text box. Then put your pitch pattern into the adjacent box (using either 0/l as downsteps and
+              1/h as upsteps). Since you must manually enter the pitch accent for the word, this applications requires a base understanding
+              of pitch accent.
+            </p>
+
+            <p>
+              The purpose of this application is aimed at helping both Japanese language educators and learners to study 
+              Pitch Accent. Following this, I have tried to make the license as open as possible.
               All generated diagrams can be used freely for both commercial/non-commercial use and can also be modified and distributed.
               However, any pitch diagrams created through the use of はつおん Pitch Generator must follow the rules outlined below: 
             </p>
@@ -40,7 +48,7 @@ export default function Home() {
                 </Tooltip>
 
                 <p className="align-middle mr-2">
-                  Make sure to include both the current website URL as well the site's creator "Caleb Landry" in the content the diagram is to be used in.
+                  Make sure to include both the current website URL as well the site&apos;s creator &quot;Caleb Landry&quot; in the content the diagram is to be used in.
                 </p>
 
               </li>

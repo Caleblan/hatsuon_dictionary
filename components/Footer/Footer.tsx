@@ -36,14 +36,11 @@ export default function Footer(): JSX.Element {
             <div className={styling.footerColumns}>
                 
                 {/* About */}
-                <nav className={styling.column}>
+                {/* <nav className={styling.column}>
                     <span className={styling.columnHeader}>About</span>
                     <ul className={styling.list}>
-                        {/* <Link className = "FooterLink" to={links.internalLinks.license}>
-                            License
-                        </Link> */}
                     </ul>
-                </nav>
+                </nav> */}
                     
                 {/* Social Links */}
                 <nav className={styling.column}>

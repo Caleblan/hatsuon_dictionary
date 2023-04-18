@@ -6,7 +6,7 @@ interface props {
     color:string
 }
 
-export default function DotDiagram({mora, pitchPattern, color} : props) {
+export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Element{
 
     //Diagram settings
     const nodeDistance: number = 65;
@@ -24,13 +24,13 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
             
         const nodes: JSX.Element[] = createNodes(pitchPattern);
 
-        console.log(pitchPattern, "Pitch Pattern")
+        let path: JSX.Element | null = null;
 
         //Only draw line if more than a single node.
         if(pitchPattern.length > 1) {
         
             //Move point to first node.
-            let pathString = `M${nodes[0].props.cx},${nodes[0].props.cy}`;
+            let pathString: string = `M${nodes[0].props.cx},${nodes[0].props.cy}`;
             
             //Create a path connecting all nodes together.
             for(let i = 1; i < nodes.length; i++)
@@ -42,7 +42,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
             //TODO path make a better solution for mask on path
             // new Set(pitchPattern).size != 1 ? {mask: "url(#mask)"} : {}
 
-            var path : JSX.Element = (
+            path = (
                 <path d={pathString} stroke={primaryColor} fill= "none" strokeWidth="3" mask="url(#mask)"/>
             );
         }
@@ -69,8 +69,8 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
         }
 
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"190px"}}
-            viewBox={`0 0 ${svgWidth} 190`}>
+            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"180px"}}
+            viewBox={`0 0 ${svgWidth} 180`}>
                 <text fill-opacity="0%">Created by Hatsuon website. Caleb Landry</text>
                 <defs>
                     <mask id="mask" maskUnits="userSpaceOnUse">
@@ -80,7 +80,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props) {
                         {mask}
                     </mask>
                 </defs>
-                <g>{path}</g>
+                {path ? path : <></>}
                 <g>{nodes}</g>
                 <g>{text}</g>
             </svg>

@@ -2,26 +2,22 @@
 import Image from 'next/image'
 // import { Inter } from '@next/font/google'
 // import styles from '../../styles/Home.module.css'
-import { IconButton, TextField} from '@mui/material';
+import { IconButton} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Router from 'next/router'
 
 import Link from 'next/link'
-// import { useRouter } from 'next/router'
-import { PropaneSharp } from '@mui/icons-material';
+
 
 const { fit } = require('furigana');
 
-import FuriganaWord from './furiganaWord';
-
-
-import {useState} from "react"
+import FuriganaWord from './FuriganaWord';
 
 
 // NOTE NO COMPLETE
 // TODO add all tags 
-let entryTags = {
+let entryTags: any = {
     'adj-f': 'noun or verb acting prenominally',
     'adj-i': 'adjective (keiyoushi)',
     'adj-ix': 'adjective (keiyoushi) - yoi/ii class',
@@ -81,7 +77,7 @@ interface entryInfo {
 
 
 
-export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}) {
+export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
     const {kanji, kana} = entryInfo;
 
@@ -149,14 +145,16 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     // console.log(definitionElements1)
     
     return (
-        <div className="flex w-full border-b border-gray-300">
+        <div className="w-full flex mb-4 border-b border-gray-300">
             {/* Used to  */}
-            <div className="flex flex-col w-1/4">
-                {/* {createWordElement(kanji, kana)} */}
-                <FuriganaWord kanji={kanji.length > 0 ? kanji[0].text : null} kana={kana[0].text}/>
-            </div>
-            <div className="flex flex-col w-3/4">
-                {definitionElements}
+            <div className="mb-4">
+                <div className="flex flex-col w-1/4 px-4">
+                    {/* {createWordElement(kanji, kana)} */}
+                    <FuriganaWord kanji={kanji.length > 0 ? kanji[0].text : null} kana={kana[0].text}/>
+                </div>
+                <div className="flex flex-col w-3/4">
+                    {definitionElements}
+                </div>
             </div>
         </div>
     )

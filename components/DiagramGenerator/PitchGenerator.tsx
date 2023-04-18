@@ -1,23 +1,31 @@
 // React/MUI
-import { useState , useRef, useMemo } from "react"
+import { useState , useRef, useMemo, ReactNode } from "react"
 import {FileDownloadOutlined, SettingsOutlined} from '@mui/icons-material';
-import {TextField, IconButton, Tooltip} from '@mui/material';
-
+import {TextField, IconButton, ToggleButton as MuiToggleButton, 
+        ToggleButtonGroup,Tooltip} from '@mui/material';
+import { styled } from "@mui/material/styles";
+// Other imports
+import { saveAs } from 'file-saver';
+import * as ReactDOMServer from 'react-dom/server';
+// Custom functions
 import toMora from '../../lib/moraParser';
-
+// Custom components
 import GeneratorSettings from "./GeneratorSettings";
-import DownloadButton from "./DownloadButton";
-// import PitchDiagram from "../PitchDiagram/PitchDiagram";
-
 import DotDiagram from "../PitchDiagrams/DotDiagram";
 import CompactDiagram from "../PitchDiagrams/CompactDiagram";
 
-import { saveAs } from 'file-saver';
-import * as ReactDOMServer from 'react-dom/server';
 
-const buttonStyle = "flex justify-end";
+const buttonStyle: string = "flex justify-end";
 
-export default function PitchGenerator() {
+// Change ToggleButtom Color
+const ToggleButton = styled(MuiToggleButton)(({ color /*, backgroundColor*/ }) => ({
+    "&.Mui-selected, &.Mui-selected:hover": {
+      color: color,
+    //   backgroundColor: backgroundColor
+    }
+  }));
+
+export default function PitchGenerator(): JSX.Element {
   
     //State for diagram text.
     const [diagramText, changeText] = useState<string>("");
@@ -25,7 +33,7 @@ export default function PitchGenerator() {
     //State for diagram pitch pattern.
     const [pitchPattern, changePitch] = useState<number[]>([]);
 
-    //Used to keep track of selected color
+    //Used to keep track of selected color for diagram
     const [color, changeDiagramColor] = useState<string>("#000000");
 
     //Used to enable/disable diagram settings.
@@ -37,51 +45,60 @@ export default function PitchGenerator() {
     //Used to store dimensions of download.
     const [downloadDimensions, changeDownloadDimensions] = useState<{width: number, height:number}>({width: 500, height: 250});
 
-    // Used to store state of whether pitchaccent pattern is valid
-    const [errorValue, changeErrorValue] = useState<boolean>(false);
+    // Used to keep current state of diagram type selector.
+    const [diagramType, setDiagramType] = useState<string>('Dot');
 
     //Used so we can access Pitch Diagram SVG from DOM for use when downloading
-    const diagramContainer = useRef(null);
+    const diagramContainer = useRef<HTMLDivElement | null>(null);
 
     //Used to store pitchDiagram generator
     const pitchDiagram: JSX.Element = useMemo(() => {
-        return <DotDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
-    }, [diagramText, pitchPattern, color]);
+        return diagramType === 'Dot' ?
+            <DotDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
+            : <CompactDiagram mora={toMora(diagramText)} pitchPattern={pitchPattern} color={color}/>
+    }, [diagramText, pitchPattern, color, diagramType]);
 
 
-    function downloadAsSVG(): void {
-        
+    /**
+     * Allows the download of the diagram as a PNG when called by a click event from the download button.
+     * ASSUMPTION: download format is set to PNG in diagram settings selector
+     */
+    function downloadAsSVG(): void 
+    {    
         //TODO change size of svg attributes and styling to match dimensions input.
         
         //Convert pitch accent DOM
-        let diagramString = ReactDOMServer.renderToString(pitchDiagram)
-        const blob = new Blob([diagramString], {type: 'image/svg+xml;charset=utf-16'});
+        let diagramString: string = ReactDOMServer.renderToString(pitchDiagram)
+        const blob: Blob = new Blob([diagramString], {type: 'image/svg+xml;charset=utf-16'});
         saveAs(blob, `${diagramText}_pitch_diagram.svg`);
     
         //TODO if filename too large shorten
     }
 
-    // //Used for pitchPattern TextField so we can change value of input.
-    // const pitchTextField = useRef(null);
-    function downloadAsPNG(): void {
+    /**
+     * Allows the download of the diagram as a PNG when called by a click event from the download button.
+     * ASSUMPTION: download format is set to PNG in diagram settings selector
+     */
+    function downloadAsPNG(): void 
+    {
+        if(diagramContainer.current === null){
+            throw new Error("Diagram conatiner doesn't exist")
+        }
 
         //Get diagram DOM Element.
         const svg = diagramContainer.current.children[0];
-        console.log(svg)
 
         //Set for firefox as svg needs stying in both style and height/width attributes.
-        //THIS IS A DUMB Nuance BUT I GUESS I HAVE TO DO IT.
-        svg.setAttribute("width", downloadDimensions.width);
-        svg.setAttribute("height", downloadDimensions.height);
+        svg.setAttribute("width", String(downloadDimensions.width));
+        svg.setAttribute("height", String(downloadDimensions.height));
     
-        let image = new Image();
+        let image: HTMLImageElement = new Image();
         
         //Turn svg image into a string.
         const SVGDiagramString: string = new XMLSerializer().serializeToString(svg);
         //Turn SVG diagram string into base64 string.
         const base64SVG: string = window.btoa(decodeURIComponent(encodeURIComponent(SVGDiagramString)));
         
-    
         image.src = `data:image/svg+xml;base64,${base64SVG}`;
     
         image.onload = () => {
@@ -91,14 +108,20 @@ export default function PitchGenerator() {
             canvas.width = downloadDimensions.width;
             canvas.height = downloadDimensions.height;
             let context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-            context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
-            //Download image.
-            canvas.toBlob(blob => {saveAs(blob, `${diagramText}_pitch_diagram.png`)});
+            
+            if(context) {
+                context.drawImage(image, 0, 0, downloadDimensions.width, downloadDimensions.height);
+                //Download image.
+                canvas.toBlob((blob: Blob | null) => {if(blob) saveAs(blob, `${diagramText}_pitch_diagram.png`)});
+            }
+            else {
+                throw new Error("Context is not found when downloading pitch accent diagram")
+            }
         }
     }
 
     /**
-     * 
+     * Allows the user to change the download format of the diagram from diagram settings selector.
      * @param fileFormat String that defines what download format has been selected.
      */
     function changeFileFormat(fileFormat:string): void
@@ -108,42 +131,19 @@ export default function PitchGenerator() {
                         break; 
             case "PNG" : changeDownloadFormat("PNG");
                         break;
-            default: console.log(`Unknown file format: ${fileFormat}`);
+            default: throw new Error(`Unknown file format: ${fileFormat}`)
         }
     }
 
     /**
-     * 
-     * @param pattern Pitch Accent pattern inputted by user.
+     * Parses the pitch pattern inputted by user in Pitch Pattern Field into a valid pattern.
+     * @param pattern Pitch Accent pattern inputted by user in Pitch Pattern textfield.
      */
-    function inputPattern(pattern:string): void {
-        
-        //Case insensitive regex
-        const regex = new RegExp("[^01０１lｌhｈ]+", "i");
+    function inputPattern(pattern:string): void 
+    {
         //Used to check if we are not using 0 or 1.
-        const regexSwitch = new RegExp("[0０lｌ]", "i");
-
-        //If string doesnt match, set error value
-        if(regex.test(pattern)){
-            changeErrorValue(() => true);
-            console.log("Here", pattern)
-            return;
-        }
-
-        // Set pitch pattern input box to non-error
-        changeErrorValue(() => false);
-
-        let parsedPattern: number[] = [];
-
-        //Change all non 0/1 characters into 0/1's.
-        for (const char of pattern) 
-        {    
-            //Values inverted to make diagram creation easier. 2 is low node, 1 is high node
-            parsedPattern.push(regexSwitch.test(char) ? 2 : 1);
-        }
-
-        changePitch(() => parsedPattern);
-
+        const regexSwitch: RegExp = new RegExp("[0０lｌ]", "i");
+        changePitch(() => pattern.split("").map( (char:string) => regexSwitch.test(char) ? 2 : 1));
     }
 
     return (
@@ -153,17 +153,24 @@ export default function PitchGenerator() {
             <div className="flex flex-wrap items-center w-full h-full gap-x-4 gap-y-3">
                 
                 {/* Input textfield */}
-                <TextField className="grow-[2]" label="Input text" onChange={event => changeText(event.target.value)}
-                placeholder="Ex. はつおん" autoFocus={true}/>
+                <TextField className="grow-[2]" label="Input text" 
+                placeholder="Ex. はつおん" InputLabelProps={{ shrink: true }} autoFocus={true}
+                onChange={event => changeText(event.target.value)} />
             
                 {/* Pitch Pattern textfield */}
-                <TextField className="grow-[2]" label="Pitch Pattern" helperText={errorValue ? "Text field contains invalid characters.": null}
-                placeholder="Ex. 0111 or lhhh" error={errorValue} onChange={event => inputPattern(event.target.value)}/>
-
-{/* onChange={() => changePitch((event:any) => Number(event.target.value))} */}
+                <TextField className="grow-[2]" label="Pitch Pattern"
+                placeholder="Ex. 01111 or lhhhh" InputLabelProps={{ shrink: true }} 
+                onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                    // Prevents negative numbers
+                    const value: string = event.target.value.match(/[^01０１lｌLhｈH]+/) != null ? 
+                    (event.target.value = event.target.value.replace(/[^01０１lｌLhｈH]+/, ''))
+                    : event.target.value;
+                    inputPattern(value);
+                }}/>
                 
                 {/* Diagram Buttons */}
                 <div className="flex gap-x-1">
+
                     {/* Download button */}
                     <Tooltip title="Download" placement="top">
                         <span>
@@ -185,6 +192,19 @@ export default function PitchGenerator() {
             {/* Diagram Display */}
             <div className = "w-full h-full overflow-x-auto overflow-y-hidden bg-[#cececec2] border-2 border-black rounded-md" ref={diagramContainer}>
                 {pitchDiagram}
+                
+                {/* <div className="w-full flex justify-end bottom-0 left-0 "> */}
+                {/* <Tooltip title="Diagram Type" placement="right">
+                    <ToggleButtonGroup className="sticky z-2 bottom-2 right-2 left-2"
+                        color="standard"
+                        value={diagramType}
+                        exclusive
+                        onChange={(event: React.MouseEvent<HTMLElement>, newAlignment:string) => {setDiagramType(newAlignment)}}
+                        aria-label="Platform">
+                        <ToggleButton value="Dot">Dot</ToggleButton>
+                        <ToggleButton value="Compact">Compact</ToggleButton>
+                    </ToggleButtonGroup>
+                </Tooltip> */}
             </div>
 
             {/* Diagram options box */}

@@ -5,7 +5,7 @@ import { BlockPicker} from 'react-color';
 interface props {
     downloadFormat: string
     color: string,
-    downloadDimensions: {width:string, height:string},
+    downloadDimensions: {width:number, height:number},
     changeFileFormat: any,
     changeColor: any,
     changeDownloadDimensions: any
@@ -16,7 +16,7 @@ export default function GeneratorSettings(props: props) {
     const {downloadFormat, color, downloadDimensions, changeFileFormat, changeColor, changeDownloadDimensions} = props;
 
     //Default color options provided by blockpicker
-    const colors = ["#000000", "#FFFFFF", "#DC143C", "#00CD00", "#FF8C00", "#009ACD"];
+    const colors: string[] = ["#000000", "#FFFFFF", "#DC143C", "#00CD00", "#FF8C00", "#009ACD"];
 
     return (
         // style={{backgroundColor: "#EFEFEF", border: "2px solid black", width: "100%", borderRadius: "0.3em", display: "flex", margin: "0 0 1em 0"}}
@@ -40,15 +40,28 @@ export default function GeneratorSettings(props: props) {
                         </Select>
                     </FormControl>
 
-                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} inputProps={{autoFocus: true}} 
-                        onChange={event => changeDownloadDimensions(() => {return {width: event.target.value, height: downloadDimensions.height}})}/>
+                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} InputLabelProps={{ shrink: true}}
+                        onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                            // Prevents negative numbers
+                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                            (event.target.value = String(0))
+                            : event.target.value = String(Number(event.target.value))
+                            changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
+                        }/>
 
-                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height} inputProps={{autoFocus: true}} 
-                        onChange={event => changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: event.target.value}})}/>
+                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height} 
+                    InputLabelProps={{ shrink: true}} InputProps={{ spellCheck: 'false' }}
+                        onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                            // Prevents negative numbers
+                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                                (event.target.value = String(0))
+                                : event.target.value = String(Number(event.target.value))
+                            changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0}})}
+                        }/>
 
                 </div>
             
-                {/*  */}
+                {/* Color Picker */}
                 {/* style={{margin: "0.75em 0.75em 0.5em 0", height: "100%", display: "flex", justifyContent: "center", flexGrow: "2"}} */}
                 <div className="h-full w-1/2 min-w-max">
                     <BlockPicker width="100%" triangle="hide" color={color} colors={colors} onChange={(color:any, event:any) => 

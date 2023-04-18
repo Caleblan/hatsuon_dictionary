@@ -5,7 +5,7 @@ interface furigana {
   kana: string
 }
 
-export default function FuriganaWord({kanji, kana}: furigana) {
+export default function FuriganaWord({kanji, kana}: furigana): JSX.Element {
     
     console.log("We are here")
 
@@ -19,14 +19,15 @@ export default function FuriganaWord({kanji, kana}: furigana) {
     }
 
     return (
-            <ruby style={{fontSize: "15rem"}}>
-            {
-                furigana.map((value:any) => { 
-                    return value.w != value.r ? 
-                        // <rb>{value.w}<rp>(<rt>{value.r}</rt>)</rp></rb>
-                        <><rb className="text-2xl">{value.w}</rb><rt className="text-sm mb-2">{value.r}</rt></>: <><rb>{value.r}</rb><rt></rt></>
-                })
-            }
-            </ruby>
+            // <ruby className="text-3xl">
+            // {
+            //     furigana.map((value:any) => { 
+            //         return value.w != value.r ? 
+            //             // <rb>{value.w}<rp>(<rt>{value.r}</rt>)</rp></rb>
+            //             <><rb>{value.w}</rb><rt className="text-sm mb-4">{value.r}</rt></>: <><rb>{value.r}</rb><rt></rt></>
+            //     })
+            // }
+            // </ruby>
+            <></>
     )
 }

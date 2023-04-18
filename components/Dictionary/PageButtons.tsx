@@ -1,7 +1,4 @@
 
-import Image from 'next/image'
-// import { Inter } from '@next/font/google'
-// import styles from '../../styles/Home.module.css'
 import { IconButton, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LoadingButton from '@mui/lab/LoadingButton';
