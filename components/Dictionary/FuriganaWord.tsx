@@ -1,33 +1,36 @@
+import { useFuriPairs, Wrapper, Pair, Text, Furi } from 'react-furi'
 const { fit } = require('furigana');
 
+
 interface furigana {
-  kanji: string | null,
-  kana: string
+  word: string | null,
+  reading: string,
+  furi ?: string,
+  showFuri: boolean
 }
 
-export default function FuriganaWord({kanji, kana}: furigana): JSX.Element {
-    
-    console.log("We are here")
+
+export default function FuriganaWord({ word, reading, furi, showFuri }: furigana): JSX.Element {
 
 
     // If is a valid input, then we add furigana
-    if(kanji) {
-        var furigana = fit(kanji, kana, { type: 'object' })
-    }
-    else{
-        var furigana = fit(kana, kana, { type: 'object' })
-    }
+    let furigana: any = word ? fit(word, reading, { type: 'object' }) : fit(reading, reading, { type: 'object' })
+
+    console.log(furigana)
+
+    const pairs: any = useFuriPairs(word, reading, furi);
 
     return (
-            // <ruby className="text-3xl">
-            // {
-            //     furigana.map((value:any) => { 
-            //         return value.w != value.r ? 
-            //             // <rb>{value.w}<rp>(<rt>{value.r}</rt>)</rp></rb>
-            //             <><rb>{value.w}</rb><rt className="text-sm mb-4">{value.r}</rt></>: <><rb>{value.r}</rb><rt></rt></>
-            //     })
-            // }
-            // </ruby>
-            <></>
-    )
+        <Wrapper style={{border: "1px solid black", borderRadius: "4px", padding: ".5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end"}}>
+        {
+            pairs.map(([furiText, text] : string[], index:number) => (
+                <Pair key={text + index}>
+                    {showFuri && <Furi style={{color: 'coral'}}>{furiText}</Furi>}
+                    <Text style={{color: 'blue'}}>{text}</Text>
+                </Pair>
+        ))
+        }
+        </Wrapper>
+  );
 }
+

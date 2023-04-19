@@ -12,13 +12,15 @@ export default function Home() {
       </Head>
 
       {/* className={styles.main} */}
-      <main className={styles.main}>
-        <div>
+      <main className="w-full">
+        {/* <div>
           <TextField/>
           <IconButton>
             <SearchIcon/>
           </IconButton>
-        </div>
+        </div> */}
+
+        UNDER CONSTRUCTION
       </main>
     </>
   )

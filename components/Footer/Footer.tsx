@@ -13,9 +13,12 @@ import PatreonLogoWhite from "./SVGs/Digital-Patreon-Wordmark_White1.svg";
 
 import links from "../../links.json";
 
+
+
+
 // Used for styling
 const styling: any = {
-    "footer": "bg-neutral-800 text-neutral-100 px-8 py-2 mt-6",
+    "footer": "bg-neutral-800 text-neutral-100 px-8 py-2 mt-auto",
     "footerColumns": "flex flex-wrap justify-around",
     "footerLink": "flex flex-row justify-start items-center no-underline",
     "column": "w-fit flex flex-col",
