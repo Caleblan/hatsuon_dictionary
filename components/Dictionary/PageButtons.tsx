@@ -1,9 +1,8 @@
 
-import { IconButton, TextField} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+// MUI/React Imports
+import {IconButton, Button, Stack} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-
-import {Button, Stack} from '@mui/material';
+// Next.js imports
 import Link from 'next/link'
 
 
@@ -24,12 +23,12 @@ export default function PageButtons({entriesCount, pageEntries, currentPage, que
 }
 
 /**
- * 
+ * Generates a button layout which corresponds to the number of pages returned by specific query.
  * @param entriesCount 
  * @param pageEntries 
  * @param currentPage 
- * @param query 
- * @returns 
+ * @param query The current query given by the user
+ * @returns Button Layout as a JSX Element
  */
 function generatePageButtons(entriesCount:number, pageEntries:number, currentPage:number, query:string): JSX.Element[] {
     
