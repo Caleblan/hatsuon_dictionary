@@ -79,7 +79,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
               // <div className="w-full h-full flex flex-col justify-center text-center relative">
               //  <span>Nothing is found</span>
               <>
-                <span className="underline pl-4">0 results.</span>
+                <span className="underline pl-4">Results 0.</span>
                 <div className="w-full h-full text-center font-semibold text-2xl">
                     Oops! It seems we weren&apos;t able to find what you were looking for.
                     <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
@@ -116,7 +116,9 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
                 )
               )
             }
-            <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>
+            
+            {entriesCount > 0 ? 
+              <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null}
           </div>
       </main>
       
