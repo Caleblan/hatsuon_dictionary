@@ -11,7 +11,7 @@ export default function DictionaryHomePage() {
         <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
       </Head>
 
-      <main className="w-full flex flex-col items-center">
+      <main>
         <div className="w-3/4">
           <SearchBar query={null}/>
         </div>

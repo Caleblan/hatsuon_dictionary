@@ -1,4 +1,4 @@
-import { useFuriPairs, Wrapper, Pair, Text, Furi } from 'react-furi'
+// import { useFuriPairs, Wrapper, Pair, Text, Furi } from 'react-furi'
 const { fit } = require('furigana');
 
 
@@ -18,19 +18,20 @@ export default function FuriganaWord({ word, reading, furi, showFuri }: furigana
 
     console.log(furigana)
 
-    const pairs: any = useFuriPairs(word, reading, furi);
+    // const pairs: any = useFuriPairs(word, reading, furi);
 
     return (
-        <Wrapper style={{border: "1px solid black", borderRadius: "4px", padding: ".5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end"}}>
-        {
-            pairs.map(([furiText, text] : string[], index:number) => (
-                <Pair key={text + index}>
-                    {showFuri && <Furi style={{color: 'coral'}}>{furiText}</Furi>}
-                    <Text style={{color: 'blue'}}>{text}</Text>
-                </Pair>
-        ))
-        }
-        </Wrapper>
+        // <Wrapper style={{border: "1px solid black", borderRadius: "4px", padding: ".5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end"}}>
+        // {
+        //     pairs.map(([furiText, text] : string[], index:number) => (
+        //         <Pair key={text + index}>
+        //             {showFuri && <Furi style={{color: 'coral'}}>{furiText}</Furi>}
+        //             <Text style={{color: 'blue'}}>{text}</Text>
+        //         </Pair>
+        // ))
+        // }
+        // </Wrapper>
+        <></>
   );
 }
 

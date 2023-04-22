@@ -5,6 +5,9 @@ import {useState, useEffect} from "react"
 
 import { useRouter } from 'next/router'
 
+
+import * as wanakana from 'wanakana';
+
 // Library Functions
 import clientPromise from "../../lib/mongodb";
 import toMora from '../../lib/moraParser';
@@ -26,8 +29,8 @@ import { Pattern } from '@mui/icons-material';
 
 //Used to store language setting for dictionary entries
 import cookie from "cookie"
-
-
+// Images
+import MissingPageImage from "../../Images/404Image.svg"
 
 
 interface props {
@@ -66,15 +69,25 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
         <title>{query} | Hatsuon</title>
         <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
       </Head>
-      {/* className={styles.main} */}
-      <main className="w-full flex flex-col items-center"> 
-      {/* "flex flex-col content-center w-3/4" */}
-          <div className="w-3/4">
+      <main> 
+          <div className="w-3/4 h-full flex flex-col justify-center">
 
             <SearchBar query={query}/>
             {
               JSON.stringify(entries) == '[]' ?
-                "Nothing is found" + entries.length:
+                
+              // <div className="w-full h-full flex flex-col justify-center text-center relative">
+              //  <span>Nothing is found</span>
+              <>
+                <span className="underline pl-4">0 results.</span>
+                <div className="w-full h-full text-center font-semibold text-2xl">
+                    Oops! It seems we weren't able to find what you were looking for.
+                    <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
+                </div>
+              </>
+              /* </div> */
+              
+              :
 
                 // Create entry for each dictionary result returned from database.
                 entries.map((entry:any) => 
@@ -115,6 +128,13 @@ export async function getServerSideProps({query} : {query:any}) {
     
   const {client, db} = await clientPromise();
 
+
+  // TODO put try statement in incase connection to database fails
+
+  const tokens: {type: string, value: string}[] = wanakana.tokenize(query, { compact: true, detailed: true})
+  console.log(tokens)
+
+
   // Breakdown all query attributes
   const {page} : {page:number} = query;
   // Take user query and create query to give to database.
@@ -128,6 +148,9 @@ export async function getServerSideProps({query} : {query:any}) {
   // .skip((page-1) * pageEntries)
   // .limit(pageEntries)
   // .toArray();
+
+
+  // wanakana.toHiragana()
 
   //Get the number of results so we know how many page number buttons we need.
   const resultCount: number = await db

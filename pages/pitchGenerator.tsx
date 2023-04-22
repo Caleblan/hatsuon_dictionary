@@ -22,7 +22,7 @@ export default function Home() {
       </Head>
 
       {/* className={styles.main} */}
-      <main className="flex justify-center w-full h-full">
+      <main>
         <div className="w-3/4 h-full text-justify flex flex-col gap-y-4">
             <PitchGenerator/>
 

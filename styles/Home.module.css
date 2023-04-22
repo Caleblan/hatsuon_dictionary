@@ -6,8 +6,9 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
+  margin-top : 1.5rem;
+  margin-bottom: 1.5rem;
+  min-height: 100%;
 }
 
 .description {

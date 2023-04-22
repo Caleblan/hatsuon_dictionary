@@ -21,14 +21,13 @@ export default function NotFoundPage(props: any) {
     //TODO add some styling to the website.
 
   return (
-    <main className="w-full h-screen flex flex-col justify-center items-center">
+    <main>
         
-        
-        <p>404</p>
-        <Image alt="A sad pitch diagram guy shrugging :(" width={30} height={15} src={MissingPageImage}></Image>
+        <span className="font-bold text-6xl">404</span>
+        <Image className="object-contain w-3/4 h-3/4" alt="A sad pitch diagram guy shrugging :(" src={MissingPageImage}></Image>
         <p>
             Oops! Seems like the page you are looking for doesn&apos;t exist.
-            Try typing the link again or go the <Link href="/"> home page</Link>
+            Try typing the link again or go the <Link className="underline" href="/"> home page</Link>
         </p>
     </main>
   )
