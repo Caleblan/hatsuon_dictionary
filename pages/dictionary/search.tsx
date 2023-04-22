@@ -81,7 +81,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
               <>
                 <span className="underline pl-4">0 results.</span>
                 <div className="w-full h-full text-center font-semibold text-2xl">
-                    Oops! It seems we weren't able to find what you were looking for.
+                    Oops! It seems we weren&apos;t able to find what you were looking for.
                     <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
                 </div>
               </>
