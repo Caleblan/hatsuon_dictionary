@@ -131,8 +131,8 @@ export async function getServerSideProps({query} : {query:any}) {
 
   // TODO put try statement in incase connection to database fails
 
-  const tokens: {type: string, value: string}[] = wanakana.tokenize(query, { compact: true, detailed: true})
-  console.log(tokens)
+  // const tokens: {type: string, value: string}[] = wanakana.tokenize(query, { compact: true, detailed: true})
+  // console.log(tokens)
 
 
   // Breakdown all query attributes
