@@ -1,6 +1,8 @@
 {
     "internalLinks" :
     {
+        "home": "/",
+        "dictionary": "/dictionary",
         "pitchGenerator": "/pitchGenerator"
     },
     "externalLinks" :

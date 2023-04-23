@@ -1,39 +1,44 @@
-
-// import { useRouter } from 'next/router'
-
-
-
+// React/MUI
 import {useState} from "react"
-// Components
+import {IconButton} from '@mui/material';
+import { Menu } from '@mui/icons-material';
+// Next.js
 import Image from 'next/image'
 import Link from 'next/link'
-import { SvgIcon } from '@mui/material';
-import Button from '@mui/material/Button';
-//Icons
-import { Menu } from '@mui/icons-material';
+import {useRouter} from 'next/router';
 
 import links from "../../links.json"
 
 
+
+
 export default function Header() {
     
+    const router = useRouter(); 
+
     return (
         <header className="w-full mx-4 my-4">
             <nav className="w-full flex items-center">
                 <div className="w-1/2 flex text-3xl">
                     <Link href={links.internalLinks.pitchGenerator}>Hatsuon</Link>
                 </div>
-                <div className="w-1/2 flex justify-end space-around">
+                <div className="w-1/2 flex justify-end gap-x-6 space-around align-middle">
 
-                    <div className="md:visible invisible flex gap-x-4">
+                    <span className={`md:visible invisible ${router.asPath == links.internalLinks.home ? "underline" : ""}`}>
+                        {/* <Link href="/dictionary">Dictionary</Link> */}
+                        <Link href={links.internalLinks.home}>Home</Link>
+                    </span>
+
+                    <span className={`md:visible invisible ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}>
                         {/* <Link href="/dictionary">Dictionary</Link> */}
                         <Link href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
-                    </div>
-                    <Button className="md:invisible visible">
-                        <SvgIcon>
-                            <Menu/>
-                        </SvgIcon>
-                    </Button>
+                    </span>
+
+                    {}
+                    <IconButton className="px-8 md:hidden visible" size="large" disableRipple={true}>
+                        <Menu/>
+                    </IconButton>
+
                 </div>
                 
             </nav>
