@@ -29,6 +29,11 @@ export default function Header() {
                         <Link href={links.internalLinks.home}>Home</Link>
                     </span>
 
+                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.dictionary ? "underline" : ""}`}>
+                        {/* <Link href="/dictionary">Dictionary</Link> */}
+                        <Link href={links.internalLinks.dictionary}>Dictionary</Link>
+                    </span>
+
                     <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}>
                         {/* <Link href="/dictionary">Dictionary</Link> */}
                         <Link href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>

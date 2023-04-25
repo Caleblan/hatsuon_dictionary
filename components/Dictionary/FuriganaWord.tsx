@@ -31,7 +31,9 @@ export default function FuriganaWord({ word, reading, furi, showFuri }: furigana
         // ))
         // }
         // </Wrapper>
-        <></>
+        <>
+        {word}
+        </>
   );
 }
 

@@ -24,7 +24,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
 
     useEffect(() => {
         updatePage(currentPage)
-      }, [currentPage])
+    }, [currentPage])
 
 
     return (
@@ -56,23 +56,30 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                         // Non-number character
                         let value: string = ''
 
-                        if(event.target.value.match(/^[0-9]+$/) != null){
-                            value = event.target.value.length <= 3 ? event.target.value : event.target.value.substring(0,3)
+
+                        // If valid input
+                        if(event.target.value.match(/^[0-9]+$/) == null)
+                        {
+                            value = event.target.value.replace(/^[0-9]+$/, '').substring(0,3);
+                        }
+                        else{
+                            value = event.target.value.substring(0,3);
                         }
 
-                        let temp: string = event.target.value.replace(/^[0-9]{1,3}$/, '');
-                        
-                        value =  temp.length == 0 ? '1' : temp
+
                         updatePage(Number(value))
                 }}
                 
                 onKeyDown={(event:any) => {
                     console.log(`Pressed keyCode ${event.key}`);
                     if (event.key === 'Enter') {
-                    // Do code here
+                        // Do code here
+                        event.preventDefault();
 
-                    router.push()
-                    event.preventDefault();
+                        if(page <= Math.ceil(entriesCount / pageEntries) && page >= 1)
+                        {
+                            router.push({ pathname: "/dictionary/search", query: {query, page}});
+                        }
                     }
                 }}/>
                 
@@ -99,9 +106,6 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                 </Link>
             </Tooltip>
 
-
-        </Stack>
-
-        
+        </Stack>  
     )
 }

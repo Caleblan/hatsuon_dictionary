@@ -49,7 +49,7 @@ interface props {
 
 
 //Determines how many dictionary entries are allowed per page.
-const pageEntries: number = 3;
+const pageEntries: number = 5;
 
 export default function DictionarySearchPage({entries, entriesCount, page, query}: props): JSX.Element {
 
@@ -74,7 +74,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
             <SearchBar query={query}/>
             
             <span className="text-slate-600 pl-2 pt-2 pb-4">
-              {entriesCount > 0 ? 
+              {entriesCount > 0 && entries.length > 0 ? 
                 `${(page-1)*pageEntries + 1}-${(page-1)*pageEntries + entries.length} of ${entriesCount} entries`
                 : "No entries found"
               }
@@ -125,7 +125,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
               )
             }
             {
-              entriesCount > 0 ?
+              entriesCount > 0 && entries.length > 0 ?
               <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
               : null
             }
