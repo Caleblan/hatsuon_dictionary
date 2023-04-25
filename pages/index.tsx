@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
 
       {/* className={styles.main} */}
-      <main className="w-full">
+      <main>
         {/* <div>
           <TextField/>
           <IconButton>

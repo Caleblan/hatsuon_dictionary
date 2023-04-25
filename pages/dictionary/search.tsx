@@ -27,6 +27,8 @@ import CompactDiagram from '../../components/PitchDiagrams/CompactDiagram';
 import DotDiagram from '../../components/PitchDiagrams/DotDiagram';
 import { Pattern } from '@mui/icons-material';
 
+import DictionaryFooter from '../../components/Dictionary/DictionaryFooter';
+
 //Used to store language setting for dictionary entries
 import cookie from "cookie"
 // Images
@@ -35,6 +37,7 @@ import MissingPageImage from "../../Images/404Image.svg"
 
 interface props {
   entries: any[],
+  // Count of total number of entries for the whole query (not limited by page entries)
   entriesCount: number,
   page: number,
   query: string
@@ -49,10 +52,6 @@ interface props {
 const pageEntries: number = 3;
 
 export default function DictionarySearchPage({entries, entriesCount, page, query}: props): JSX.Element {
-
-
-  //ONly here so that when back button pressed, the query is also set as the previous one
-  // useEffect(() => setQuery(props.query),[props.query])
 
 
   let pageLinks: JSX.Element[] = [];
@@ -73,13 +72,22 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
           <div className="w-3/4 h-full flex flex-col justify-center">
 
             <SearchBar query={query}/>
+            
+            <span className="text-slate-600 pl-2 pt-2 pb-4">
+              {entriesCount > 0 ? 
+                `${(page-1)*pageEntries + 1}-${(page-1)*pageEntries + entries.length} of ${entriesCount} entries`
+                : "No entries found"
+              }
+            </span>
+
+
             {
               JSON.stringify(entries) == '[]' ?
-                
+              
+              
               // <div className="w-full h-full flex flex-col justify-center text-center relative">
               //  <span>Nothing is found</span>
               <>
-                <span className="underline pl-4">Results 0.</span>
                 <div className="w-full h-full text-center font-semibold text-2xl">
                     Oops! It seems we weren&apos;t able to find what you were looking for.
                     <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
@@ -116,15 +124,21 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
                 )
               )
             }
+            {
+              entriesCount > 0 ?
+              <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
+              : null
+            }
             
-            {entriesCount > 0 ? 
-              <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null}
+
           </div>
       </main>
       
     </>
   )
 }
+
+{/* <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null */}
 
 export async function getServerSideProps({query} : {query:any}) {
     

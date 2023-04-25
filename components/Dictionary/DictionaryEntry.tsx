@@ -76,9 +76,6 @@ interface entryInfo {
 }
 
 
-
-
-
 export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
     const {kanji, kana} = entryInfo;
@@ -152,6 +149,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             <div className="flex w-fit mb-4">
                 <div className="w-fit flex flex-col px-4">
                     {/* {createWordElement(kanji, kana)} */}
+                    1
                     <FuriganaWord word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
                     showFuri={true}/>
                 </div>

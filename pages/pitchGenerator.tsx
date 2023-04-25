@@ -21,7 +21,6 @@ export default function Home() {
         <meta name="description" content="Create and Download Japanese Pitch Accent Diagrams" />
       </Head>
 
-      {/* className={styles.main} */}
       <main>
         <div className="w-3/4 h-full text-justify flex flex-col gap-y-4">
             <PitchGenerator/>
