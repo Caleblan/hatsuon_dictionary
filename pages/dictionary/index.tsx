@@ -13,7 +13,7 @@ export default function DictionaryHomePage() {
 
       <main>
         <div className="w-3/4">
-          <SearchBar query={null}/>
+          <SearchBar query={''}/>
         </div>
       </main>
     </>

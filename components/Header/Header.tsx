@@ -39,6 +39,12 @@ export default function Header() {
                         <Link href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
                     </span>
 
+                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}>
+                        {/* <Link href="/dictionary">Dictionary</Link> */}
+                        <Link href={links.internalLinks.contact}>Contact</Link>
+                    </span>
+                    
+
                     <IconButton className="px-8 lg:hidden md:visible" size="large" disableRipple={true}>
                         <Menu/>
                     </IconButton>

@@ -43,6 +43,7 @@ export default function DictionaryEntry({query}:input): JSX.Element {
           <OutlinedInput
             id="searchbar"
             value={searchQuery}
+            autoComplete='off'
             autoFocus={true}
             onChange={(event:any) => {
               updateSearchQuery(event.target.value)
@@ -54,7 +55,7 @@ export default function DictionaryEntry({query}:input): JSX.Element {
                 
                 <Link href={
                   // Go back to dictionary homepage if nothing entered
-                  query == "" ? {pathname: '/dictionary'}
+                  searchQuery == "" ? {pathname: '/dictionary'}
                   // If new submission, go to first page results
                   : {pathname: '/dictionary/search', query: {query: searchQuery, page: 1}}}>
                   <IconButton

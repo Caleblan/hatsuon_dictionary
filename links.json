@@ -3,7 +3,8 @@
     {
         "home": "/",
         "dictionary": "/dictionary",
-        "pitchGenerator": "/pitchGenerator"
+        "pitchGenerator": "/pitchGenerator",
+        "contact": "/contact"
     },
     "externalLinks" :
     {
