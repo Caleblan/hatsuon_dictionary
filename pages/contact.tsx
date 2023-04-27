@@ -49,6 +49,7 @@ export default function Contact() {
         event.preventDefault();
     
         // let isValidForm = handleValidation();
+        console.log("here", name, email, subject, message);
      
           const res = await fetch("/api/contact", {
             body: JSON.stringify({
@@ -139,7 +140,7 @@ export default function Contact() {
                 />
             </FormControl>
 
-            <Button className="w-1/3" type="submit" variant="contained" onSubmit={handleSubmit} 
+            <Button className="w-1/3" variant="contained" onClick={handleSubmit} 
             endIcon={<SendIcon/>}>
                 Send
             </Button>
