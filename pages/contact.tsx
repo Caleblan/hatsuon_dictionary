@@ -76,7 +76,7 @@ export default function Contact() {
 
     return (
     <main>
-        <form className="w-1/2 flex flex-col gap-y-4">
+        <form className="w-1/2 flex flex-col gap-y-4" method="post" onSubmit={handleSubmit} >
             
             <FormControl required={true} className="w-full" variant="outlined">
                 <InputLabel htmlFor="nameInput">Name</InputLabel>
@@ -140,7 +140,7 @@ export default function Contact() {
                 />
             </FormControl>
 
-            <Button className="w-1/3" variant="contained" type="submit" onSubmit={handleSubmit} 
+            <Button className="w-1/3" variant="contained" type="submit"
             endIcon={<SendIcon/>}>
                 Send
             </Button>
