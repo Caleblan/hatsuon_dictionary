@@ -2,7 +2,6 @@
 import React, {useState, useEffect} from "react"
 // import { IconButton, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import LoadingButton from '@mui/lab/LoadingButton';
 // Next.js
 import Link from 'next/link'
 
@@ -19,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 
 interface input {
     query: string,
@@ -60,8 +60,6 @@ export default function DictionaryEntry({query}:input): JSX.Element {
                   : {pathname: '/dictionary/search', query: {query: searchQuery, page: 1}}}>
                   <IconButton
                     aria-label="toggle password visibility"
-                    // onClick={handleClickShowPassword}
-                    // onMouseDown={handleMouseDownPassword}
                     edge="end"
                     type="submit"
                   >

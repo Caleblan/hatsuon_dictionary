@@ -153,12 +153,12 @@ export default function PitchGenerator(): JSX.Element {
             <div className="flex flex-wrap items-center w-full h-full gap-x-4 gap-y-3">
                 
                 {/* Input textfield */}
-                <TextField className="grow-[2]" label="Input text" 
+                <TextField className="grow-[2]" label="Input text" autoComplete='off' type='text'
                 placeholder="Ex. はつおん" InputLabelProps={{ shrink: true }} autoFocus={true}
                 onChange={event => changeText(event.target.value)} />
             
                 {/* Pitch Pattern textfield */}
-                <TextField className="grow-[2]" label="Pitch Pattern"
+                <TextField className="grow-[2]" label="Pitch Pattern" autoComplete='off' type='text'
                 placeholder="Ex. 01111 or lhhhh" InputProps={{spellCheck: false}} InputLabelProps={{ shrink: true }} 
                 onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                     // Prevents negative numbers

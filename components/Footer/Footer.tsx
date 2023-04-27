@@ -88,7 +88,7 @@ export default function Footer(): JSX.Element {
             
             </div>
             <span className={styling.copyright}>
-                © {date.getFullYear()} Caleb Landry. All Rights Reserved.
+                Copywright © {date.getFullYear()} Caleb Landry. All Rights Reserved.
             </span>
         </footer>
     );

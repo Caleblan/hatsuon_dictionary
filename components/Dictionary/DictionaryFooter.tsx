@@ -56,7 +56,6 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                         // Non-number character
                         let value: string = ''
 
-
                         // If valid input
                         if(event.target.value.match(/^[0-9]+$/) == null)
                         {
@@ -65,7 +64,6 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                         else{
                             value = event.target.value.substring(0,3);
                         }
-
 
                         updatePage(Number(value))
                 }}
