@@ -50,7 +50,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
             </Tooltip>
                 
             <span className="flex items-center align-middle">
-                <TextField className="w-12 mr-2" size="small" value={page}
+                <TextField className="w-14 mr-2" size="small" value={page}
                     InputProps={{spellCheck: false}} inputProps={{ style: {textAlign: 'center', height: "2em", padding: "0.1em 0em 0.1em 0em"} }}
                     onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                         // Non-number character
@@ -81,7 +81,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                     }
                 }}/>
                 
-                <span> {`of ${Math.ceil(entriesCount/pageEntries)}`} </span>
+                <span className="min-w-fit"> {`of ${Math.ceil(entriesCount/pageEntries)}`} </span>
 
             </span>
             

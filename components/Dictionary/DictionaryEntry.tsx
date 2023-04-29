@@ -12,6 +12,8 @@ import Link from 'next/link'
 
 const { fit } = require('furigana');
 
+import * as wanakana from 'wanakana';
+
 import FuriganaWord from './FuriganaWord';
 
 
@@ -146,12 +148,12 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     return (
         <div className="w-full flex mb-4 border-b border-gray-300">
             {/* Used to  */}
-            <div className="flex w-fit mb-4">
-                <div className="w-fit flex flex-col px-4">
+            <div className="w-fit flex flex-col px-4 mb-4">
+                <div className="w-fit flex gap-x-4 flex-col sm:flex-row mb-2">
                     {/* {createWordElement(kanji, kana)} */}
-                    1
-                    <FuriganaWord word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
+                    <FuriganaWord className="font-bold text-3xl" word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
                     showFuri={true}/>
+                    <span className="align-baseline">{wanakana.toRomaji(kana[0].text)}</span>
                 </div>
                 <div className="flex flex-col w-3/4">
                     {definitionElements}

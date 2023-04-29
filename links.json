@@ -4,6 +4,7 @@
         "home": "/",
         "dictionary": "/dictionary",
         "pitchGenerator": "/pitchGenerator",
+        "license": "/license",
         "contact": "/contact"
     },
     "externalLinks" :

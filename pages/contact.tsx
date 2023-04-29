@@ -76,8 +76,11 @@ export default function Contact() {
 
     return (
     <main>
+
+        <h1 className="text-6xl mb-6 font-bold">Contact Us</h1>
+
         <form className="w-1/2 flex flex-col gap-y-4" method="post" onSubmit={handleSubmit} >
-            
+
             <FormControl required={true} className="w-full" variant="outlined">
                 <InputLabel htmlFor="nameInput">Name</InputLabel>
                 <OutlinedInput
@@ -98,6 +101,7 @@ export default function Contact() {
             <FormControl className="w-full" variant="outlined">
                 <InputLabel htmlFor="organizationInput">Organization</InputLabel>
                 <OutlinedInput id="organizationInput" label="Organization" autoComplete="organization"
+                    placeholder="i.e. Google"
                     onChange={(event:any) => setOrganization(event.target.value)}
                     // type={showPassword ? 'text' : 'password'}
                     endAdornment={

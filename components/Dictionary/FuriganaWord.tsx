@@ -6,11 +6,12 @@ interface furigana {
   word: string | null,
   reading: string,
   furi ?: string,
-  showFuri: boolean
+  showFuri: boolean,
+  className: string
 }
 
 
-export default function FuriganaWord({ word, reading, furi, showFuri }: furigana): JSX.Element {
+export default function FuriganaWord({ word, reading, furi, showFuri, className}: furigana): JSX.Element {
 
 
     // If is a valid input, then we add furigana
@@ -31,9 +32,9 @@ export default function FuriganaWord({ word, reading, furi, showFuri }: furigana
         // ))
         // }
         // </Wrapper>
-        <>
-        {word}
-        </>
+        <span className={className}>
+        {word ? word : reading}
+        </span>
   );
 }
 

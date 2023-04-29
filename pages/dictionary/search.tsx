@@ -147,15 +147,40 @@ export async function getServerSideProps({query} : {query:any}) {
 
   // TODO put try statement in incase connection to database fails
 
-  // const tokens: {type: string, value: string}[] = wanakana.tokenize(query, { compact: true, detailed: true})
-  // console.log(tokens)
+  const tokens: any[] = wanakana.tokenize(query.query, { compact: true, detailed: true})
+  
+  // Used to store the english turned into romaji
+  let romajiToKana: string[] = [];
+  let japanese: string[] = [];
 
+  console.log(tokens)
+
+  for(let i: number = 0; i < tokens.length; i++)
+  {
+    switch (tokens[i].type) 
+    {
+      case "en":romajiToKana.push(wanakana.toHiragana(tokens[i].value), wanakana.toKatakana(tokens[i].value));
+                break;
+      case "jp":japanese.push(tokens[i].value)
+                break;
+    }
+  }
+
+
+
+  console.log(romajiToKana)
+
+
+  let list: any[] = romajiToKana.map( (token:string) => {return {kana: {$elemMatch: {text: {$regex:`.*${token}.*`}}}}});
+
+  console.log(list)
 
   // Breakdown all query attributes
   const {page} : {page:number} = query;
   // Take user query and create query to give to database.
   const databaseQuery: any = {$or: [{"kanji.text": query.query},{"kana.text": query.query}]};
-  const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: query.query}}}]};
+  
+  const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: query.query}}}, ...list]};
 
   // // Search the database for either the kanji or kana of the word.
   // let accents = await db

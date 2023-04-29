@@ -27,10 +27,7 @@ interface input {
 
 export default function DictionaryEntry({query}:input): JSX.Element {
   
-
-      //ONly here so that when back button pressed, the query is also set as the previous one
-    const [searchQuery, updateSearchQuery] = useState<string>(query)
-
+  const [searchQuery, updateSearchQuery] = useState<string>(query)
 
   useEffect(() => {
     updateSearchQuery(query)

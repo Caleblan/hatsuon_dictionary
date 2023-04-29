@@ -20,53 +20,47 @@ export default function GeneratorSettings(props: props) {
 
     return (
         // style={{backgroundColor: "#EFEFEF", border: "2px solid black", width: "100%", borderRadius: "0.3em", display: "flex", margin: "0 0 1em 0"}}
-        <nav className="w-full flex bg-[#EFEFEF] border-2 border-black rounded-md">
-
-            {/* All inputs except color picker. */}
-            {/* sm:flex-wrap md:flex-nowrap */}
-            <div className="w-full flex  sm:flex-wrap md:flex-nowrap gap-y-3 gap-x-4 mt-3 mb-4 mx-3">
+        <nav className="w-full flex flex-wrap sm:flex-nowrap gap-y-3 gap-x-4 pt-3 pb-4 px-3 bg-[#EFEFEF] border-2 border-black rounded-md">
                 
-                {/* Form selectors */}
-                <div className="flex flex-col gap-x-4 gap-y-3 w-1/2">
-                    <FormControl className="flex">
-                        <InputLabel>Download Format</InputLabel>
-                        <Select
-                        defaultValue={"PNG"}
-                        value={downloadFormat}
-                        onChange={event => changeFileFormat(event.target.value)}
-                        >
-                            <MenuItem value={"PNG"}>PNG</MenuItem>
-                            <MenuItem value={"SVG"}>SVG</MenuItem>
-                        </Select>
-                    </FormControl>
+            {/* Form selectors */}
+            <div className="flex flex-col gap-x-4 gap-y-3 w-full">
+                <FormControl className="flex">
+                    <InputLabel>Download Format</InputLabel>
+                    <Select
+                    defaultValue={"PNG"}
+                    value={downloadFormat}
+                    onChange={event => changeFileFormat(event.target.value)}
+                    >
+                        <MenuItem value={"PNG"}>PNG</MenuItem>
+                        <MenuItem value={"SVG"}>SVG</MenuItem>
+                    </Select>
+                </FormControl>
 
-                    <TextField type="number" label="Width" defaultValue={downloadDimensions.width} InputLabelProps={{ shrink: true}}
-                        onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                            // Prevents negative numbers
-                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                <TextField className="w-full" type="number" label="Width" defaultValue={downloadDimensions.width} InputLabelProps={{ shrink: true}}
+                    onChange={ (event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                        // Prevents negative numbers
+                        const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
+                        (event.target.value = String(0))
+                        : event.target.value = String(Number(event.target.value))
+                        changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
+                    }/>
+
+                <TextField className="w-full" type="number" label="Height" defaultValue={downloadDimensions.height} 
+                InputLabelProps={{ shrink: true}} InputProps={{ spellCheck: 'false' }}
+                    onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                        // Prevents negative numbers
+                        const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
                             (event.target.value = String(0))
                             : event.target.value = String(Number(event.target.value))
-                            changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
-                        }/>
-
-                    <TextField type="number" label="Height" defaultValue={downloadDimensions.height} 
-                    InputLabelProps={{ shrink: true}} InputProps={{ spellCheck: 'false' }}
-                        onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                            // Prevents negative numbers
-                            const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
-                                (event.target.value = String(0))
-                                : event.target.value = String(Number(event.target.value))
-                            changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0}})}
-                        }/>
-
-                </div>
-            
-                {/* Color Picker */}
-                {/* style={{margin: "0.75em 0.75em 0.5em 0", height: "100%", display: "flex", justifyContent: "center", flexGrow: "2"}} */}
-                <div className="h-full w-1/2 min-w-max">
-                    <BlockPicker width="100%" triangle="hide" color={color} colors={colors} onChange={(color:any, event:any) => 
-                    changeColor(color.hex)}/>
-                </div>
+                        changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0}})}
+                    }/>
+            </div>
+        
+            {/* Color Picker */}
+            {/* style={{margin: "0.75em 0.75em 0.5em 0", height: "100%", display: "flex", justifyContent: "center", flexGrow: "2"}} */}
+            <div className="h-full w-full min-w-max">
+                <BlockPicker width="100%" triangle="hide" color={color} colors={colors} onChange={(color:any, event:any) => 
+                changeColor(color.hex)}/>
             </div>
         </nav>
     );

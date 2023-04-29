@@ -9,48 +9,46 @@ import {useRouter} from 'next/router';
 
 import links from "../../links.json"
 
-
-
+// Used for styling
+const styling: any[string] = {
+    "header": "w-full mx-4 py-4",
+    "websiteIcon": "w-1/2 flex text-3xl",
+    "headerLink": "hidden md:inline",
+    "menuButton": "md:hidden px-8"
+};
 
 export default function Header() {
     
     const router = useRouter(); 
 
     return (
-        <header className="w-full mx-4 my-4">
+        <header className={styling.header}>
+            
             <nav className="w-full flex items-center">
-                <div className="w-1/2 flex text-3xl">
-                    <Link href={links.internalLinks.home}>Hatsuon</Link>
-                </div>
+                
+                {/* Website Icon */}
+                <Link className={styling.websiteIcon} href={links.internalLinks.home}>Hatsuon</Link>
+                
+                {/* Header Page Links */}
                 <div className="w-1/2 flex justify-end gap-x-6 space-around">
 
-                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.home ? "underline" : ""}`}>
-                        {/* <Link href="/dictionary">Dictionary</Link> */}
-                        <Link href={links.internalLinks.home}>Home</Link>
-                    </span>
+                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.home ? "underline" : ""}`}
+                    href={links.internalLinks.home}>Home</Link>
 
-                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.dictionary ? "underline" : ""}`}>
-                        {/* <Link href="/dictionary">Dictionary</Link> */}
-                        <Link href={links.internalLinks.dictionary}>Dictionary</Link>
-                    </span>
+                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.dictionary ? "underline" : ""}`} 
+                    href={links.internalLinks.dictionary}>Dictionary</Link>
 
-                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}>
-                        {/* <Link href="/dictionary">Dictionary</Link> */}
-                        <Link href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
-                    </span>
+                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}
+                    href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
 
-                    <span className={`lg:visible sm:invisible ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}>
-                        {/* <Link href="/dictionary">Dictionary</Link> */}
-                        <Link href={links.internalLinks.contact}>Contact</Link>
-                    </span>
+                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}
+                    href={links.internalLinks.contact}>Contact</Link>
                     
-
-                    <IconButton className="px-8 lg:hidden md:visible" size="large" disableRipple={true}>
+                    {/* Menu Button (Meant for mobile/small screens) */}
+                    <IconButton className={styling.menuButton} size="large" disableRipple={true}>
                         <Menu/>
                     </IconButton>
-
                 </div>
-                
             </nav>
         </header>
     )
