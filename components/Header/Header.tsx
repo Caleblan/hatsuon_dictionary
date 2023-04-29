@@ -12,7 +12,9 @@ import links from "../../links.json"
 // Used for styling
 const styling: any[string] = {
     "header": "w-full mx-4 py-4",
+    "nav": "w-full flex items-center",
     "websiteIcon": "w-1/2 flex text-3xl",
+    "headerPageLinks": "w-1/2 flex justify-end gap-x-6 space-around",
     "headerLink": "hidden md:inline",
     "menuButton": "md:hidden px-8"
 };
@@ -24,13 +26,13 @@ export default function Header() {
     return (
         <header className={styling.header}>
             
-            <nav className="w-full flex items-center">
+            <nav className={styling.nav}>
                 
                 {/* Website Icon */}
                 <Link className={styling.websiteIcon} href={links.internalLinks.home}>Hatsuon</Link>
                 
                 {/* Header Page Links */}
-                <div className="w-1/2 flex justify-end gap-x-6 space-around">
+                <div className={styling.headerPageLinks}>
 
                     <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.home ? "underline" : ""}`}
                     href={links.internalLinks.home}>Home</Link>
