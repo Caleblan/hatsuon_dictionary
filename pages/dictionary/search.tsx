@@ -49,7 +49,7 @@ interface props {
 
 
 //Determines how many dictionary entries are allowed per page.
-const pageEntries: number = 5;
+const pageEntries: number = 10;
 
 export default function DictionarySearchPage({entries, entriesCount, page, query}: props): JSX.Element {
 
@@ -97,6 +97,8 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
               
               :
 
+              <div className="flex flex-col gap-y-4">
+              {
                 // Create entry for each dictionary result returned from database.
                 entries.map((entry:any) => 
                 (
@@ -124,6 +126,10 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
                 )
               )
             }
+            </div>
+          }
+            
+            
             {
               entriesCount > 0 && entries.length > 0 ?
               <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>

@@ -3,18 +3,20 @@ import Image from 'next/image'
 // import { Inter } from '@next/font/google'
 // import styles from '../../styles/Home.module.css'
 import { IconButton} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Router from 'next/router'
 
+
+import Router from 'next/router'
 import Link from 'next/link'
 
-
+import DotDiagram from '../PitchDiagrams/DotDiagram';
 const { fit } = require('furigana');
 
 import * as wanakana from 'wanakana';
 
 import FuriganaWord from './FuriganaWord';
+
+import toMora from '../../lib/moraParser';
 
 
 // NOTE NO COMPLETE
@@ -109,11 +111,11 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                     
                     definitionElements.push(
                         <div>
-                            <p>
+                            <span className="w-full">
                                 {definitions[i].partOfSpeech.map( (value:string) => entryTags[value]).toString()}
-                            </p>
+                            </span>
 
-                            <p>{definitions[i].partOfSpeech}</p>
+                            {/* <p>{definitions[i].partOfSpeech}</p> */}
                             <p>{`${(i+1) * (j+1)}. `}{definitions[i].gloss[j].text}</p>
                         </div>
                     )
@@ -146,19 +148,30 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     // console.log(definitionElements1)
     
     return (
-        <div className="w-full flex mb-4 border-b border-gray-300">
+        <div className="w-full flex flex-col md:flex-row border-b border-gray-400">
             {/* Used to  */}
-            <div className="w-fit flex flex-col px-4 mb-4">
-                <div className="w-fit flex gap-x-4 flex-col sm:flex-row mb-2">
+            <div className="w-full flex flex-col px-4 mb-4">
+                
+                {/* Word and readings */}
+                <div className="w-fit flex gap-x-4 gap-y-1 flex-col sm:flex-row mb-2">
                     {/* {createWordElement(kanji, kana)} */}
-                    <FuriganaWord className="font-bold text-3xl" word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
+                    <FuriganaWord className="contents font-bold text-3xl" word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
                     showFuri={true}/>
-                    <span className="align-baseline">{wanakana.toRomaji(kana[0].text)}</span>
+                    <span className="h-full flex align-text-bottom items-end text-sm text-slate-500 font-serif">{wanakana.toRomaji(kana[0].text)}</span>
                 </div>
+
+                {/* Definitions */}
                 <div className="flex flex-col w-3/4">
                     {definitionElements}
                 </div>
             </div>
+
+            {/* Pitch Accents */}
+            <div className="w-1/2">
+                <span>Pitch Accents</span>
+                <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,1]} color={"black"} height={150} width={300}/>
+            </div>
+            
         </div>
     )
 }

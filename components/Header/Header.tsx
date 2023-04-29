@@ -16,7 +16,7 @@ const styling: any[string] = {
     "websiteIcon": "w-1/2 flex text-3xl",
     "headerPageLinks": "w-1/2 flex justify-end gap-x-6 space-around",
     "headerLink": "hidden md:inline",
-    "menuButton": "md:hidden px-8"
+    "menuButton": "inline md:hidden px-4"
 };
 
 export default function Header() {

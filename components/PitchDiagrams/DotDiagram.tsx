@@ -3,10 +3,13 @@ import React, {useState} from "react"
 interface props {
     mora:string[], 
     pitchPattern:number[], 
-    color:string
+    color:string,
+    // Used for dictionary part
+    width ?: number,
+    height ?: number
 }
 
-export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Element{
+export default function DotDiagram({mora, pitchPattern, color, width, height} : props): JSX.Element{
 
     //Diagram settings
     const nodeDistance: number = 65;
@@ -69,7 +72,7 @@ export default function DotDiagram({mora, pitchPattern, color} : props): JSX.Ele
         }
 
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${svgWidth}px`, height:"180px"}}
+            <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${width ? width : svgWidth}px`, height:`${height ? height :"180px"}`}}
             viewBox={`0 0 ${svgWidth} 180`}>
                 <text fill-opacity="0%">Created by Hatsuon website. Caleb Landry</text>
                 <defs>

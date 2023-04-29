@@ -29,7 +29,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
 
     return (
         
-        <Stack className="w-full flex justify-center items-center" direction="row" spacing={2}>
+        <Stack className="w-full flex justify-center items-center mt-4" direction="row" spacing={2}>
             
             <Tooltip title="Go to First Page" placement="bottom">
                 <Link className={`${currentPage == 1 ? 'pointer-events-none' : ''}`} 

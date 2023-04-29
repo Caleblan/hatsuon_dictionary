@@ -17,7 +17,7 @@ interface props {
 export default function PageButtons({entriesCount, pageEntries, currentPage, query}: props): JSX.Element {
 
     return (
-        <Stack className="w-full flex justify-center" direction="row" spacing={2}>
+        <Stack className="w-full flex justify-center mt-4" direction="row" spacing={2}>
             
             <Link className={`${currentPage == 1 ? 'pointer-events-none' : ''}`} 
             href={{pathname: '/dictionary/search', query: {query , page: currentPage == 1 ? 1 : currentPage-1}}}>
