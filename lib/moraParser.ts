@@ -30,3 +30,40 @@ export default function toMora(inputText:string) {
 
     return mora;
 }
+
+
+/**
+ * Determines what type 
+ * @param moraCount 
+ * @param pitchPattern 
+ * @returns Array
+ */
+export function determinePitchPattern(moraCount:number, pitchPattern:number) {
+
+    const patternTypes: string[][] = 
+    [["平板", "へいばん"], ["中高", "なかだか"], ["頭高", "あたまだか"], ["尾高", "おだか"]];
+
+    // Prevent negative pitch patterns which don't exist. Or if word is not long enough for pattern.
+    if(pitchPattern < 0 || moraCount < pitchPattern) return null
+
+    // Heiban pattern
+    if(pitchPattern === 0)
+    {
+        return patternTypes[0];
+    }
+    // Atamadaka pattern
+    else if(pitchPattern === 1)
+    {
+        return patternTypes[2];
+    }
+    // Odaka pattern
+    else if(moraCount === pitchPattern)
+    {
+        return patternTypes[3];
+    }
+    // Nakadaka pattern
+    else
+    {
+        return patternTypes[1];
+    }
+}

@@ -229,7 +229,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             <div className="w-full flex flex-col px-4 mb-4">
                 
                 {/* Word and readings */}
-                <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-2">
+                <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-3">
                     {/* {createWordElement(kanji, kana)} */}
                     <FuriganaWord className="font-bold text-3xl" word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
                     showFuri={true}/>
@@ -237,7 +237,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 </div>
 
                 {/* Definitions */}
-                <div className="flex flex-col w-3/4 gap-y-4">
+                <div className="flex flex-col w-3/4 gap-y-4 pl-2">
                     {definitionElements}
                 </div>
             </div>
