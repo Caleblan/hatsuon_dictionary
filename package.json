@@ -27,6 +27,8 @@
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "furigana": "^0.19.3",
+    "kamiya-codec": "^4.9.2",
+    "kuroshiro": "^1.2.0",
     "mongodb": "^4.13.0",
     "next": "^13.0.7",
     "react": "^18.2.0",

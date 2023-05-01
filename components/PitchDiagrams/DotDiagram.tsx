@@ -19,6 +19,8 @@ export default function DotDiagram({mora, pitchPattern, color, width, height} : 
     //Used to mask path behind last node which has transparent center.
     let mask: JSX.Element | null = null;
 
+    let maskID: string = `mask-${mora.join('')}-${[pitchPattern.join('')]}`;
+
     /**
      * Draws a pitch diagram based on the inputed text and pitch pattern.
      * @returns An SVG JSX element of the pitch diagram.
@@ -46,7 +48,7 @@ export default function DotDiagram({mora, pitchPattern, color, width, height} : 
             // new Set(pitchPattern).size != 1 ? {mask: "url(#mask)"} : {}
 
             path = (
-                <path d={pathString} stroke={primaryColor} fill= "none" strokeWidth="3" mask="url(#mask)"/>
+                <path d={pathString} stroke={primaryColor} fill= "none" strokeWidth="3" mask={`url(#${maskID})`}/>
             );
         }
 
@@ -73,12 +75,12 @@ export default function DotDiagram({mora, pitchPattern, color, width, height} : 
 
         return (
             <svg xmlns="http://www.w3.org/2000/svg" style={{width: `${width ? width : svgWidth}px`, height:`${height ? height :"180px"}`}}
-            viewBox={`0 0 ${svgWidth} 180`}>
+            viewBox={`0 0 ${svgWidth} 180`} width={`${width ? width : svgWidth}px`} height={`${height ? height :"180px"}`} >
                 <text fill-opacity="0%">Created by Hatsuon website. Caleb Landry</text>
                 <defs>
-                    <mask id="mask" maskUnits="userSpaceOnUse">
+                    <mask id={maskID} maskUnits="userSpaceOnUse">
                         {/* Rectangle element states where we can see the element */}
-                        <rect x="0" y="0" width={`${svgWidth}px`} height="190px" fill="white"/>
+                        <rect x="0" y="0" width={`${svgWidth}px`} height="180px" fill="white"/>
                         {/* Mask dictates where we can see the element */}
                         {mask}
                     </mask>
