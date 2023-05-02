@@ -152,86 +152,86 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
  */
 export async function getServerSideProps({query} : {query:any}) {
 
-  //Connect to the database 
-  try {
+  try 
+  {
+    //Connect to the database 
     const {client, db} = await clientPromise();
+  
+    const collection: string = "JMdict";
+
+    // TODO put try statement in incase connection to database fails
+
+    const tokens: any[] = wanakana.tokenize(query.query, { compact: true, detailed: true})
+    
+    // Used to store the english turned into romaji
+    let romajiToKana: string[] = [];
+    let japanese: string[] = [];
+
+    console.log(tokens)
+
+    for(let i: number = 0; i < tokens.length; i++)
+    {
+      switch (tokens[i].type) 
+      {
+        case "en":romajiToKana.push(wanakana.toHiragana(tokens[i].value), wanakana.toKatakana(tokens[i].value));
+                  break;
+        case "jp":japanese.push(tokens[i].value)
+                  break;
+      }
+    }
+
+
+
+    console.log(romajiToKana)
+
+
+    let list: any[] = romajiToKana.map( (token:string) => {return {kana: {$elemMatch: {text: {$regex:`.*${token}.*`}}}}});
+
+    console.log(list)
+
+    // Breakdown all query attributes
+    const {page} : {page:number} = query;
+    // Take user query and create query to give to database.
+    const databaseQuery: any = {$or: [{"kanji.text": query.query},{"kana.text": query.query}]};
+    
+    const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: query.query}}}, ...list]};
+
+    // // Search the database for either the kanji or kana of the word.
+    // let accents = await db
+    // .collection("PitchAccents")
+    // .find(databaseQuery)
+    // .skip((page-1) * pageEntries)
+    // .limit(pageEntries)
+    // .toArray();
+
+
+    // wanakana.toHiragana()
+
+    //Get the number of results so we know how many page number buttons we need.
+    const resultCount: number = await db
+    .collection(collection)
+    .countDocuments(databaseQueryDictionary);
+
+
+    // We will search the JMdict where we can get definitions.
+    let definitions: any[] = await db
+    .collection(collection)
+    .find(databaseQueryDictionary)
+    .skip((page-1) * pageEntries)
+    .limit(pageEntries)
+    .toArray();
+
+    definitions = JSON.parse(JSON.stringify(definitions));
+
+    return {
+      props: {entries: definitions, entriesCount: resultCount, page, query:query.query},
+    };
   }
   catch(error: unknown)
   {
     throw new Error("Connection to database failed.");
   }
 
-  const collection: string = "JMdict";
-
-  // TODO put try statement in incase connection to database fails
-
-  const tokens: any[] = wanakana.tokenize(query.query, { compact: true, detailed: true})
-  
-  // Used to store the english turned into romaji
-  let romajiToKana: string[] = [];
-  let japanese: string[] = [];
-
-  console.log(tokens)
-
-  for(let i: number = 0; i < tokens.length; i++)
-  {
-    switch (tokens[i].type) 
-    {
-      case "en":romajiToKana.push(wanakana.toHiragana(tokens[i].value), wanakana.toKatakana(tokens[i].value));
-                break;
-      case "jp":japanese.push(tokens[i].value)
-                break;
-    }
-  }
-
-
-
-  console.log(romajiToKana)
-
-
-  let list: any[] = romajiToKana.map( (token:string) => {return {kana: {$elemMatch: {text: {$regex:`.*${token}.*`}}}}});
-
-  console.log(list)
-
-  // Breakdown all query attributes
-  const {page} : {page:number} = query;
-  // Take user query and create query to give to database.
-  const databaseQuery: any = {$or: [{"kanji.text": query.query},{"kana.text": query.query}]};
-  
-  const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: query.query}}}, ...list]};
-
-  // // Search the database for either the kanji or kana of the word.
-  // let accents = await db
-  // .collection("PitchAccents")
-  // .find(databaseQuery)
-  // .skip((page-1) * pageEntries)
-  // .limit(pageEntries)
-  // .toArray();
-
-
-  // wanakana.toHiragana()
-
-  //Get the number of results so we know how many page number buttons we need.
-  const resultCount: number = await db
-  .collection(collection)
-  .countDocuments(databaseQueryDictionary);
-
-
-  // We will search the JMdict where we can get definitions.
-  let definitions: any[] = await db
-  .collection(collection)
-  .find(databaseQueryDictionary)
-  .skip((page-1) * pageEntries)
-  .limit(pageEntries)
-  .toArray();
-
-  definitions = JSON.parse(JSON.stringify(definitions));
-
-  // console.log(JSON.stringify(accents))
-
-  return {
-    props: {entries: definitions, entriesCount: resultCount, page, query:query.query},
-  };
 }
 
 // export function parseCookies(req) {
