@@ -9,9 +9,9 @@ const digraphs: Set<string> = new Set<string>(hiriDigraphs.concat(kataDigraphs))
 /**
  * Parses a string and breaks it up into Japanese mora. *Note that っ/ッ are assumed as 1 mora.*
  * @param {string} inputText - The string to be broken up into mora.
- * @returns A list containing parsed mora from input text.
+ * @returns {string[]} A list containing parsed mora from input text.
  */
-export default function toMora(inputText:string) {
+export function toMora(inputText:string) {
 
     const mora:string[] = [];
 
@@ -33,10 +33,10 @@ export default function toMora(inputText:string) {
 
 
 /**
- * Determines what type 
- * @param moraCount 
- * @param pitchPattern 
- * @returns Array
+ * Determines what type of pitch patch pattern based on inputted pitch patttern number for a specific word.
+ * @param {number} moraCount  The number of mora in the given word.
+ * @param {number} pitchPattern (number) The pattern of the word.
+ * @returns {string[] | null} Array with 2 elements: Kanji and hiragana of the pitch pattern
  */
 export function determinePitchPattern(moraCount:number, pitchPattern:number) {
 
@@ -67,3 +67,5 @@ export function determinePitchPattern(moraCount:number, pitchPattern:number) {
         return patternTypes[1];
     }
 }
+
+export default {toMora, determinePitchPattern};

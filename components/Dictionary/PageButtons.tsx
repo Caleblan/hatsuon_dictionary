@@ -41,11 +41,11 @@ export default function PageButtons({entriesCount, pageEntries, currentPage, que
 
 /**
  * Generates a button layout which corresponds to the number of pages returned by specific query.
- * @param entriesCount 
- * @param pageEntries 
- * @param currentPage 
- * @param query The current query given by the user
- * @returns Button Layout as a JSX Element
+ * @param {number} entriesCount The total number of results returned by the query.
+ * @param {number} pageEntries Number of entries per page.
+ * @param {number} currentPage The current page that is selected (assuming valid value).
+ * @param {string} query The current query given by the user
+ * @returns {JSX.Element} Button Layout as a JSX Element
  */
 function generatePageButtons(entriesCount:number, pageEntries:number, currentPage:number, query:string): JSX.Element[] {
     

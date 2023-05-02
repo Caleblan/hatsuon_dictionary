@@ -10,7 +10,6 @@ import * as wanakana from 'wanakana';
 
 // Library Functions
 import clientPromise from "../../lib/mongodb";
-import toMora from '../../lib/moraParser';
 // Components
 import Link from 'next/link'
 import Head from 'next/head'

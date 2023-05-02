@@ -95,7 +95,7 @@ export default function DotDiagram({mora, pitchPattern, color, width, height} : 
     /**
      * Creates a node for each japanese mora.
      * @param {number[]} pattern - A list of the heights of each node.
-     * @returns List of JSX Node elements for each mora.
+     * @returns {JSX.Element[]} List of JSX Node elements for each mora.
      */
     function createNodes(pattern:number[]): JSX.Element[] {
         

@@ -16,7 +16,7 @@ import * as wanakana from 'wanakana';
 
 import FuriganaWord from './FuriganaWord';
 
-import toMora from '../../lib/moraParser';
+import {toMora, determinePitchPattern} from '../../lib/pitchUtilities';
 
 // import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 // import Kuroshiro from "kuroshiro";
@@ -243,8 +243,12 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             </div>
 
             {/* Pitch Accents */}
-            <div className="w-1/2">
+            <div className="w-1/2 flex flex-col">
                 <span>Pitch Accents</span>
+                <span className="flex flex-col">
+                    {determinePitchPattern(toMora(kana[0].text).length, 2)}
+                    {/* {determinePitchPattern(toMora(kana[0].text).length, 2)[1]} */}
+                </span>
                 <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,2,2]} color={"black"} height={150} width={300}/>
                 <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/>
             </div>

@@ -8,7 +8,7 @@ import { styled } from "@mui/material/styles";
 import { saveAs } from 'file-saver';
 import * as ReactDOMServer from 'react-dom/server';
 // Custom functions
-import toMora from '../../lib/moraParser';
+import {toMora} from '../../lib/pitchUtilities';
 // Custom components
 import GeneratorSettings from "./GeneratorSettings";
 import DotDiagram from "../PitchDiagrams/DotDiagram";
@@ -122,7 +122,7 @@ export default function PitchGenerator(): JSX.Element {
 
     /**
      * Allows the user to change the download format of the diagram from diagram settings selector.
-     * @param fileFormat String that defines what download format has been selected.
+     * @param {string} fileFormat String that defines what download format has been selected.
      */
     function changeFileFormat(fileFormat:string): void
     {
@@ -137,7 +137,7 @@ export default function PitchGenerator(): JSX.Element {
 
     /**
      * Parses the pitch pattern inputted by user in Pitch Pattern Field into a valid pattern.
-     * @param pattern Pitch Accent pattern inputted by user in Pitch Pattern textfield.
+     * @param {string} pattern Pitch Accent pattern inputted by user in Pitch Pattern textfield.
      */
     function inputPattern(pattern:string): void 
     {
