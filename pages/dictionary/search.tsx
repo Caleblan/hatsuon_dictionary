@@ -145,10 +145,17 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
 
 {/* <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null */}
 
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
 export async function getServerSideProps({query} : {query:any}) {
-    
+
+  //Connect to the database 
   const {client, db} = await clientPromise();
 
+  const collection: string = "JMdict";
 
   // TODO put try statement in incase connection to database fails
 
@@ -200,13 +207,13 @@ export async function getServerSideProps({query} : {query:any}) {
 
   //Get the number of results so we know how many page number buttons we need.
   const resultCount: number = await db
-  .collection("Dictionary")
+  .collection(collection)
   .countDocuments(databaseQueryDictionary);
 
 
   // We will search the JMdict where we can get definitions.
   let definitions: any[] = await db
-  .collection("Dictionary")
+  .collection(collection)
   .find(databaseQueryDictionary)
   .skip((page-1) * pageEntries)
   .limit(pageEntries)
