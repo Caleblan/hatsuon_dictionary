@@ -153,7 +153,13 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
 export async function getServerSideProps({query} : {query:any}) {
 
   //Connect to the database 
-  const {client, db} = await clientPromise();
+  try {
+    const {client, db} = await clientPromise();
+  }
+  catch(error: unknown)
+  {
+    throw new Error("Connection to database failed.");
+  }
 
   const collection: string = "JMdict";
 
