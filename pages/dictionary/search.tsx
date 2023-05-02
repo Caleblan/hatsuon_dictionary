@@ -207,25 +207,31 @@ export async function getServerSideProps({query} : {query:any}) {
 
     // wanakana.toHiragana()
 
-    //Get the number of results so we know how many page number buttons we need.
-    const resultCount: number = await db
-    .collection(collection)
-    .countDocuments(databaseQueryDictionary);
+    // //Get the number of results so we know how many page number buttons we need.
+    // const resultCount: number = await db
+    // .collection(collection)
+    // .countDocuments(databaseQueryDictionary);
 
 
-    // We will search the JMdict where we can get definitions.
-    let definitions: any[] = await db
-    .collection(collection)
-    .find(databaseQueryDictionary)
-    .skip((page-1) * pageEntries)
-    .limit(pageEntries)
-    .toArray();
+    // // We will search the JMdict where we can get definitions.
+    // let definitions: any[] = await db
+    // .collection(collection)
+    // .find(databaseQueryDictionary)
+    // .skip((page-1) * pageEntries)
+    // .limit(pageEntries)
+    // .toArray();
 
-    definitions = JSON.parse(JSON.stringify(definitions));
+    // definitions = JSON.parse(JSON.stringify(definitions));
+
+    // return {
+    //   props: {entries: definitions, entriesCount: resultCount, page, query:query.query},
+    // };
 
     return {
-      props: {entries: definitions, entriesCount: resultCount, page, query:query.query},
+      props: {entries: [], entriesCount: 0, page, query:query.query},
     };
+
+
   }
   catch(error: unknown)
   {
