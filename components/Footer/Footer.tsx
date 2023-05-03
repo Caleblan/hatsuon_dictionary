@@ -5,7 +5,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import GithubIcon from '@mui/icons-material/Github';
+// import GithubIcon from '@mui/icons-material/Github';
 
 // Next.js
 import Image from 'next/image'
