@@ -220,9 +220,9 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
     
     return (
-        <div className="w-full flex flex-col md:flex-row border-b border-gray-400 pb-4">
+        <div className="w-full flex flex-col gap-y-4 md:gap-x-6 md:flex-row border-b border-gray-400 pb-4 px-4">
                 
-            <div className="w-full flex flex-col px-4">
+            <div className="w-full flex flex-col">
                 
                 {/* Word and readings */}
                 <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-3">
@@ -239,16 +239,16 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             </div>
 
             {/* Pitch Accents */}
-            <div className="w-1/2 flex flex-col px-2">
-                <span>Pitch Accents</span>
+            <div className="w-full flex flex-col pl-2 pt-2">
+                <span className="font-semibold">Pitch Accents</span>
 
-                <span className="flex flex-col items-center ">
+                <div className="flex flex-col items-center ">
                     <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/> 
-                    <div className="w-full text-end">
+                    <div className="w-full text-end pl-2">
                         <span className="font-bold mr-2">{determinePitchPattern(toMora(kana[0].text).length, 2)[0]}</span>
                         <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(kana[0].text).length, 2)[1])}</span>
                     </div>
-                </span>
+                </div>
             </div>
         </div>
     )
