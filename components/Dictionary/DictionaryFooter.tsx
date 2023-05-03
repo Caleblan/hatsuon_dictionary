@@ -1,9 +1,16 @@
 
 // MUI/React Imports
 import React, {useState, useEffect} from "react";
-import {IconButton, Button, Stack, TextField, Tooltip} from '@mui/material';
-import {ArrowBackIos, ArrowForwardIos, SkipNext, SkipPrevious} from '@mui/icons-material/';
-import LoadingButton from '@mui/lab/LoadingButton';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+// Icons
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 // Next.js imports
 import Link from 'next/link';
 import {useRouter} from "next/router";
@@ -35,7 +42,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                 <Link className={`${currentPage == 1 ? 'pointer-events-none' : ''}`} 
                 href={{pathname: '/dictionary/search', query: {query , page: 1}}}>
                     <IconButton className="flex justify-center" disabled={currentPage == 1 ? true: false}>
-                        <SkipPrevious/>
+                        <SkipPreviousIcon/>
                     </IconButton>
                 </Link>
             </Tooltip>
@@ -44,7 +51,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                 <Link className={`${currentPage == 1 ? 'pointer-events-none' : ''}`} 
                 href={{pathname: '/dictionary/search', query: {query , page: currentPage == 1 ? 1 : currentPage-1}}}>
                     <IconButton className="flex justify-center" disabled={currentPage == 1 ? true: false}>
-                        <ArrowBackIos/>
+                        <ArrowBackIosIcon/>
                     </IconButton>
                 </Link>
             </Tooltip>
@@ -90,7 +97,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                 href={{pathname: '/dictionary/search', 
                 query: {query , page: currentPage == Math.ceil(entriesCount / pageEntries) ? Math.ceil(entriesCount / pageEntries) : Number(currentPage)+1}}}>
                     <IconButton className="flex justify-center" disabled={currentPage == Math.ceil(entriesCount / pageEntries) ? true: false}>
-                        <ArrowForwardIos/>
+                        <ArrowForwardIosIcon/>
                     </IconButton>
                 </Link>
             </Tooltip>
@@ -99,7 +106,7 @@ export default function DictionaryFooter({entriesCount, pageEntries, currentPage
                 <Link className={`${currentPage == Math.ceil(entriesCount / pageEntries) ? 'pointer-events-none' : ''}`} 
                 href={{pathname: '/dictionary/search', query: {query , page: Math.ceil(entriesCount / pageEntries)}}}>
                     <IconButton className="flex justify-center" disabled={currentPage == Math.ceil(entriesCount / pageEntries) ? true: false}>
-                        <SkipNext/>
+                        <SkipNextIcon/>
                     </IconButton>
                 </Link>
             </Tooltip>

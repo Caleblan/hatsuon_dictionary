@@ -1,35 +1,23 @@
 
-import styles from '../../styles/Home.module.css'
-import { IconButton, TextField} from '@mui/material';
+// MUI/ React.js
 import {useState, useEffect} from "react"
-
-import { useRouter } from 'next/router'
-
-
-import * as wanakana from 'wanakana';
-
+import IconButton from "@mui/material/IconButton";
+import TextField from '@mui/material/TextField';
 // Library Functions
 import clientPromise from "../../lib/mongodb";
-// Components
+// Next.js
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
-import SearchIcon from '@mui/icons-material/Search';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import { useRouter } from 'next/router'
+// Third-party
+import cookie from "cookie"
+import * as wanakana from 'wanakana';
 // Custom Components
 import DictionaryEntry from '../../components/Dictionary/DictionaryEntry';
 import SearchBar from "../../components/Dictionary/SearchBar";
-import PageButtons from '../../components/Dictionary/PageButtons';
-import CompactDiagram from '../../components/PitchDiagrams/CompactDiagram';
-import DotDiagram from '../../components/PitchDiagrams/DotDiagram';
-import { Pattern } from '@mui/icons-material';
-
 import DictionaryFooter from '../../components/Dictionary/DictionaryFooter';
 
-//Used to store language setting for dictionary entries
-import cookie from "cookie"
 // Images
 import MissingPageImage from "../../Images/404Image.svg"
 

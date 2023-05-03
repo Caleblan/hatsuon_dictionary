@@ -1,8 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { IconButton, TextField} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 
 import AttributionIcon from '@mui/icons-material/Attribution';
 import Tooltip from '@mui/material/Tooltip';

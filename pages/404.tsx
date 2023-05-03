@@ -1,11 +1,5 @@
-import Head from 'next/head'
+// Next.js 
 import Image from 'next/image'
-import styles from '../../styles/Home.module.css'
-import { IconButton, TextField} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Router from 'next/router'
-
 import Link from 'next/link'
 
 // interface IndexProps {

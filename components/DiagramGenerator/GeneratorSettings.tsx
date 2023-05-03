@@ -1,5 +1,13 @@
+// MUI / React
 import React, {useState} from "react"
-import {InputLabel, FormControl, Select, MenuItem, IconButton, TextField} from '@mui/material';
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+// Icons
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+// Third-party
 import { BlockPicker} from 'react-color';
 
 interface props {

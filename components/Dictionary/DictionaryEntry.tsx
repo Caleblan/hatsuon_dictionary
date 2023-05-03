@@ -1,21 +1,17 @@
-
-import Image from 'next/image'
-// import { Inter } from '@next/font/google'
-// import styles from '../../styles/Home.module.css'
-import { IconButton} from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-
-
-import Router from 'next/router'
-import Link from 'next/link'
-
-import DotDiagram from '../PitchDiagrams/DotDiagram';
-const { fit } = require('furigana');
-
+// React/MUI
+import React from "react";
+// Next.js
+import Image from 'next/image';
+import Router from 'next/router';
+import Link from 'next/link';
+// Third-party
 import * as wanakana from 'wanakana';
-
+const { fit } = require('furigana');
+var codec = require('kamiya-codec');
+// Custom components
+import DotDiagram from '../PitchDiagrams/DotDiagram';
 import FuriganaWord from './FuriganaWord';
-
+// Library functions
 import {toMora, determinePitchPattern} from '../../lib/pitchUtilities';
 
 // import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";

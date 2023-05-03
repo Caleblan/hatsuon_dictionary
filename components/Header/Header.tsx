@@ -1,7 +1,6 @@
 // React/MUI
 import {useState} from "react"
-import {IconButton} from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
 // Next.js
 import Image from 'next/image'
 import Link from 'next/link'
@@ -47,9 +46,9 @@ export default function Header() {
                     href={links.internalLinks.contact}>Contact</Link>
                     
                     {/* Menu Button (Meant for mobile/small screens) */}
-                    <IconButton className={styling.menuButton} size="large" disableRipple={true}>
+                    {/* <IconButton className={styling.menuButton} size="large" disableRipple={true}>
                         <Menu/>
-                    </IconButton>
+                    </IconButton> */}
                 </div>
             </nav>
         </header>

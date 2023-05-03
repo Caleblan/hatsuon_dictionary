@@ -1,8 +1,10 @@
 
 // MUI/React Imports
-import {IconButton, Button, Stack} from '@mui/material';
-import {ArrowBackIos, ArrowForwardIos} from '@mui/icons-material/';
-import LoadingButton from '@mui/lab/LoadingButton';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // Next.js imports
 import Link from 'next/link'
 
@@ -23,7 +25,7 @@ export default function PageButtons({entriesCount, pageEntries, currentPage, que
             href={{pathname: '/dictionary/search', query: {query , page: currentPage == 1 ? 1 : currentPage-1}}}>
               <IconButton className="flex justify-center" 
               disabled={currentPage == 1 ? true: false}>
-                <ArrowBackIos/>
+                <ArrowBackIosIcon/>
               </IconButton>
             </Link>
             {generatePageButtons(entriesCount, pageEntries, currentPage, query)}
@@ -32,7 +34,7 @@ export default function PageButtons({entriesCount, pageEntries, currentPage, que
             href={{pathname: '/dictionary/search', query: {query , page: currentPage == Math.ceil(entriesCount / pageEntries) ? Math.ceil(entriesCount / pageEntries) : Number(currentPage)+1}}}>
               <IconButton
               disabled={currentPage == Math.ceil(entriesCount / pageEntries) ? true: false}>
-                <ArrowForwardIos/>
+                <ArrowForwardIosIcon/>
               </IconButton>
             </Link>
         </Stack>

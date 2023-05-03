@@ -1,6 +1,12 @@
 // React/MUI
 import React, {useState} from "react"
-import {Instagram, Twitter, LinkedIn, Facebook, GitHub } from '@mui/icons-material';
+// Icons
+import InstagramIcon from '@mui/icons-material/Instagram';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GithubIcon from '@mui/icons-material/Github';
+
 // Next.js
 import Image from 'next/image'
 import Link from 'next/link'
@@ -53,11 +59,11 @@ export default function Footer(): JSX.Element {
                     <span className={styling.columnHeader}>Social</span>
                     <ul className={styling.list}>
                         <Link className={styling.footerLink} href={links.externalLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                            <LinkedIn className="Icon"/>
+                            <LinkedInIcon className="Icon"/>
                             LinkedIn
                         </Link>
                         <Link className={styling.footerLink} href={links.externalLinks.facebook} target="_blank" rel="noopener noreferrer">
-                            <Facebook className="Icon"/>
+                            <FacebookIcon className="Icon"/>
                             Facebook
                         </Link> 
                         <Link className={styling.footerLink} href={links.externalLinks.discord} target="_blank" rel="noopener noreferrer">

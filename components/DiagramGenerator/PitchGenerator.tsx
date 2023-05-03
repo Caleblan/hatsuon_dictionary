@@ -1,13 +1,19 @@
 // React/MUI
-import { useState , useRef, useMemo, ReactNode } from "react"
-import {FileDownloadOutlined, SettingsOutlined} from '@mui/icons-material';
-import {TextField, IconButton, ToggleButton as MuiToggleButton, 
-        ToggleButtonGroup, Tooltip} from '@mui/material';
-import { styled } from "@mui/material/styles";
-// Other imports
-import { saveAs } from 'file-saver';
+import React, { useState , useRef, useMemo} from "react"
 import * as ReactDOMServer from 'react-dom/server';
-// Custom functions
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+// import ToggleButton as MuiToggleButton from "@mui/material/ToggleButton";
+// import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Tooltip from "@mui/material/Tooltip"
+// Icons
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+
+// import { styled } from "@mui/material/styles";
+// Third-party
+import { saveAs } from 'file-saver';
+// Library functions
 import {toMora} from '../../lib/pitchUtilities';
 // Custom components
 import GeneratorSettings from "./GeneratorSettings";
@@ -17,13 +23,13 @@ import CompactDiagram from "../PitchDiagrams/CompactDiagram";
 
 const buttonStyle: string = "flex justify-end";
 
-// Change ToggleButtom Color
-const ToggleButton = styled(MuiToggleButton)(({ color /*, backgroundColor*/ }) => ({
-    "&.Mui-selected, &.Mui-selected:hover": {
-      color: color,
-    //   backgroundColor: backgroundColor
-    }
-  }));
+// // Change ToggleButtom Color
+// const ToggleButton = styled(MuiToggleButton)(({ color /*, backgroundColor*/ }) => ({
+//     "&.Mui-selected, &.Mui-selected:hover": {
+//       color: color,
+//     //   backgroundColor: backgroundColor
+//     }
+//   }));
 
 export default function PitchGenerator(): JSX.Element {
   
@@ -176,14 +182,14 @@ export default function PitchGenerator(): JSX.Element {
                         <span>
                             <IconButton className={buttonStyle} onClick={downloadFormat === "SVG" ? downloadAsSVG : downloadAsPNG} 
                                 disabled={diagramText === "" && pitchPattern.length === 0 ? true : false}>
-                                <FileDownloadOutlined/>
+                                <FileDownloadOutlinedIcon/>
                             </IconButton>
                         </span>
                     </Tooltip>
                     {/* Settings button */}
                     <Tooltip title="Settings" placement="top">
                         <IconButton className={buttonStyle} onClick={() => {displaySettings(value => !value)}}>
-                            <SettingsOutlined/>
+                            <SettingsOutlinedIcon/>
                         </IconButton>
                     </Tooltip>
                 </div>
