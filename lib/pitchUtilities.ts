@@ -36,7 +36,7 @@ export function toMora(inputText:string) {
  * Determines what type of pitch patch pattern based on inputted pitch patttern number for a specific word.
  * @param {number} moraCount  The number of mora in the given word.
  * @param {number} pitchPattern (number) The pattern of the word.
- * @returns {string[] | null} Array with 2 elements: Kanji and hiragana of the pitch pattern
+ * @returns {string[]} Array with 2 elements: Kanji and hiragana of the pitch pattern
  */
 export function determinePitchPattern(moraCount:number, pitchPattern:number) {
 
@@ -44,7 +44,7 @@ export function determinePitchPattern(moraCount:number, pitchPattern:number) {
     [["平板", "へいばん"], ["中高", "なかだか"], ["頭高", "あたまだか"], ["尾高", "おだか"]];
 
     // Prevent negative pitch patterns which don't exist. Or if word is not long enough for pattern.
-    if(pitchPattern < 0 || moraCount < pitchPattern) return null
+    if(pitchPattern < 0 || moraCount < pitchPattern) return [];
 
     // Heiban pattern
     if(pitchPattern === 0)

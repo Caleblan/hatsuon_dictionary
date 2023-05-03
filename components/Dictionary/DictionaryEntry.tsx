@@ -220,9 +220,9 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
     
     return (
-        <div className="w-full flex flex-col md:flex-row border-b border-gray-400">
-            {/* Used to  */}
-            <div className="w-full flex flex-col px-4 mb-4">
+        <div className="w-full flex flex-col md:flex-row border-b border-gray-400 pb-4">
+                
+            <div className="w-full flex flex-col px-4">
                 
                 {/* Word and readings */}
                 <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-3">
@@ -239,26 +239,17 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             </div>
 
             {/* Pitch Accents */}
-            <div className="w-1/2 flex flex-col">
+            <div className="w-1/2 flex flex-col px-2">
                 <span>Pitch Accents</span>
-                <span className="flex flex-col">
-                    {determinePitchPattern(toMora(kana[0].text).length, 2)}
-                    {/* {determinePitchPattern(toMora(kana[0].text).length, 2)[1]} */}
-                </span>
-                <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,2,2]} color={"black"} height={150} width={300}/>
-                <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/>
-            </div>
 
-            {/* <div className="w-1/2">
-                Conjugations
-                {
-                    <div>
-                    <DotDiagram mora={toMora(masuVerb)} pitchPattern={masuPattern} color={"black"} height={150} width={300}/>
-                    <DotDiagram mora={toMora(negativeMasuVerb)} pitchPattern={negativeMasuPattern} color={"black"} width={300} height={150}/>
+                <span className="flex flex-col items-center ">
+                    <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/> 
+                    <div className="w-full text-end">
+                        <span className="font-bold mr-2">{determinePitchPattern(toMora(kana[0].text).length, 2)[0]}</span>
+                        <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(kana[0].text).length, 2)[1])}</span>
                     </div>
-                }
-            </div> */}
-            
+                </span>
+            </div>
         </div>
     )
 }
