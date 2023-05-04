@@ -10,7 +10,7 @@ import links from "../../links.json"
 
 // Used for styling
 const styling: any[string] = {
-    "header": "w-full mx-4 py-4",
+    "header": "w-full p-4",
     "nav": "w-full flex items-center",
     "websiteIcon": "w-1/2 flex text-3xl",
     "headerPageLinks": "w-1/2 flex justify-end gap-x-6 space-around",
