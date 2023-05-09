@@ -248,7 +248,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
                     {
                         accents[0].accents.map( (pattern:number) => {
-                            return <DotDiagram mora={toMora(accents[0].kana)} 
+                            return <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
                             pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
                             color={"black"} height={150} width={300}/>
                         })

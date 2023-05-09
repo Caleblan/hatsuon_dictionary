@@ -6,7 +6,8 @@ interface props {
     color:string,
     // Used for dictionary part
     width ?: number,
-    height ?: number
+    height ?: number,
+    key: string
 }
 
 export default function DotDiagram({mora, pitchPattern, color, width, height} : props): JSX.Element{
