@@ -246,13 +246,13 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 <div className="flex flex-col items-center ">
                     <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/>
 
-                    {
+                    {/* {
                         accents[0].accents.map( (pattern:number) => {
                             return <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
                             pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
                             color={"black"} height={150} width={300}/>
                         })
-                    };
+                    }; */}
 
 
                     <div className="w-full text-end pl-2">
