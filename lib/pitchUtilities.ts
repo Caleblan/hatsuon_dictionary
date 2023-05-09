@@ -11,7 +11,7 @@ const digraphs: Set<string> = new Set<string>(hiriDigraphs.concat(kataDigraphs))
  * @param {string} inputText - The string to be broken up into mora.
  * @returns {string[]} A list containing parsed mora from input text.
  */
-export function toMora(inputText:string) {
+export function toMora(inputText:string): string[] {
 
     const mora:string[] = [];
 
@@ -38,7 +38,7 @@ export function toMora(inputText:string) {
  * @param {number} pitchPattern (number) The pattern of the word.
  * @returns {string[]} Array with 2 elements: Kanji and hiragana of the pitch pattern
  */
-export function determinePitchPattern(moraCount:number, pitchPattern:number) {
+export function determinePitchPattern(moraCount:number, pitchPattern:number): string[] {
 
     const patternTypes: string[][] = 
     [["平板", "へいばん"], ["中高", "なかだか"], ["頭高", "あたまだか"], ["尾高", "おだか"]];
@@ -68,4 +68,40 @@ export function determinePitchPattern(moraCount:number, pitchPattern:number) {
     }
 }
 
-export default {toMora, determinePitchPattern};
+/**
+ * Converts a pitch pattern number of accented/unaccented mora (i.e. [2,1,1,1,2])
+ * @param {number} pitchPattern A single number which contains the drop
+ * @param {number} moraCount The number of mora contained in the word.
+ * @returns {number[]} The array which will be fed into the pitch diagram input variables
+ */
+export function convertPitchNumber(pitchPattern:number, moraCount: number): number[] {
+
+    let pattern: number[] = [];
+
+    //If 平板（へいばん)
+    if(pitchPattern === 0) {
+        pattern = [2];
+        pattern = pattern.concat(Array(moraCount).fill(1));
+    }
+    //If 頭高（あたまだか).
+    else if(pitchPattern === 1) {
+        pattern = [1];
+        pattern = pattern.concat(Array(moraCount).fill(2));
+    }
+    //If 中高 (なかだか) or 尾高 (おだか).
+    else if (pitchPattern > 1 && pitchPattern <= moraCount){
+        pattern = [2];
+
+        //Get all higher mora.
+        pattern = pattern.concat(Array(pitchPattern - 1).fill(1));
+        //Get mora after pitch drop.
+        pattern = pattern.concat(Array(moraCount - pitchPattern + 1).fill(2));
+    }
+    else {
+        return [];
+    }
+
+    return pattern;
+}
+
+export default {toMora, determinePitchPattern, convertPitchNumber};

@@ -12,7 +12,7 @@ var codec = require('kamiya-codec');
 import DotDiagram from '../PitchDiagrams/DotDiagram';
 import FuriganaWord from './FuriganaWord';
 // Library functions
-import {toMora, determinePitchPattern} from '../../lib/pitchUtilities';
+import {toMora, determinePitchPattern, convertPitchNumber} from '../../lib/pitchUtilities';
 
 // import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 // import Kuroshiro from "kuroshiro";
@@ -126,16 +126,17 @@ var codec = require('kamiya-codec');
 
 
 interface entryInfo {
-  kanji: any[]
-  kana: any[]
-  sense?: any[]
-  translation?: any[]
+  kanji: any[],
+  kana: any[],
+  sense?: any[],
+  translation?: any[],
+  accents: any[]
 }
 
 
 export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
-    const {kanji, kana} = entryInfo;
+    const {kanji, kana, accents} = entryInfo;
 
     const definitions: any[] | undefined = entryInfo.sense;
     const translation: any[] | undefined = entryInfo.translation;
@@ -243,7 +244,17 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 <span className="font-semibold">Pitch Accents</span>
 
                 <div className="flex flex-col items-center ">
-                    <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/> 
+                    <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/>
+
+                    {
+                        accents[0].accents.map( (pattern:number) => {
+                            return <DotDiagram mora={toMora(accents[0].kana)} 
+                            pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
+                            color={"black"} height={150} width={300}/>
+                        })
+                    };
+
+
                     <div className="w-full text-end pl-2">
                         <span className="font-bold mr-2">{determinePitchPattern(toMora(kana[0].text).length, 2)[0]}</span>
                         <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(kana[0].text).length, 2)[1])}</span>

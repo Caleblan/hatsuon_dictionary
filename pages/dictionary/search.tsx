@@ -115,13 +115,11 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
             }
             </div>
           }
-            
-            
-            {
-              entriesCount > 0 && entries.length > 0 ?
-              <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
-              : null
-            }
+          {
+            entriesCount > 0 && entries.length > 0 ?
+            <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
+            : null
+          }
             
 
           </div>
@@ -145,7 +143,7 @@ export async function getServerSideProps({query} : {query:any}) {
     //Connect to the database 
     const {client, db} = await clientPromise();
   
-    const collection: string = "JMdict";
+    const collection: string = "PitchDictionary";
 
     // TODO put try statement in incase connection to database fails
 
