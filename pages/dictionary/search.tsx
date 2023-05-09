@@ -143,7 +143,7 @@ export async function getServerSideProps({query} : {query:any}) {
     //Connect to the database 
     const {client, db} = await clientPromise();
   
-    const collection: string = "PitchDictionary";
+    const collection: string = "JMdict";
 
     // TODO put try statement in incase connection to database fails
 
