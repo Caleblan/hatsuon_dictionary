@@ -136,7 +136,7 @@ interface entryInfo {
 
 export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
-    const {kanji, kana} = entryInfo;
+    const {kanji, kana, accents} = entryInfo;
 
     const definitions: any[] | undefined = entryInfo.sense;
     const translation: any[] | undefined = entryInfo.translation;

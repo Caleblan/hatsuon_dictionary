@@ -16,7 +16,7 @@ export function toMora(inputText:string): string[] {
     const mora:string[] = [];
 
     //Checks the all characters.
-    for(let i = 0; i < inputText.length; i++) {
+    for(let i:number = 0; i < inputText.length; i++) {
 
         //If we found a digraph, add to previous 
         if(digraphs.has(inputText[i]) && mora[mora.length-1].length == 1) {

@@ -20,7 +20,7 @@ export default function DotDiagram({mora, pitchPattern, color, width, height} : 
     //Used to mask path behind last node which has transparent center.
     let mask: JSX.Element | null = null;
 
-    let maskID: string = `mask-${mora.join('')}-${[pitchPattern.join('')]}`;
+    let maskID: string = `mask-${mora.join('').replace(/\s/g, '☓')}-${pitchPattern.join('')}`;
 
     /**
      * Draws a pitch diagram based on the inputed text and pitch pattern.

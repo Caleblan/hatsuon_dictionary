@@ -207,6 +207,28 @@ export async function getServerSideProps({query} : {query:any}) {
     .limit(pageEntries)
     .toArray();
 
+
+    // db.collection('PitchAccents').aggregate([
+    //   { 
+    //      $match: {
+    //         kana : {$in: definitions.},
+    //      }
+    //  }
+    // ]);
+
+    // let test: any[] = await db
+    // .collection("PitchAccents")
+    // .createIndex(
+    //   { word : "text", kana: "text" },
+    //   { default_language: "japanese" }
+    // )
+
+  //   db.collection("PitchAccents").createIndex(
+  //     { word : "text", kana: "text" },
+  //     { default_language: "japanese" }
+  //  )
+
+
     definitions = JSON.parse(JSON.stringify(definitions));
 
     return {
