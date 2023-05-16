@@ -209,7 +209,7 @@ export async function getServerSideProps({query} : {query:any}) {
     ];
 
     // We will search the JMdict where we can get definitions.
-    let definitions: {count:any[], results: any[]}[] = await db
+    let definitions: any[] = await db
     .collection(collection)
     .aggregate(pipeline)
     .toArray();
