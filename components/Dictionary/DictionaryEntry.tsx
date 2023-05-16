@@ -136,13 +136,13 @@ interface entryInfo {
 
 export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {entryInfo:entryInfo /*, diagrams:any[]*/, language:string}): JSX.Element {
     
-    const {kanji, kana, accents} = entryInfo;
+    const {kanji, kana, accents}: {kanji: any[],kana: any[], accents: any[]} = entryInfo;
 
     const definitions: any[] | undefined = entryInfo.sense;
     const translation: any[] | undefined = entryInfo.translation;
 
 
-
+    console.log(accents[0])
 
     //Need to include JMedict definitions 
 
@@ -244,21 +244,24 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 <span className="font-semibold">Pitch Accents</span>
 
                 <div className="flex flex-col items-center ">
-                    <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/>
-
-                    {/* {
-                        accents[0].accents.map( (pattern:number) => {
-                            return <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
-                            pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
-                            color={"black"} height={150} width={300}/>
+                    {/* <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/> */}
+                    {/* { accents ? accents[0].accents.generic.toString() : null} */}
+                    {
+                        accents ? accents[0].accents.generic.map( (pattern:number) => {
+                            return (
+                            <>
+                                <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
+                                pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
+                                color={"black"} height={150} width={300}/>
+                                <div className="w-full text-end pl-2">
+                                    <span className="font-bold mr-2">{determinePitchPattern(toMora(accents[0].kana).length, pattern)[0]}</span>
+                                    <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(accents[0].kana).length, pattern)[1])}</span>
+                                </div>
+                            </>
+                            )
                         })
-                    }; */}
-
-
-                    <div className="w-full text-end pl-2">
-                        <span className="font-bold mr-2">{determinePitchPattern(toMora(kana[0].text).length, 2)[0]}</span>
-                        <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(kana[0].text).length, 2)[1])}</span>
-                    </div>
+                        : null
+                    }
                 </div>
             </div>
         </div>

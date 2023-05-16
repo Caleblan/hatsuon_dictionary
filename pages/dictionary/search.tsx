@@ -1,25 +1,19 @@
 
-// MUI/ React.js
-import {useState, useEffect} from "react"
-import IconButton from "@mui/material/IconButton";
-import TextField from '@mui/material/TextField';
 // Library Functions
 import clientPromise from "../../lib/mongodb";
 // Next.js
-import Link from 'next/link'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
+import Head from 'next/head';
+import Image from 'next/image';
+// Mongo
+import mongoose from 'mongoose';
 // Third-party
-import cookie from "cookie"
 import * as wanakana from 'wanakana';
 // Custom Components
 import DictionaryEntry from '../../components/Dictionary/DictionaryEntry';
-import SearchBar from "../../components/Dictionary/SearchBar";
 import DictionaryFooter from '../../components/Dictionary/DictionaryFooter';
-
+import SearchBar from "../../components/Dictionary/SearchBar";
 // Images
-import MissingPageImage from "../../Images/404Image.svg"
+import MissingPageImage from "../../Images/404Image.svg";
 
 
 interface props {
@@ -138,8 +132,8 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
  */
 export async function getServerSideProps({query} : {query:any}) {
 
-  try 
-  {
+  // try 
+  // {
     //Connect to the database 
     const {client, db} = await clientPromise();
   
@@ -153,7 +147,7 @@ export async function getServerSideProps({query} : {query:any}) {
     let romajiToKana: string[] = [];
     let japanese: string[] = [];
 
-    console.log(tokens)
+    // console.log(tokens)
 
     for(let i: number = 0; i < tokens.length; i++)
     {
@@ -168,44 +162,66 @@ export async function getServerSideProps({query} : {query:any}) {
 
 
 
-    console.log(romajiToKana)
+    // console.log(romajiToKana)
 
 
-    let list: any[] = romajiToKana.map( (token:string) => {return {kana: {$elemMatch: {text: {$regex:`.*${token}.*`}}}}});
+    let list: any[] = romajiToKana.map( (token:string) => {return {$in: [/^.*${token}.*/, "$kana.text"]}});
 
-    console.log(list)
+    // console.log(list)
+
+    // $in: ["$kana", "$$kana.text"]
 
     // Breakdown all query attributes
     const {page} : {page:number} = query;
-    // Take user query and create query to give to database.
-    const databaseQuery: any = {$or: [{"kanji.text": query.query},{"kana.text": query.query}]};
-    
-    const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
+    // const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
 
-    // // Search the database for either the kanji or kana of the word.
-    // let accents = await db
-    // .collection("PitchAccents")
-    // .find(databaseQuery)
+
+    const databaseQueryDictionary: any = {$or: [{$in: [query.query, "$kanji.text"]},{$in: [/^.*${query.query}.*/, "$kana.text"]}, ...list]};
+    // Aggregation pipeline.
+    const pipeline: any[] = [
+      {$match: {$expr: databaseQueryDictionary}},
+      {$facet: 
+        {
+          "count": [{$count: 'value'}],
+          "results" :
+          [
+            {$skip: (page-1) * pageEntries},
+            {$limit: pageEntries},
+            {$lookup: {
+              from: "PitchAccents",
+              let: {
+                // kanji: "$kanji",
+                kana: "$kana",
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $in: ["$kana", "$$kana.text"],
+                    },
+                  },
+                },
+              ],
+              as: "accents",
+            }}
+          ]}
+        }
+    ];
+
+    // We will search the JMdict where we can get definitions.
+    let definitions: {count:any[], results: any[]}[] = await db
+    .collection(collection)
+    .aggregate(pipeline)
+    .toArray();
+
+
+    console.log(definitions);
+
+
+    // .find(databaseQueryDictionary)
     // .skip((page-1) * pageEntries)
     // .limit(pageEntries)
     // .toArray();
-
-
-    // wanakana.toHiragana()
-
-    //Get the number of results so we know how many page number buttons we need.
-    const resultCount: number = await db
-    .collection(collection)
-    .countDocuments(databaseQueryDictionary);
-
-
-    // We will search the JMdict where we can get definitions.
-    let definitions: any[] = await db
-    .collection(collection)
-    .find(databaseQueryDictionary)
-    .skip((page-1) * pageEntries)
-    .limit(pageEntries)
-    .toArray();
 
 
     // db.collection('PitchAccents').aggregate([
@@ -232,15 +248,15 @@ export async function getServerSideProps({query} : {query:any}) {
     definitions = JSON.parse(JSON.stringify(definitions));
 
     return {
-      props: {entries: definitions, entriesCount: resultCount, page, query:query.query},
+      props: {entries: definitions[0].results, entriesCount: definitions[0].count /*resultCount*/, page, query:query.query},
     };
 
     
-  }
-  catch(error: unknown)
-  {
-    throw new Error("Connection to database failed.");
-  }
+  // }
+  // catch(error: unknown)
+  // {
+  //   // throw new Error("Connection to database failed.");
+  // }
 
 }
 
