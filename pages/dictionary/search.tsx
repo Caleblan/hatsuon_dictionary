@@ -180,7 +180,7 @@ export async function getServerSideProps({query} : {query:any}) {
     // Take user query and create query to give to database.
     const databaseQuery: any = {$or: [{"kanji.text": query.query},{"kana.text": query.query}]};
     
-    const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: query.query}}}, ...list]};
+    const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
 
     // // Search the database for either the kanji or kana of the word.
     // let accents = await db
