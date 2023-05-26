@@ -61,7 +61,7 @@ export default function Diagram({kanji, kana, accents, partOfSpeech} :props) {
 
                         accents.map( (pattern:number) => {
                             return (
-                                <Button className="object-contain" variant="outlined"
+                                <Button key={kana+pattern} className="object-contain" variant="outlined"
                                 onClick={(event) => changeSelectedPattern(Number(pattern))}>{pattern}</Button>
 
                                 // <ToggleButton value={pattern}>

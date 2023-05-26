@@ -267,7 +267,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
                     {
                         accents.length > 0 ? Object.entries(accents[0].accents).map( (value: any[]) => {
-                            return <Diagram kanji={accents[0].word} kana={accents[0].kana} accents={value[1]} partOfSpeech={value[0]}/>  
+                            return <Diagram key={`${accents[0].word}`} kanji={accents[0].word} kana={accents[0].kana} accents={value[1]} partOfSpeech={value[0]}/>  
                         }): "No pitch accent data found"
                     }
 
