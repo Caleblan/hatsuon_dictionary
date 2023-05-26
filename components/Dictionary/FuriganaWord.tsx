@@ -15,9 +15,9 @@ export default function FuriganaWord({ word, reading, furi, showFuri, className}
 
 
     // If is a valid input, then we add furigana
-    let furigana: any = word ? fit(word, reading, { type: 'object' }) : fit(reading, reading, { type: 'object' })
+    // let furigana: any = word ? fit(word, reading, { type: 'object' }) : fit(reading, reading, { type: 'object' })
 
-    console.log(furigana)
+    // console.log(furigana)
 
     // const pairs: any = useFuriPairs(word, reading, furi);
 

@@ -1,5 +1,6 @@
 // React/MUI
-import React from "react";
+import React, {useState} from "react";
+import Button from '@mui/material/Button';
 // Next.js
 import Image from 'next/image';
 import Router from 'next/router';
@@ -11,6 +12,7 @@ var codec = require('kamiya-codec');
 // Custom components
 import DotDiagram from '../PitchDiagrams/DotDiagram';
 import FuriganaWord from './FuriganaWord';
+import Diagram from "./Diagram";
 // Library functions
 import {toMora, determinePitchPattern, convertPitchNumber} from '../../lib/pitchUtilities';
 
@@ -141,14 +143,10 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     const definitions: any[] | undefined = entryInfo.sense;
     const translation: any[] | undefined = entryInfo.translation;
 
-
-    console.log(accents[0])
-
     //Need to include JMedict definitions 
 
     // Stores JSX.ELements of word and dictionary definitions
     const definitionElements: JSX.Element[] = [];
-    // const
 
     //Assumes that 
     if(definitions != undefined)
@@ -181,7 +179,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             }
         }
 
-        console.log("Here", definitionElements)
+        // console.log("Here", definitionElements)
         // definitions.forEach(element => {
         //     console.log("here", element)
         // });
@@ -244,24 +242,35 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 <span className="font-semibold">Pitch Accents</span>
 
                 <div className="flex flex-col items-center ">
-                    {/* <DotDiagram mora={toMora(kana[0].text)} pitchPattern={[2,1,1,1,2]} color={"black"} height={150} width={300}/> */}
-                    {/* { accents ? accents[0].accents.generic.toString() : null} */}
+                    {/* {
+                        accents.length > 0 ? accents.map( (accent: any) => {
+                            return accent.accents.generic.map( (pattern:number) => {
+                                return (
+                                <>
+                                    <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
+                                    pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
+                                    color={"black"} height={150} width={300}/>
+                                    <div className="w-full flex justify-around text-end pl-2">
+                                        Generic   
+                                        <span>
+                                            <span className="font-bold mr-2">{determinePitchPattern(toMora(accents[0].kana).length, pattern)[0]}</span>
+                                            <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(accents[0].kana).length, pattern)[1])}</span>
+                                        </span>
+                                    </div>
+                                </>
+                                )
+                            })
+                        }): null
+                    } */}
+
+
+
                     {
-                        accents ? accents[0].accents.generic.map( (pattern:number) => {
-                            return (
-                            <>
-                                <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
-                                pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
-                                color={"black"} height={150} width={300}/>
-                                <div className="w-full text-end pl-2">
-                                    <span className="font-bold mr-2">{determinePitchPattern(toMora(accents[0].kana).length, pattern)[0]}</span>
-                                    <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(accents[0].kana).length, pattern)[1])}</span>
-                                </div>
-                            </>
-                            )
-                        })
-                        : null
+                        accents.length > 0 ? Object.entries(accents[0].accents).map( (value: any[]) => {
+                            return <Diagram kanji={accents[0].word} kana={accents[0].kana} accents={value[1]} partOfSpeech={value[0]}/>  
+                        }): "No pitch accent data found"
                     }
+
                 </div>
             </div>
         </div>

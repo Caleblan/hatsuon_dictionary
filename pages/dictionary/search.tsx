@@ -70,7 +70,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
               //  <span>Nothing is found</span>
               <>
                 <div className="w-full h-full text-center font-semibold text-2xl">
-                    Oops! It seems we weren&apos;t able to find what you were looking for.
+                    {"Oops! It seems we weren't able to find what you were looking for"}.
                     <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
                 </div>
               </>
@@ -123,6 +123,12 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
   )
 }
 
+async function queryDatabase({query} : {query:any}) {
+
+  
+
+}
+
 {/* <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null */}
 
 /**
@@ -155,19 +161,53 @@ export async function getServerSideProps({query} : {query:any}) {
       {
         case "en":romajiToKana.push(wanakana.toHiragana(tokens[i].value), wanakana.toKatakana(tokens[i].value));
                   break;
-        case "jp":japanese.push(tokens[i].value)
+        case "ja":japanese.push(tokens[i].value)
                   break;
       }
     }
 
 
 
-    // console.log(romajiToKana)
+    console.log(romajiToKana)
 
 
-    let list: any[] = romajiToKana.map( (token:string) => {return {$in: [/^.*${token}.*/, "$kana.text"]}});
+    // let list: any[] = romajiToKana.map( (token:string) => {return {$in: [ new RegExp(token), "$kana.text"]}});
+    let list: any[] = romajiToKana.map( (token:string) => {
+      return {$in: [true,
+      {
+        $map: {
+          input: "$kana",
+          as: "kanaElement",
+          in: {
+            $regexMatch: {
+              input: "$$kanaElement.text",
+              regex: `${token}`
+            }
+          }
+        }
+      }
+    ]}});
 
-    // console.log(list)
+    let japaneseList: any[] = japanese.map( (token:string) => {
+      return {$in: [true,
+      {
+        $map: {
+          input: "$kanji",
+          as: "kanjiElement",
+          in: {
+            $regexMatch: {
+              input: "$$kanjiElement.text",
+              regex: `${token}`
+            }
+          }
+        }
+      }
+    ]}});
+
+    // let japaneseObject: any[] = japanese.map( (token:string) => {return {"kana": {"text": {regex: `.*${token}.*`}}}});
+
+    console.log(list)
+    // console.log(japaneseObject)
 
     // $in: ["$kana", "$$kana.text"]
 
@@ -175,35 +215,53 @@ export async function getServerSideProps({query} : {query:any}) {
     const {page} : {page:number} = query;
     // const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
 
+    // {$in: [`/^.*${query.query}.*/`, "$kana.text"]}
 
-    const databaseQueryDictionary: any = {$or: [{$in: [query.query, "$kanji.text"]},{$in: [/^.*${query.query}.*/, "$kana.text"]}, ...list]};
+    const databaseQueryDictionary: any = {$or: [{$in: [query.query, "$kanji.text"]}, ...list, ...japaneseList]};
     // Aggregation pipeline.
     const pipeline: any[] = [
       {$match: {$expr: databaseQueryDictionary}},
       {$facet: 
         {
-          "count": [{$count: 'value'}],
+          "count": [{$count: 'count'}],
           "results" :
           [
             {$skip: (page-1) * pageEntries},
             {$limit: pageEntries},
-            {$lookup: {
-              from: "PitchAccents",
-              let: {
-                // kanji: "$kanji",
-                kana: "$kana",
-              },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: {
-                      $in: ["$kana", "$$kana.text"],
-                    },
+            {
+              $lookup: {
+                from: "PitchAccents",
+                let: {
+                  kanji: {
+                    $map: {
+                      input: { $ifNull: ["$kanji", []] },
+                      as: "w",
+                      in: "$$w.text"
+                    }
                   },
+                  kana: {
+                    $map: {
+                      input: { $ifNull: ["$kana", []] },
+                      as: "k",
+                      in: "$$k.text"
+                    }
+                  }
                 },
-              ],
-              as: "accents",
-            }}
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $in: ["$word", "$$kanji"] },
+                          { $in: ["$kana", "$$kana"] }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                as: "accents"
+              }
+            }
           ]}
         }
     ];
@@ -213,42 +271,24 @@ export async function getServerSideProps({query} : {query:any}) {
     .collection(collection)
     .aggregate(pipeline)
     .toArray();
-
-
-    console.log(definitions);
-
-
-    // .find(databaseQueryDictionary)
-    // .skip((page-1) * pageEntries)
-    // .limit(pageEntries)
-    // .toArray();
-
-
-    // db.collection('PitchAccents').aggregate([
-    //   { 
-    //      $match: {
-    //         kana : {$in: definitions.},
-    //      }
-    //  }
-    // ]);
-
-    // let test: any[] = await db
-    // .collection("PitchAccents")
-    // .createIndex(
-    //   { word : "text", kana: "text" },
-    //   { default_language: "japanese" }
-    // )
-
-  //   db.collection("PitchAccents").createIndex(
-  //     { word : "text", kana: "text" },
-  //     { default_language: "japanese" }
-  //  )
-
+    console.log(tokens)
 
     definitions = JSON.parse(JSON.stringify(definitions));
 
+    console.log(definitions[0].results)
+
+    // console.log(definitions[0].count[0]);
+
+    // console.log(definitions[0].results[0].accents, definitions[0].results[1].accents)
+
+    // console.log(definitions[0]["count"], definitions[0]["count"][0]["count"])
+
     return {
-      props: {entries: definitions[0].results, entriesCount: definitions[0].count /*resultCount*/, page, query:query.query},
+      props: {
+        entries: definitions[0].results, 
+        entriesCount: definitions[0]["count"].length > 0 && definitions[0]["count"][0]["count"] ? definitions[0].count[0].count : 0, 
+        page, 
+        query:query.query},
     };
 
     

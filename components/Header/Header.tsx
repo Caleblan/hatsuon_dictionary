@@ -12,7 +12,8 @@ import links from "../../links.json"
 const styling: any[string] = {
     "header": "w-full p-4",
     "nav": "w-full flex items-center",
-    "websiteIcon": "w-1/2 flex text-3xl",
+    "iconContainer": "w-1/2",
+    "websiteIcon": "w-fit flex text-3xl",
     "headerPageLinks": "w-1/2 flex justify-end gap-x-6 space-around",
     "headerLink": "hidden md:inline",
     "menuButton": "inline md:hidden px-4"
@@ -28,8 +29,10 @@ export default function Header() {
             <nav className={styling.nav}>
                 
                 {/* Website Icon */}
-                <Link className={styling.websiteIcon} href={links.internalLinks.home}>Hatsuon</Link>
-                
+                <span className={styling.iconContainer}>
+                    <Link className={styling.websiteIcon} href={links.internalLinks.home}>Hatsuon</Link>
+                </span>
+
                 {/* Header Page Links */}
                 <div className={styling.headerPageLinks}>
 
