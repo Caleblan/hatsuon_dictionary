@@ -35,53 +35,41 @@ export default function Diagram({kanji, kana, accents, partOfSpeech} :props) {
     }, [selectedPattern])
 
     return (
-        <>
+        <div>
+            {partOfSpeech.charAt(0).toUpperCase() + partOfSpeech.slice(1)}:
             <DotDiagram key={`${kanji}-${kana}`} mora={mora} 
             pitchPattern={convertPitchNumber(selectedPattern, mora.length)} 
             color={"black"} height={150} width={300}/>
-            <div className="w-full flex justify-around text-end pl-2">
-                {partOfSpeech}
+            <div className="w-full flex items-center justify-around text-end">
                 
                 <Stack className="flex flex-row">
-                    
-                {/* <ToggleButtonGroup
-                    // orientation="vertical"
-                    value={selectedPattern}
-                    exclusive
-                    onChange={(event) => changeSelectedPattern(event.target.value)}
-                > */}
-                    
-                    {
-
-                        
-
-
-
-
-
-                        accents.map( (pattern:number) => {
-                            return (
-                                <Button key={kana+pattern} className="object-contain" variant="outlined"
-                                onClick={(event) => changeSelectedPattern(Number(pattern))}>{pattern}</Button>
-
-                                // <ToggleButton value={pattern}>
-                                //     {pattern}
-                                // </ToggleButton>
-
-
-                            )
-                        })
-                    }
-                    {/* </ToggleButtonGroup> */}
+                    <ToggleButtonGroup
+                        className="h-fit"
+                        // orientation="vertical"
+                        value={selectedPattern}
+                        exclusive
+                        onChange={(event:any) => changeSelectedPattern(Number(event.target.value))}
+                    >
+                        {
+                            accents.map( (pattern:number) => {
+                                return (
+                                    <ToggleButton className="h-fit"
+                                    key={kana+pattern} value={pattern}>
+                                        {pattern}
+                                    </ToggleButton>
+                                )
+                            })
+                        }
+                    </ToggleButtonGroup>
                 </Stack>
                   
-                <span>
+                <span className="">
                     <span className="font-bold mr-2">{patternType[0]}</span>
                     <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(patternType[1])}</span>
                 </span>
             </div>
 
-        </>
+        </div>
     )
     
 }

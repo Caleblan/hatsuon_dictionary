@@ -1,5 +1,5 @@
 // React/MUI
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Button from '@mui/material/Button';
 // Next.js
 import Image from 'next/image';
@@ -130,7 +130,7 @@ var codec = require('kamiya-codec');
 interface entryInfo {
   kanji: any[],
   kana: any[],
-  sense?: any[],
+  sense: any[],
   translation?: any[],
   accents: any[]
 }
@@ -141,64 +141,35 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     const {kanji, kana, accents}: {kanji: any[],kana: any[], accents: any[]} = entryInfo;
 
     const definitions: any[] | undefined = entryInfo.sense;
-    const translation: any[] | undefined = entryInfo.translation;
+    // const translation: any[] | undefined = entryInfo.translation;
 
-    //Need to include JMedict definitions 
-
+    // Used to keep track of the main furigana reading (Also used to exclude reading in other readings section.)
+    const selectedReading = selectReading(kanji, kana);
+    // Keeps the list of other reading elements to be displayed
+    const alternateForms: JSX.Element[] = generateAlternateForms(kanji, kana, selectedReading);
     // Stores JSX.ELements of word and dictionary definitions
-    const definitionElements: JSX.Element[] = [];
+    const definitionElements: JSX.Element[] = createDefinitions(definitions);
 
-    //Assumes that 
-    if(definitions != undefined)
-    {
-        for(let i = 0; i < definitions.length; i++)
-        {
-            for(let j = 0; j < definitions[i].gloss.length; j++){
-
-                if(definitions[i].gloss[j].lang == "eng"){
-                    
-                    console.log("What up", definitions[i].partOfSpeech)
-
-
-                    // fit(definitions[i].gloss[j].text, 'にのまえしゃちょうとつなしせんせい')
-                    
-                    definitionElements.push(
-                        <div className="flex flex-col">
-
-                            <span className="w-full text-sm text-slate-500 font-serif">
-                                {definitions[i].partOfSpeech.map( (value:string) => partOfSpeechTags[value]).toString()}
-                            </span>
-
-                            {/* <p>{definitions[i].partOfSpeech}</p> */}
-                            <span className="w-full text-lg">
-                                {`${(i+1) * (j+1)}. `}{definitions[i].gloss[j].text}
-                            </span>
-                        </div>
-                    )
-                }
-            }
-        }
 
         // console.log("Here", definitionElements)
         // definitions.forEach(element => {
         //     console.log("here", element)
         // });
-    }
-    else if (translation != undefined)
-    {
-        for(let i = 0; i < translation.length; i++)
-        {
-            for(let j = 0; j < translation[i].translation.length; j++){
+    // else if (translation != undefined)
+    // {
+    //     for(let i = 0; i < translation.length; i++)
+    //     {
+    //         for(let j = 0; j < translation[i].translation.length; j++){
 
-                if(translation[i].translation[j].lang == "eng"){
-                    definitionElements.push(
-                        // <p>{translation[i].translation[j].type}</p>
-                        <p>{`${(i+1) * (j+1)}. `}{translation[i].translation[j].text}</p>
-                    )
-                }
-            }
-        }
-    }
+    //             if(translation[i].translation[j].lang == "eng"){
+    //                 definitionElements.push(
+    //                     // <p>{translation[i].translation[j].type}</p>
+    //                     <p>{`${(i+1) * (j+1)}. `}{translation[i].translation[j].text}</p>
+    //                 )
+    //             }
+    //         }
+    //     }
+    // }
 
         // Used to determine if it is a katakana string
     // let newString = originalString.replace(new RegExp("する", "g"), "");
@@ -217,114 +188,217 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
     // const verbToKana: string = wanakana.toHiragana(masuVerb)
 
+    function createDefinitions(sense:any, language:string = "eng"): JSX.Element[] {
+
+        let definitionCount: number = 1;
+        
+        // Go through each sense item
+        return sense.reduce( (accumulator:JSX.Element[], senseElement:any) => {
+
+            const glossElements: any[] = senseElement.gloss;
+
+            let definition: string = ""
+            
+            // Go through all definitions and combine if they are of the current language.
+            for(let i = 0; i < glossElements.length; i++)
+            {
+                // Only accept entries of the specified language.
+                if(glossElements[i].lang === language){
+                    definition += `${glossElements[i].text}${i < glossElements.length-1 ? "; ": ""}`;
+                }             
+            }
+
+            if(definition)
+            {
+                accumulator.push(
+                    <div className="flex flex-col">
+                        <span className="w-full text-sm text-slate-500 font-serif">
+                            {senseElement.partOfSpeech.map( (value:string) => partOfSpeechTags[value]).toString()}
+                        </span>
+
+                        {/* <p>{definitions[i].partOfSpeech}</p> */}
+                        <span className="w-full text-lg">
+                            {`${definitionCount++}. `}{definition}
+                        </span>
+                    </div>
+                )
+            }
+            
+            return accumulator;
+        }, []);
+    }
+
+
+
+    /**
+     * Selects the most common readings of current entry.
+     * @param {any[]} kanji Array of objects which contain all the kanji related to entry.
+     * @param {any[]} kana Array of objects which contain all the kana related to entry.
+     * @returns {string[]} A string array of length 2 [kanjiText, kanaText]. Note that
+     * the first element of the list will be an empty string if not kanji are found.
+     */
+    function selectReading(kanji:any[], kana:any[]): string[] {
+
+        const reading: string[] = [];
+
+        // If a kanji exists for the entry, we use it and find reading.
+        if(kanji.length > 0)
+        {
+            reading.push(kanji[0].text);  
+
+            for(let i = 0 ; i < kana.length; i++)
+            {
+                // Apply kana reading to kanji if it applies to all. 
+                // (Note dataset already ordered by frequency by placement in the array).
+                if(kana[i].appliesToKanji[0] === "*" || kana[i].appliesToKanji.includes(reading[0]))
+                {
+                    reading.push(kana[i].text); 
+                    break;
+                }
+            }
+        }
+        // No kanji found so just use kana.
+        else
+        {
+            reading.push("", kana[0].text);
+        }
+
+        return reading;
+    }
+
+
+
+    /**
+     * Creates all the possible alternate word forms.
+     * @param {any} kanji All kanji for the dictionary entry
+     * @param {any} kana All kana for the dictionary entry
+     * @param {string[]} selectedReading The reading of the word (Index 0 is Kanji, Index 1 is Kana).
+     * @returns A list of JSX Elements of all the alternate readings
+     */
+    function generateAlternateForms(kanji:any[], kana:any[], selectedReading:string[]): JSX.Element[] {
+
+            // Go through each of the kana elements
+            return kana.reduce( (completeList:JSX.Element[], kanaElement:any) => {
+
+                // If there is elements the list but no elements state what reading applies to.
+                if(kanaElement.appliesToKanji && kanaElement.appliesToKanji.length === 0 && selectedReading[1] !== kanaElement.text)
+                {
+                    completeList.push(
+                        <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                            {kanaElement.text}
+                        </div>
+                    )
+                }
+                // If reading applies to all kanji.
+                else if(kanaElement.appliesToKanji[0] === "*")
+                {
+                    completeList.push(...
+                        kanji.reduce( (accumulator:JSX.Element[], kanjiElement:any) => {
+                            
+                            // If the current reading is already already used as main reading, don't include.
+                            if(kanjiElement.text === selectedReading[0] && kanaElement.text === selectedReading[1])
+                            {
+                                return accumulator;
+                            }
+
+                            accumulator.push(
+                                <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                                    {`${kanjiElement.text} (${kanaElement.text})`}
+                                </div>
+                            )
+
+                            return accumulator;
+                        }, [])
+                    )
+                }
+                // Produce an element for each specified reading 
+                else
+                {
+                    completeList.push(...
+                        kanaElement.appliesToKanji.reduce( (accumulator:JSX.Element[], appliedKanji:string) => {
+                            
+                            // If the current reading is already already used as main reading, don't include.
+                            if(appliedKanji === selectedReading[0] && kanaElement.text === selectedReading[1])
+                            {
+                                return accumulator;
+                            }
+                            
+                            accumulator.push(
+                                <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                                    {`${appliedKanji} (${kanaElement.text})`}
+                                </div>
+                            )
+
+                            return accumulator;
+
+                        }, [])
+                    )
+                }
+
+                return completeList;
+
+            }, [])
+        }
     
     return (
-        <div className="w-full flex flex-col gap-y-4 md:gap-x-6 md:flex-row border-b border-gray-400 pb-4 px-4">
+        <div className="w-full flex flex-col gap-y-4 border-b border-gray-400 pb-4 px-4">
                 
-            <div className="w-full flex flex-col">
-                
-                {/* Word and readings */}
-                <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-3">
-                    {/* {createWordElement(kanji, kana)} */}
-                    <FuriganaWord className="font-bold text-3xl" word={kanji.length > 0 ? kanji[0].text : null} reading={kana[0].text}
-                    showFuri={true}/>
-                    <span className="h-full flex items-end text-sm text-slate-500 font-serif">{wanakana.toRomaji(kana[0].text)}</span>
+            <div className="w-full flex flex-col md:gap-x-6 md:flex-row">
+
+                <div className="w-full flex flex-col">
+                    
+                    {/* Word and readings */}
+                    <div className="w-fit flex gap-x-4 gap-y-1 flex-col md:flex-row mb-3">
+                        {/* {createWordElement(kanji, kana)} */}
+                        <FuriganaWord className="font-bold text-3xl" word={selectedReading[0]} reading={selectedReading[1]} 
+                        showFuri={true}/>
+                        <span className="h-full flex items-end text-sm text-slate-500 font-serif">{wanakana.toRomaji(selectedReading[1])}</span>
+                    </div>
+
+                    {/* Definitions */}
+                    <div className="flex flex-col w-3/4 gap-y-4 pl-2">
+                        {definitionElements}
+                    </div>
                 </div>
 
-                {/* Definitions */}
-                <div className="flex flex-col w-3/4 gap-y-4 pl-2">
-                    {definitionElements}
-                </div>
-            </div>
-
-            {/* Pitch Accents */}
-            <div className="w-full flex flex-col pl-2 pt-2">
-                <span className="font-semibold">Pitch Accents</span>
-
-                <div className="flex flex-col items-center ">
-                    {/* {
-                        accents.length > 0 ? accents.map( (accent: any) => {
-                            return accent.accents.generic.map( (pattern:number) => {
-                                return (
-                                <>
-                                    <DotDiagram key={accents[0].kana} mora={toMora(accents[0].kana)} 
-                                    pitchPattern={convertPitchNumber(Number(pattern), toMora(accents[0].kana).length)} 
-                                    color={"black"} height={150} width={300}/>
-                                    <div className="w-full flex justify-around text-end pl-2">
-                                        Generic   
-                                        <span>
-                                            <span className="font-bold mr-2">{determinePitchPattern(toMora(accents[0].kana).length, pattern)[0]}</span>
-                                            <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(determinePitchPattern(toMora(accents[0].kana).length, pattern)[1])}</span>
-                                        </span>
-                                    </div>
-                                </>
-                                )
-                            })
-                        }): null
-                    } */}
-
-
-
-                    {
-                        accents.length > 0 ? Object.entries(accents[0].accents).map( (value: any[]) => {
-                            return <Diagram key={`${accents[0].word}`} kanji={accents[0].word} kana={accents[0].kana} accents={value[1]} partOfSpeech={value[0]}/>  
-                        }): "No pitch accent data found"
+                {/* Pitch Accents */}
+                
+                <div className="w-full flex flex-col pl-2 pt-2">
+                    { accents.length > 0 ?
+                    <>
+                        <span className="font-semibold">Pitch Accents</span>
+                        <div className="flex flex-col items-center ">
+                            {// Go through each pitch diagram accent match 
+                                accents.map( (element:any) => {
+                                    // For individual pitch diagram
+                                    return Object.entries(element.accents).map( (value: any[]) => {
+                                        return <Diagram key={`${element.word}-${element.kana}`} kanji={element.word} kana={element.kana} accents={value[1]} partOfSpeech={value[0]}/>  
+                                    })
+                                })
+                            }
+                        </div> 
+                    </>
+                    : null
                     }
-
+                    <div className="flex flex-col gap-y-4">
+                        {/* {accents.map( (element) => accents.length ? <div>{JSON.stringify(element)}</div>:null) } */}
+                    </div>
                 </div>
+
             </div>
+
+            {/* Other Readings */}
+            { alternateForms.length > 0 ?
+                <span>
+                    <span className="font-semibold">Other Readings</span>
+                    <div className="flex flex-wrap gap-y-2 gap-x-2 pt-1">
+                        {alternateForms}
+                    </div>
+                </span> : null
+            }
+
         </div>
+
+
     )
 }
-
-/**
- * Creates a JSX Element which displays hirigana word or kanji with furigana 
- * @param kanji Array of all kanji related to a specific entry
- * @param kana Array of all kana related to a specific entry
- * @returns 
- */
-function createWordElement(kanji: any[], kana: any[]): JSX.Element {
-    
-    let commonReading: string;
-
-    //If there is no kanji, make kana the larger element
-    if(kanji.length == 0)
-    {
-        commonReading = kana[0].text;
-
-        for(let i = 0; i < kana.length; i++)
-        {
-            if(kana[i].common == true)
-            {
-                commonReading = kana[i].text;
-                break;
-            }
-        }
-
-        return (<span className="text-2xl ">{commonReading}</span>)
-    }
-    else 
-    {
-        let commonKanji: string = kanji[0].text;
-        commonReading = kana[0].text;
-        
-
-        for(let i = 0; i < kana.length; i++)
-        {
-            if(kana[i].common == true)
-            {
-                commonReading = kana[i].text;
-                break;
-            }
-        }
-
-        return (
-            <>
-                <span className="text-sm ">{commonReading}</span>
-                <span className="text-2xl ">{commonKanji}</span>
-            </>
-        )
-    }
-}
-
-{/* {diagrams.map((compactDiagram:any) => compactDiagram)} */}

@@ -8,6 +8,7 @@ import Image from 'next/image';
 import mongoose from 'mongoose';
 // Third-party
 import * as wanakana from 'wanakana';
+import { v4 as uuidv4 } from 'uuid';
 // Custom Components
 import DictionaryEntry from '../../components/Dictionary/DictionaryEntry';
 import DictionaryFooter from '../../components/Dictionary/DictionaryFooter';
@@ -83,7 +84,7 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
                 // Create entry for each dictionary result returned from database.
                 entries.map((entry:any) => 
                 (
-                  <DictionaryEntry key={key++} entryInfo={entry} language="eng"
+                  <DictionaryEntry key={uuidv4()} entryInfo={entry} language="eng"
                     // diagrams={}
                     
                     
