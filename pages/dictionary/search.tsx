@@ -252,10 +252,22 @@ export async function getServerSideProps({query} : {query:any}) {
                   {
                     $match: {
                       $expr: {
-                        $and: [
-                          { $in: ["$word", "$$kanji"] },
-                          { $in: ["$kana", "$$kana"] }
+                        $or: [
+                          {
+                            $and: [
+                              { $in: ["$word", "$$kanji"] },
+                              { $in: ["$kana", "$$kana"] }
+                              // TODO add check to make sure kana applies kanji
+                            ]
+                          },
+                          {
+                            $and: [
+                              {$eq: ["$kana", ""]},
+                              { $in: ["$word", "$$kana"] }
+                            ]
+                          }
                         ]
+                      
                       }
                     }
                   }

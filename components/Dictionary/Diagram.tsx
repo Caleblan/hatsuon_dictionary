@@ -16,18 +16,18 @@ import * as wanakana from 'wanakana';
 interface props {
     kanji: string,
     kana: string,
+    key: string,
     accents: number[],
     partOfSpeech: string
 };
 
-export default function Diagram({kanji, kana, accents, partOfSpeech} :props) {
+export default function Diagram({kanji, kana, accents, partOfSpeech, key} :props) {
 
-    const mora: string[] = toMora(kana);
+    const mora: string[] = toMora(kana === "" ? kanji : kana);
 
-    
-
+    // Current pattern that is selected.
     const [selectedPattern, changeSelectedPattern] = useState<number>(Number(accents[0]));
-    
+    // Stores the name of the current pattern type (i.e. heiban, etc.)
     const [patternType, changePatternType] = useState<string[]>(determinePitchPattern(mora.length, selectedPattern));
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function Diagram({kanji, kana, accents, partOfSpeech} :props) {
     return (
         <div>
             {partOfSpeech.charAt(0).toUpperCase() + partOfSpeech.slice(1)}:
-            <DotDiagram key={`${kanji}-${kana}`} mora={mora} 
+            <DotDiagram key={key} mora={mora} 
             pitchPattern={convertPitchNumber(selectedPattern, mora.length)} 
             color={"black"} height={150} width={300}/>
             <div className="w-full flex items-center justify-around text-end">

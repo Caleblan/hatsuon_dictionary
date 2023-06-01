@@ -9,6 +9,7 @@ import Link from 'next/link';
 import * as wanakana from 'wanakana';
 const { fit } = require('furigana');
 var codec = require('kamiya-codec');
+import { v4 as uuidv4 } from 'uuid';
 // Custom components
 import DotDiagram from '../PitchDiagrams/DotDiagram';
 import FuriganaWord from './FuriganaWord';
@@ -188,6 +189,12 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
     // const verbToKana: string = wanakana.toHiragana(masuVerb)
 
+    /**
+     * 
+     * @param {any} sense 
+     * @param {any} language 
+     * @returns {JSX.Element[]} List of JSX Definition Elements to be rendered.
+     */
     function createDefinitions(sense:any, language:string = "eng"): JSX.Element[] {
 
         let definitionCount: number = 1;
@@ -266,8 +273,6 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
         return reading;
     }
 
-
-
     /**
      * Creates all the possible alternate word forms.
      * @param {any} kanji All kanji for the dictionary entry
@@ -292,6 +297,16 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 // If reading applies to all kanji.
                 else if(kanaElement.appliesToKanji[0] === "*")
                 {
+                    // If there is no kanji to apply, then put reading on its own
+                    if(kanji.length === 0 && kanaElement.text !== selectedReading[1])
+                    {
+                        completeList.push(
+                            <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                                {`${kanaElement.text}`}
+                            </div>
+                        )
+                    }
+
                     completeList.push(...
                         kanji.reduce( (accumulator:JSX.Element[], kanjiElement:any) => {
                             
@@ -356,8 +371,9 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                     </div>
 
                     {/* Definitions */}
-                    <div className="flex flex-col w-3/4 gap-y-4 pl-2">
+                    <div className="flex flex-col w-full gap-y-4 pl-2">
                         {definitionElements}
+                        {/* {JSON.stringify(accents)} */}
                     </div>
                 </div>
 
@@ -372,7 +388,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                                 accents.map( (element:any) => {
                                     // For individual pitch diagram
                                     return Object.entries(element.accents).map( (value: any[]) => {
-                                        return <Diagram key={`${element.word}-${element.kana}`} kanji={element.word} kana={element.kana} accents={value[1]} partOfSpeech={value[0]}/>  
+                                        return <Diagram key={uuidv4()} kanji={element.word} kana={element.kana} accents={value[1]} partOfSpeech={value[0]}/>  
                                     })
                                 })
                             }
@@ -380,9 +396,9 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                     </>
                     : null
                     }
-                    <div className="flex flex-col gap-y-4">
-                        {/* {accents.map( (element) => accents.length ? <div>{JSON.stringify(element)}</div>:null) } */}
-                    </div>
+                    {/* <div className="flex flex-col gap-y-4">
+                        {accents.map( (element) => accents.length ? <div>{JSON.stringify(element)}</div>:null) }
+                    </div> */}
                 </div>
 
             </div>
