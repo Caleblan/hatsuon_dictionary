@@ -281,80 +281,139 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
      * @returns A list of JSX Elements of all the alternate readings
      */
     function generateAlternateForms(kanji:any[], kana:any[], selectedReading:string[]): JSX.Element[] {
+        
+        // Go through each of the kana elements
+        return kana.reduce( (completeList:JSX.Element[], kanaElement:any) => {
 
-            // Go through each of the kana elements
-            return kana.reduce( (completeList:JSX.Element[], kanaElement:any) => {
-
-                // If there is elements the list but no elements state what reading applies to.
-                if(kanaElement.appliesToKanji && kanaElement.appliesToKanji.length === 0 && selectedReading[1] !== kanaElement.text)
+            // If there is elements the list but no elements state what reading applies to.
+            if(kanaElement.appliesToKanji && kanaElement.appliesToKanji.length === 0 && selectedReading[1] !== kanaElement.text)
+            {
+                completeList.push(
+                    <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                        {kanaElement.text}
+                    </div>
+                )
+            }
+            // If reading applies to all kanji.
+            else if(kanaElement.appliesToKanji[0] === "*")
+            {
+                // If there is no kanji to apply, then put reading on its own
+                if(kanji.length === 0 && kanaElement.text !== selectedReading[1])
                 {
                     completeList.push(
                         <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
-                            {kanaElement.text}
+                            {`${kanaElement.text}`}
                         </div>
                     )
                 }
-                // If reading applies to all kanji.
-                else if(kanaElement.appliesToKanji[0] === "*")
-                {
-                    // If there is no kanji to apply, then put reading on its own
-                    if(kanji.length === 0 && kanaElement.text !== selectedReading[1])
-                    {
-                        completeList.push(
+
+                completeList.push(...
+                    kanji.reduce( (accumulator:JSX.Element[], kanjiElement:any) => {
+                        
+                        // If the current reading is already already used as main reading, don't include.
+                        if(kanjiElement.text === selectedReading[0] && kanaElement.text === selectedReading[1])
+                        {
+                            return accumulator;
+                        }
+
+                        accumulator.push(
                             <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
-                                {`${kanaElement.text}`}
+                                {`${kanjiElement.text} (${kanaElement.text})`}
                             </div>
                         )
-                    }
 
-                    completeList.push(...
-                        kanji.reduce( (accumulator:JSX.Element[], kanjiElement:any) => {
-                            
-                            // If the current reading is already already used as main reading, don't include.
-                            if(kanjiElement.text === selectedReading[0] && kanaElement.text === selectedReading[1])
-                            {
-                                return accumulator;
-                            }
-
-                            accumulator.push(
-                                <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
-                                    {`${kanjiElement.text} (${kanaElement.text})`}
-                                </div>
-                            )
-
+                        return accumulator;
+                    }, [])
+                )
+            }
+            // Produce an element for each specified reading 
+            else
+            {
+                completeList.push(...
+                    kanaElement.appliesToKanji.reduce( (accumulator:JSX.Element[], appliedKanji:string) => {
+                        
+                        // If the current reading is already already used as main reading, don't include.
+                        if(appliedKanji === selectedReading[0] && kanaElement.text === selectedReading[1])
+                        {
                             return accumulator;
-                        }, [])
-                    )
-                }
-                // Produce an element for each specified reading 
-                else
-                {
-                    completeList.push(...
-                        kanaElement.appliesToKanji.reduce( (accumulator:JSX.Element[], appliedKanji:string) => {
-                            
-                            // If the current reading is already already used as main reading, don't include.
-                            if(appliedKanji === selectedReading[0] && kanaElement.text === selectedReading[1])
-                            {
-                                return accumulator;
-                            }
-                            
-                            accumulator.push(
-                                <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
-                                    {`${appliedKanji} (${kanaElement.text})`}
-                                </div>
-                            )
+                        }
+                        
+                        accumulator.push(
+                            <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                                {`${appliedKanji} (${kanaElement.text})`}
+                            </div>
+                        )
 
-                            return accumulator;
+                        return accumulator;
 
-                        }, [])
-                    )
-                }
+                    }, [])
+                )
+            }
 
-                return completeList;
+            return completeList;
 
-            }, [])
+        }, [])
+    }
+
+    /**
+     * Creates pitch accent diagrams for each unique kana element
+     * @param {any[]} accents 
+     * @returns {JSX.Element[]} PItch Diagram elements
+     */
+    function createPitchDiagrams(accents:any[]): JSX.Element[] {
+
+        type accent = {
+            word:string;
+            kana:string; 
+            accents: any;
         }
-    
+
+        console.log(accents.length)
+
+        // Go through each pitch diagram accent match 
+        let currentDiagrams: accent[] = accents.reduce( (accumulator: accent[], element:any) => {
+
+            // Make sure to get proper kana reading.
+            const currentKana: string = element.kana ? element.kana : element.word;
+
+            // Determine if there is a kana match.
+            let diagramIndex:number = accumulator.findIndex( (object:any) => {
+                // Current comparison
+                const kanaCompare: string = object.kana ? object.kana : object.word;
+                
+                return kanaCompare === currentKana;
+            })
+
+            // If there is already an pitch accent object with same kana, only include any additional pitch accents.
+            if(diagramIndex < 0)
+            {
+                accumulator.push(element)
+            }
+            // else
+            // {
+            //     accumulator[diagramIndex].accents = 
+            //     Object.entries(accumulator[diagramIndex].accents)
+            // }
+
+            return accumulator;
+        }, [])
+
+        const diagrams: JSX.Element[] = [];
+
+        for(let i = 0; i < currentDiagrams.length; i++)
+        {
+            // For individual pitch diagram
+            diagrams.push(...
+                Object.entries(currentDiagrams[i].accents).map( (value: any[]) => {
+                    return <Diagram key={uuidv4()} kanji={currentDiagrams[i].word} kana={currentDiagrams[i].kana} 
+                            accents={value[1]} partOfSpeech={value[0]}/>  
+                })
+            )
+        }
+
+        return diagrams;
+    }
+
     return (
         <div className="w-full flex flex-col gap-y-4 border-b border-gray-400 pb-4 px-4">
                 
@@ -375,6 +434,16 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                         {definitionElements}
                         {/* {JSON.stringify(accents)} */}
                     </div>
+
+                    {/* Other Readings */}
+                    { alternateForms.length > 0 ?
+                        <span className="pt-4">
+                            <span className="font-semibold">Other Readings</span>
+                            <div className="flex flex-wrap gap-y-2 gap-x-2 pt-1">
+                                {alternateForms}
+                            </div>
+                        </span> : null
+                    }
                 </div>
 
                 {/* Pitch Accents */}
@@ -384,17 +453,9 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                     <>
                         <span className="font-semibold">Pitch Accents</span>
                         <div className="flex flex-col items-center ">
-                            {// Go through each pitch diagram accent match 
-                                accents.map( (element:any) => {
-                                    // For individual pitch diagram
-                                    return Object.entries(element.accents).map( (value: any[]) => {
-                                        return <Diagram key={uuidv4()} kanji={element.word} kana={element.kana} accents={value[1]} partOfSpeech={value[0]}/>  
-                                    })
-                                })
-                            }
+                            {createPitchDiagrams(accents)}
                         </div> 
-                    </>
-                    : null
+                    </>: null
                     }
                     {/* <div className="flex flex-col gap-y-4">
                         {accents.map( (element) => accents.length ? <div>{JSON.stringify(element)}</div>:null) }
@@ -402,19 +463,6 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 </div>
 
             </div>
-
-            {/* Other Readings */}
-            { alternateForms.length > 0 ?
-                <span>
-                    <span className="font-semibold">Other Readings</span>
-                    <div className="flex flex-wrap gap-y-2 gap-x-2 pt-1">
-                        {alternateForms}
-                    </div>
-                </span> : null
-            }
-
         </div>
-
-
     )
 }

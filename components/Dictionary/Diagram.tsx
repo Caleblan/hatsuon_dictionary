@@ -36,7 +36,7 @@ export default function Diagram({kanji, kana, accents, partOfSpeech, key} :props
 
     return (
         <div>
-            {partOfSpeech.charAt(0).toUpperCase() + partOfSpeech.slice(1)}:
+            {partOfSpeech === "generic" ? null : partOfSpeech.charAt(0).toUpperCase() + partOfSpeech.slice(1)}
             <DotDiagram key={key} mora={mora} 
             pitchPattern={convertPitchNumber(selectedPattern, mora.length)} 
             color={"black"} height={150} width={300}/>
