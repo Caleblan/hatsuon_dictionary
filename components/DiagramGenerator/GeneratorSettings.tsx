@@ -50,7 +50,7 @@ export default function GeneratorSettings(props: props) {
                         const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
                         (event.target.value = String(0))
                         : event.target.value = String(Number(event.target.value))
-                        changeDownloadDimensions(() => {return {width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height}})}
+                        changeDownloadDimensions({width: Number(event.target.value) > 0 ? Number(value): 0, height: downloadDimensions.height})}
                     }/>
 
                 <TextField className="w-full" type="number" label="Height" defaultValue={downloadDimensions.height} 
@@ -60,7 +60,7 @@ export default function GeneratorSettings(props: props) {
                         const value: string = event.target.value.match(/^[0-9]+$/) == null ? 
                             (event.target.value = String(0))
                             : event.target.value = String(Number(event.target.value))
-                        changeDownloadDimensions(() => {return {width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0}})}
+                        changeDownloadDimensions({width: downloadDimensions.width, height: Number(event.target.value) > 0 ? Number(value): 0})}
                     }/>
             </div>
         
