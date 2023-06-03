@@ -216,12 +216,57 @@ export async function getServerSideProps({query} : {query:any}) {
     const {page} : {page:number} = query;
     // const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
 
-    // {$in: [`/^.*${query.query}.*/`, "$kana.text"]}
+  // Aggregation pipeline.
 
-    const databaseQueryDictionary: any = {$or: [{$in: [query.query, "$kanji.text"]}, ...list, ...japaneseList]};
-    // Aggregation pipeline.
+
+  let kanji: string[] = japanese.filter( (element:string) => wanakana.isKanji(element))
+  //                         japanese.filter( (element:string) => wanakana.isKana(element)).join(" ") : " ",
+
+  // console.log(query.query)
+
     const pipeline: any[] = [
-      {$match: {$expr: databaseQueryDictionary}},
+
+      // {$expr: databaseQueryDictionary}
+
+      {
+        $search: {
+          index: "JMdictText",
+          text: {
+            query: query.query,
+            path: ["kana.text", "kanji.text", "sense.gloss.text"]
+          }
+        
+          // "compound": {
+          //   "should": [
+          //     {
+          //       "text": {
+          //         "query": query.query,
+          //         "path": ["kana.text", "kanji.text"]
+          //       }
+          //     },
+          //     // {
+          //     //   "text": {
+          //     //     "query":　query.query,
+          //     //     "path": ["kanji.text"]
+          //     //   }
+          //     // }
+          //   ],
+
+
+
+            // "must" : [
+            //   {
+            //     "text": {
+            //       "query":　japanese.filter( (element:string) => wanakana.isKanji(element)).join(" "),
+            //       "path": ["kanji.text"]
+            //     }
+            //   }]
+          // }
+        }
+
+      },         
+      // Sort based on text relevance
+      // {$sort: { score: {$meta: "textScore"}}},
       {$facet: 
         {
           "count": [{$count: 'count'}],
@@ -275,8 +320,11 @@ export async function getServerSideProps({query} : {query:any}) {
                 as: "accents"
               }
             }
-          ]}
+          ]
         }
+      },
+      // Sort based on relevancy
+      // { $sort: { title: 1 } }
     ];
 
     // We will search the JMdict where we can get definitions.
