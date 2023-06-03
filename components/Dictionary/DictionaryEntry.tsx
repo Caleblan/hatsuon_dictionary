@@ -128,7 +128,7 @@ var codec = require('kamiya-codec');
   }
 
 
-interface entryInfo {
+type entryInfo = {
   kanji: any[],
   kana: any[],
   sense: any[],
@@ -190,12 +190,12 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     // const verbToKana: string = wanakana.toHiragana(masuVerb)
 
     /**
-     * 
-     * @param {any} sense 
-     * @param {any} language 
+     * Creates a list of JSX Elements of definitions for a given entry.
+     * @param {any[]} sense An array containing the definitions of the word.
+     * @param {string} language Used to select all definitions for a given entry in the given language. Defaults to english.
      * @returns {JSX.Element[]} List of JSX Definition Elements to be rendered.
      */
-    function createDefinitions(sense:any, language:string = "eng"): JSX.Element[] {
+    function createDefinitions(sense:any[], language:string = "eng"): JSX.Element[] {
 
         let definitionCount: number = 1;
         
@@ -204,7 +204,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
 
             const glossElements: any[] = senseElement.gloss;
 
-            let definition: string = ""
+            let definition: string = "";
             
             // Go through all definitions and combine if they are of the current language.
             for(let i = 0; i < glossElements.length; i++)
@@ -281,6 +281,10 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
      * @returns A list of JSX Elements of all the alternate readings
      */
     function generateAlternateForms(kanji:any[], kana:any[], selectedReading:string[]): JSX.Element[] {
+
+        const styling: any[string] = {
+            "wrapper": "break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md"
+        };
         
         // Go through each of the kana elements
         return kana.reduce( (completeList:JSX.Element[], kanaElement:any) => {
@@ -289,10 +293,10 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             if(kanaElement.appliesToKanji && kanaElement.appliesToKanji.length === 0 && selectedReading[1] !== kanaElement.text)
             {
                 completeList.push(
-                    <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                    <div className={styling.wrapper}>
                         {kanaElement.text}
                     </div>
-                )
+                );
             }
             // If reading applies to all kanji.
             else if(kanaElement.appliesToKanji[0] === "*")
@@ -301,10 +305,10 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                 if(kanji.length === 0 && kanaElement.text !== selectedReading[1])
                 {
                     completeList.push(
-                        <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                        <div className={styling.wrapper}>
                             {`${kanaElement.text}`}
                         </div>
-                    )
+                    );
                 }
 
                 completeList.push(...
@@ -317,10 +321,10 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                         }
 
                         accumulator.push(
-                            <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                            <div className={styling.wrapper}>
                                 {`${kanjiElement.text} (${kanaElement.text})`}
                             </div>
-                        )
+                        );
 
                         return accumulator;
                     }, [])
@@ -339,7 +343,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
                         }
                         
                         accumulator.push(
-                            <div className="break-keep font-medium text-lg ml-2 p-2 border-2 border-gray-500 rounded-md">
+                            <div className={styling.wrapper}>
                                 {`${appliedKanji} (${kanaElement.text})`}
                             </div>
                         )
@@ -367,8 +371,6 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
             kana:string; 
             accents: any;
         }
-
-        console.log(accents.length)
 
         // Go through each pitch diagram accent match 
         let currentDiagrams: accent[] = accents.reduce( (accumulator: accent[], element:any) => {

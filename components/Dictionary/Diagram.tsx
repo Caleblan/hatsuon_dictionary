@@ -13,7 +13,7 @@ import {toMora, convertPitchNumber, determinePitchPattern} from "../../lib/pitch
 
 import * as wanakana from 'wanakana';
 
-interface props {
+type props = {
     kanji: string,
     kana: string,
     key: string,

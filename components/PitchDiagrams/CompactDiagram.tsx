@@ -23,7 +23,7 @@ export default function CompactDiagram({mora, pitchPattern, color} : props): JSX
         // console.log(pitchPattern)
 
         //TODO find better way to place text.
-        for(let i = 0; i < mora.length; i++) {
+        for(let i: number = 0; i < mora.length; i++) {
             text.push(
                 <text key={`mora${i}`} x={nodeDistance * (i + 1)} y={115} fill={primaryColor} textAnchor= "middle" 
                 style={{fontFamily: "Noto Serif JP", fontSize: "3rem"}}>{mora[i]}</text>

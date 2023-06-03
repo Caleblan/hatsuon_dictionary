@@ -1,6 +1,6 @@
-import React, {useState} from "react"
+import React from "react"
 
-interface props {
+type props = {
     mora:string[], 
     pitchPattern:number[], 
     color:string,

@@ -17,7 +17,7 @@ import SearchBar from "../../components/Dictionary/SearchBar";
 import MissingPageImage from "../../Images/404Image.svg";
 
 
-interface props {
+type props =  {
   entries: any[],
   // Count of total number of entries for the whole query (not limited by page entries)
   entriesCount: number,
@@ -26,23 +26,21 @@ interface props {
 }
 
 
-
-// entries: definitions, entriesCount: resultCount, page, query:query.query
-
-
 //Determines how many dictionary entries are allowed per page.
 const pageEntries: number = 10;
 
 export default function DictionarySearchPage({entries, entriesCount, page, query}: props): JSX.Element {
 
+  // Contains all the dictionary results that are to be displayed.
+  const results: JSX.Element[] = entries.map( (entry:any) => {
+    return (<DictionaryEntry key={uuidv4()} entryInfo={entry} language="eng"/>)
+  });
 
-  let pageLinks: JSX.Element[] = [];
+  // Used to tell user what results they are currently on (or if there are no results at all).
+  const resultResponse : string = entriesCount > 0 && entries.length > 0 ? 
+    `${(page-1)*pageEntries + 1}-${(page-1)*pageEntries + entries.length} of ${entriesCount} entries`
+    : "No entries found";
 
-  // console.log(props.query, typeof(query), query == "")
-
-  //TODO when pressing the back button in browser, must put old text into Textfield
-
-  let key = 0;
 
   return (
     <>
@@ -56,81 +54,28 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
             <SearchBar query={query}/>
             
             <span className="text-slate-600 pl-2 pt-2 pb-4">
-              {entriesCount > 0 && entries.length > 0 ? 
-                `${(page-1)*pageEntries + 1}-${(page-1)*pageEntries + entries.length} of ${entriesCount} entries`
-                : "No entries found"
-              }
+              {resultResponse}
             </span>
 
-
-            {
-              JSON.stringify(entries) == '[]' ?
-              
-              
-              // <div className="w-full h-full flex flex-col justify-center text-center relative">
-              //  <span>Nothing is found</span>
-              <>
-                <div className="w-full h-full text-center font-semibold text-2xl">
-                    {"Oops! It seems we weren't able to find what you were looking for"}.
-                    <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
-                </div>
-              </>
-              /* </div> */
-              
-              :
-
-              <div className="flex flex-col gap-y-4">
-              {
-                // Create entry for each dictionary result returned from database.
-                entries.map((entry:any) => 
-                (
-                  <DictionaryEntry key={uuidv4()} entryInfo={entry} language="eng"
-                    // diagrams={}
-                    
-                    
-                  //   {Object.entries(entry.accents).map((accentCategory) => (
-                  //     // For each accent category
-                  //     accentCategory[1].map((accent:number) => (
-                  //       // <CompactDiagram 
-                  //       //   mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
-                  //       //   pattern = {[accent]}
-                  //       // />
-                  //       <DotDiagram
-                  //         mora = {entry.kana == "" ? toMora(entry.word) : toMora(entry.kana)}
-                  //         pitchPattern = {accent}
-                  //         color="black"
-                  //       />
-                  //       )
-                  //     )
-                  //   )
-                  // )}
-                  />
-                )
-              )
+            {/* Results Display. */}
+            { results.length > 0 ?
+              // Show all results returned
+              <div className="flex flex-col gap-y-4">{results}</div>
+              // No results were found so display that no results were found.
+              : <div className="w-full h-full text-center font-semibold text-2xl">
+                  {"Oops! It seems we weren't able to find what you were looking for"}.
+                  <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
+              </div>
             }
-            </div>
-          }
-          {
-            entriesCount > 0 && entries.length > 0 ?
-            <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
-            : null
-          }
-            
-
+            {entriesCount > 0 && entries.length > 0 ?
+              <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
+              : null
+            }
           </div>
       </main>
-      
     </>
   )
 }
-
-async function queryDatabase({query} : {query:any}) {
-
-  
-
-}
-
-{/* <PageButtons entriesCount={entriesCount} pageEntries={pageEntries} currentPage={page} query={query}/>: null */}
 
 /**
  * 
@@ -360,23 +305,3 @@ export async function getServerSideProps({query} : {query:any}) {
   // }
 
 }
-
-// export function parseCookies(req) {
-//   return cookie.parse(req ? req.headers.cookie || "" : document.cookie)
-// }
-
-// DictionarySearch.getInitialProps = async ({ req, res }) => {
-  
-//   const data = parseCookies(req)
-  
-//    if (res) {
-//     if (Object.keys(data).length === 0 && data.constructor === Object) {
-//       res.writeHead(301, { Location: "/" })
-//       res.end()
-//     }
-//   }
-  
-//   return {
-//     data: data && data,
-//   }
-// }

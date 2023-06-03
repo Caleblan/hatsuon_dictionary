@@ -10,13 +10,13 @@ import TextField from "@mui/material/TextField";
 // Third-party
 import { BlockPicker} from 'react-color';
 
-interface props {
+type props = {
     downloadFormat: string
     color: string,
-    downloadDimensions: {width:number, height:number},
-    changeFileFormat: any,
-    changeColor: any,
-    changeDownloadDimensions: any
+    downloadDimensions: {width: number, height: number},
+    changeFileFormat: (fileFormat: string) => void,
+    changeColor: (color: string) => void,
+    changeDownloadDimensions: (dimensions: {width: number, height: number}) => void
 }
 
 export default function GeneratorSettings(props: props) {
@@ -32,7 +32,7 @@ export default function GeneratorSettings(props: props) {
                 
             {/* Form selectors */}
             <div className="flex flex-col gap-x-4 gap-y-3 w-full">
-                <FormControl className="flex">
+                <FormControl>
                     <InputLabel>Download Format</InputLabel>
                     <Select
                     defaultValue={"PNG"}
@@ -65,7 +65,6 @@ export default function GeneratorSettings(props: props) {
             </div>
         
             {/* Color Picker */}
-            {/* style={{margin: "0.75em 0.75em 0.5em 0", height: "100%", display: "flex", justifyContent: "center", flexGrow: "2"}} */}
             <div className="h-full w-full min-w-max">
                 <BlockPicker width="100%" triangle="hide" color={color} colors={colors} onChange={(color:any, event:any) => 
                 changeColor(color.hex)}/>

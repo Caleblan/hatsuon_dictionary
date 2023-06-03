@@ -76,29 +76,26 @@ export function determinePitchPattern(moraCount:number, pitchPattern:number): st
  */
 export function convertPitchNumber(pitchPattern:number, moraCount: number): number[] {
 
-    let pattern: number[] = [];
+    const pattern: number[] = [];
 
     //If 平板（へいばん)
     if(pitchPattern === 0) {
-        pattern = [2];
-        pattern = pattern.concat(Array(moraCount).fill(1));
+        pattern.push(2);
+        pattern.concat(Array(moraCount).fill(1));
     }
     //If 頭高（あたまだか).
     else if(pitchPattern === 1) {
-        pattern = [1];
-        pattern = pattern.concat(Array(moraCount).fill(2));
+        pattern.push(1);
+        pattern.concat(Array(moraCount).fill(2));
     }
     //If 中高 (なかだか) or 尾高 (おだか).
     else if (pitchPattern > 1 && pitchPattern <= moraCount){
-        pattern = [2];
+        pattern.push(2);
 
         //Get all higher mora.
-        pattern = pattern.concat(Array(pitchPattern - 1).fill(1));
+        pattern.concat(Array(pitchPattern - 1).fill(1));
         //Get mora after pitch drop.
-        pattern = pattern.concat(Array(moraCount - pitchPattern + 1).fill(2));
-    }
-    else {
-        return [];
+        pattern.concat(Array(moraCount - pitchPattern + 1).fill(2));
     }
 
     return pattern;

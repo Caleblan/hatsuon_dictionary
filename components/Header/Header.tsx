@@ -30,14 +30,14 @@ export default function Header() {
                 
                 {/* Website Icon */}
                 <span className={styling.iconContainer}>
-                    <Link className={styling.websiteIcon} href={links.internalLinks.home}>Hatsuon</Link>
+                    <Link className={styling.websiteIcon} href={links.internalLinks.dictionary}>Hatsuon</Link>
                 </span>
 
                 {/* Header Page Links */}
                 <div className={styling.headerPageLinks}>
 
-                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.home ? "underline" : ""}`}
-                    href={links.internalLinks.home}>Home</Link>
+                    {/* <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.home ? "underline" : ""}`}
+                    href={links.internalLinks.home}>Home</Link> */}
 
                     <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.dictionary ? "underline" : ""}`} 
                     href={links.internalLinks.dictionary}>Dictionary</Link>
@@ -45,8 +45,8 @@ export default function Header() {
                     <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}
                     href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
 
-                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}
-                    href={links.internalLinks.contact}>Contact</Link>
+                    {/* <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}
+                    href={links.internalLinks.contact}>Contact</Link> */}
                     
                     {/* Menu Button (Meant for mobile/small screens) */}
                     {/* <IconButton className={styling.menuButton} size="large" disableRipple={true}>
