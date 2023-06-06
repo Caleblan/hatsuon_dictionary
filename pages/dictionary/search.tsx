@@ -25,7 +25,6 @@ type props =  {
   query: string
 }
 
-
 //Determines how many dictionary entries are allowed per page.
 const pageEntries: number = 10;
 
@@ -41,6 +40,14 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
     `${(page-1)*pageEntries + 1}-${(page-1)*pageEntries + entries.length} of ${entriesCount} entries`
     : "No entries found";
 
+  // Image that displays when no results are found.
+  const noResultImage: JSX.Element = (
+    <div className="w-full h-full text-center font-semibold text-2xl">
+      {"Oops! It seems we weren't able to find what you were looking for"}.
+      <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
+    </div>
+  )
+
 
   return (
     <>
@@ -49,24 +56,27 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
         <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
       </Head>
       <main> 
-          <div className="w-3/4 h-full flex flex-col justify-center">
-
-            <SearchBar query={query}/>
+          {/* Note: Max width mostlikely temporary */}
+          <div className="w-full px-4 h-full flex flex-col items-center ">
             
-            <span className="text-slate-600 pl-2 pt-2 pb-4">
-              {resultResponse}
-            </span>
+            <SearchBar className="w-full mt-4 max-w-7xl" query={query}/>
 
             {/* Results Display. */}
+
+            <div className="w-full flex flex-col px-2 max-w-7xl">
+              <span className="w-full text-left text-slate-600 pt-2 pb-4">
+                {resultResponse}
+              </span>
+            
             { results.length > 0 ?
               // Show all results returned
               <div className="flex flex-col gap-y-4">{results}</div>
               // No results were found so display that no results were found.
-              : <div className="w-full h-full text-center font-semibold text-2xl">
-                  {"Oops! It seems we weren't able to find what you were looking for"}.
-                  <Image className="object-contain w-full h-full" src={MissingPageImage} alt="A sad pitch diagram guy shrugging :("/>
-              </div>
+              : noResultImage
             }
+            </div>
+
+            {/* Dictionary footer used navigate pages. */}
             {entriesCount > 0 && entries.length > 0 ?
               <DictionaryFooter entriesCount={entriesCount} currentPage={page} query={query} pageEntries={pageEntries}/>
               : null
@@ -268,8 +278,6 @@ export async function getServerSideProps({query} : {query:any}) {
           ]
         }
       },
-      // Sort based on relevancy
-      // { $sort: { title: 1 } }
     ];
 
     // We will search the JMdict where we can get definitions.

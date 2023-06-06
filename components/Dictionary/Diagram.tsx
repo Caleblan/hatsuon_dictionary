@@ -40,7 +40,14 @@ export default function Diagram({kanji, kana, accents, partOfSpeech, key} :props
             <DotDiagram key={key} mora={mora} 
             pitchPattern={convertPitchNumber(selectedPattern, mora.length)} 
             color={"black"} height={150} width={300}/>
-            <div className="w-full flex items-center justify-around text-end">
+
+            <span className="w-full flex justify-end items-center">
+                <span className="font-bold mr-2">{patternType[0]}</span>
+                <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(patternType[1])}</span>
+            </span>
+
+
+            <div className="w-full flex items-center justify-around text-end pt-2">
                 
                 <Stack className="flex flex-row">
                     <ToggleButtonGroup
@@ -53,20 +60,16 @@ export default function Diagram({kanji, kana, accents, partOfSpeech, key} :props
                         {
                             accents.map( (pattern:number) => {
                                 return (
-                                    <ToggleButton className="h-fit"
+                                    <ToggleButton className="h-fit" 
+                                    style={{height: "2.5em", width: "3em"}}
                                     key={kana+pattern} value={pattern}>
-                                        {pattern}
+                                        {`${pattern}`}
                                     </ToggleButton>
                                 )
                             })
                         }
                     </ToggleButtonGroup>
                 </Stack>
-                  
-                <span className="">
-                    <span className="font-bold mr-2">{patternType[0]}</span>
-                    <span className="text-sm text-slate-500 font-serif">{wanakana.toRomaji(patternType[1])}</span>
-                </span>
             </div>
 
         </div>

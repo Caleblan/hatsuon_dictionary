@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 // Next.js
 import Link from 'next/link'
 
+
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -20,22 +21,74 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
-interface input {
+import Twemoji from 'react-twemoji';
+
+// import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
+
+type input = {
     query: string,
+    className : string
 }
 
 
-export default function DictionaryEntry({query}:input): JSX.Element {
+export default function DictionaryEntry({query, className}:input): JSX.Element {
   
+  const languageTags: string[][] = [["eng", "🇺🇸"], ["dut", "🇳🇱"], ["ger", "🇩🇪"], 
+                                    ["rus", "🇷🇺"], ["fre", "🇫🇷"], ["spa", "🇪🇸"], 
+                                    ["slv", "🇸🇮"], ["hun", "🇭🇺"]];
+
+
+  const [currentFlag, setCurrentFlag] = useState<string[]>(languageTags[0]);
+
   const [searchQuery, updateSearchQuery] = useState<string>(query)
 
   useEffect(() => {
     updateSearchQuery(query)
   }, [query]);
 
+  const startAdornment: JSX.Element = (              
+      <Twemoji options={{ className: 'w-full' }}>
+          {currentFlag[1]}
+      </Twemoji>
+  );
+
+  let menuItems: JSX.Element[] = languageTags.map( (languageTag:string[]) => {
     return (
-      <form>
-        <FormControl className="w-full mt-4" variant="outlined">
+      <MenuItem value={languageTag}>
+        <Twemoji options={{ className: 'w-full' }}>
+          {languageTag[1]}
+        </Twemoji>
+      </MenuItem>
+    );
+  });
+
+
+
+
+  const flagSelector: JSX.Element = (
+    <InputAdornment className="h-1/2" position="start">
+      <FormControl sx={{ m: 1, minWidth: 80 }}>
+      <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+      <Select
+        labelId="demo-simple-select-autowidth-label"
+        id="demo-simple-select-autowidth"
+        value={currentFlag[1]}
+        // onChange={setCurrentFlag}
+        autoWidth
+      >
+        {menuItems}
+      </Select>
+    </FormControl>
+  </InputAdornment>
+  );
+
+    return (
+      <form className={className}>
+        <FormControl className="w-full" variant="outlined">
           <InputLabel htmlFor="searchbar">Search Dictionary</InputLabel>
           <OutlinedInput
             id="searchbar"
@@ -45,6 +98,7 @@ export default function DictionaryEntry({query}:input): JSX.Element {
             onChange={(event:any) => {
               updateSearchQuery(event.target.value)
             }}
+            // startAdornment={flagSelector}
             // type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">

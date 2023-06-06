@@ -417,7 +417,7 @@ export default function DictionaryEntry({entryInfo /*, diagrams*/, language}: {e
     }
 
     return (
-        <div className="w-full flex flex-col gap-y-4 border-b border-gray-400 pb-4 px-4">
+        <div className="w-full flex flex-col gap-y-4 border-b border-gray-400 pb-4 px-2">
                 
             <div className="w-full flex flex-col md:gap-x-6 md:flex-row">
 

@@ -19,7 +19,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <div className="w-3/4 h-full text-justify flex flex-col gap-y-4">
+        <div className="w-full px-4 h-full text-justify flex flex-col gap-y-4">
             <PitchGenerator/>
 
             <p>
