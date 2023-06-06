@@ -21,7 +21,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
-import Twemoji from 'react-twemoji';
+// import Twemoji from 'react-twemoji';
 
 // import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -50,41 +50,41 @@ export default function DictionaryEntry({query, className}:input): JSX.Element {
     updateSearchQuery(query)
   }, [query]);
 
-  const startAdornment: JSX.Element = (              
-      <Twemoji options={{ className: 'w-full' }}>
-          {currentFlag[1]}
-      </Twemoji>
-  );
+  // const startAdornment: JSX.Element = (              
+  //     <Twemoji options={{ className: 'w-full' }}>
+  //         {currentFlag[1]}
+  //     </Twemoji>
+  // );
 
-  let menuItems: JSX.Element[] = languageTags.map( (languageTag:string[]) => {
-    return (
-      <MenuItem value={languageTag}>
-        <Twemoji options={{ className: 'w-full' }}>
-          {languageTag[1]}
-        </Twemoji>
-      </MenuItem>
-    );
-  });
-
-
+  // let menuItems: JSX.Element[] = languageTags.map( (languageTag:string[]) => {
+  //   return (
+  //     <MenuItem value={languageTag}>
+  //       <Twemoji options={{ className: 'w-full' }}>
+  //         {languageTag[1]}
+  //       </Twemoji>
+  //     </MenuItem>
+  //   );
+  // });
 
 
-  const flagSelector: JSX.Element = (
-    <InputAdornment className="h-1/2" position="start">
-      <FormControl sx={{ m: 1, minWidth: 80 }}>
-      <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
-      <Select
-        labelId="demo-simple-select-autowidth-label"
-        id="demo-simple-select-autowidth"
-        value={currentFlag[1]}
-        // onChange={setCurrentFlag}
-        autoWidth
-      >
-        {menuItems}
-      </Select>
-    </FormControl>
-  </InputAdornment>
-  );
+
+
+  // const flagSelector: JSX.Element = (
+  //   <InputAdornment className="h-1/2" position="start">
+  //     <FormControl sx={{ m: 1, minWidth: 80 }}>
+  //     <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+  //     <Select
+  //       labelId="demo-simple-select-autowidth-label"
+  //       id="demo-simple-select-autowidth"
+  //       value={currentFlag[1]}
+  //       // onChange={setCurrentFlag}
+  //       autoWidth
+  //     >
+  //       {menuItems}
+  //     </Select>
+  //   </FormControl>
+  // </InputAdornment>
+  // );
 
     return (
       <form className={className}>
