@@ -62,10 +62,10 @@ export default function Footer(): JSX.Element {
                             <LinkedInIcon className="Icon"/>
                             LinkedIn
                         </Link>
-                        <Link className={styling.footerLink} href={links.externalLinks.facebook} target="_blank" rel="noopener noreferrer">
+                        {/* <Link className={styling.footerLink} href={links.externalLinks.facebook} target="_blank" rel="noopener noreferrer">
                             <FacebookIcon className="Icon"/>
                             Facebook
-                        </Link> 
+                        </Link>  */}
                         <Link className={styling.footerLink} href={links.externalLinks.discord} target="_blank" rel="noopener noreferrer">
                             <Image src={DiscordLogo} alt="Discord Logo" width= {110}/>
                         </Link>

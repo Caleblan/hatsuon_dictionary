@@ -3,11 +3,9 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { CookiesProvider } from "react-cookie";
-
 // Custom Components
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer';
-
 
 
 export default function App({ Component, pageProps }: AppProps) {
