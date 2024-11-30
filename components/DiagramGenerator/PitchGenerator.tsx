@@ -1,5 +1,3 @@
-"use client"
-
 // React/MUI
 import React, { useState , useRef, useMemo} from "react"
 import * as ReactDOMServer from 'react-dom/server';

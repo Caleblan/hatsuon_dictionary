@@ -32,7 +32,7 @@ export default function DictionaryHomePage() {
             <ul className="w-full md:w-3/4 text-lg text-start list-disc pl-10 py-4">
               <li>Kanji</li>
               <li>Hiragana / Katakana</li>
-              <li>English definition</li>
+              <li>Romaji</li>
             </ul>
 
             <p className="md:w-3/4 text-lg">
