@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "pitchUpdate": "npx ts-node ./lib/buildScripts.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -18,12 +19,11 @@
     "@mui/material": "^5.11.1",
     "@next/font": "13.0.7",
     "@sendgrid/mail": "^7.7.0",
-    "@types/node": "18.11.17",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/sendgrid": "^4.3.0",
     "eslint": "8.30.0",
-    "eslint-config-next": "13.0.7",
+    "eslint-config-next": "^13.4.19",
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "furigana": "^0.19.3",
@@ -31,7 +31,7 @@
     "kuroshiro": "^1.2.0",
     "mongodb": "^4.13.0",
     "mongoose": "^7.1.1",
-    "next": "^13.0.7",
+    "next": "^13.4.19",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-cookie": "^4.1.1",
@@ -39,6 +39,7 @@
     "react-twemoji": "^0.5.0",
     "sendgrid": "^5.2.3",
     "sharp": "^0.32.0",
+    "ts-node": "^10.9.1",
     "typescript": "4.9.4",
     "uuid": "^9.0.0",
     "wanakana": "^5.1.0"
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@playwright/test": "^1.32.3",
     "@types/file-saver": "^2.0.5",
+    "@types/node": "^20.3.3",
     "@types/react-color": "^3.0.6",
     "@types/uuid": "^9.0.1",
     "@types/wanakana": "^4.0.3",

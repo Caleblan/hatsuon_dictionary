@@ -21,8 +21,7 @@ export default function DictionaryHomePage() {
               {"Welcome to the Hatsuon Pitch Accent Dictionary!"}
             </span>
 
-           
-
+        
             <p className="md:w-3/4 text-lg">
               {
                 `This dictionary is meant to act both as a reference and and educational tool

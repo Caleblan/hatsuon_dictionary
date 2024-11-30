@@ -5,8 +5,12 @@ import SearchIcon from '@mui/icons-material/Search';
 // Next.js
 import Link from 'next/link'
 
-
 import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+
+// import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import FilledInput from '@mui/material/FilledInput';
@@ -35,14 +39,7 @@ type input = {
 }
 
 
-export default function DictionaryEntry({query, className}:input): JSX.Element {
-  
-  const languageTags: string[][] = [["eng", "🇺🇸"], ["dut", "🇳🇱"], ["ger", "🇩🇪"], 
-                                    ["rus", "🇷🇺"], ["fre", "🇫🇷"], ["spa", "🇪🇸"], 
-                                    ["slv", "🇸🇮"], ["hun", "🇭🇺"]];
-
-
-  const [currentFlag, setCurrentFlag] = useState<string[]>(languageTags[0]);
+export default function SearchBar({query, className}:input): JSX.Element {
 
   const [searchQuery, updateSearchQuery] = useState<string>(query)
 
@@ -50,41 +47,23 @@ export default function DictionaryEntry({query, className}:input): JSX.Element {
     updateSearchQuery(query)
   }, [query]);
 
-  // const startAdornment: JSX.Element = (              
-  //     <Twemoji options={{ className: 'w-full' }}>
-  //         {currentFlag[1]}
-  //     </Twemoji>
-  // );
+  const patternTypes: string[][] = 
+  [["平板", "へいばん"], ["中高", "なかだか"], ["頭高", "あたまだか"], ["尾高", "おだか"]];
 
-  // let menuItems: JSX.Element[] = languageTags.map( (languageTag:string[]) => {
-  //   return (
-  //     <MenuItem value={languageTag}>
-  //       <Twemoji options={{ className: 'w-full' }}>
-  //         {languageTag[1]}
-  //       </Twemoji>
-  //     </MenuItem>
-  //   );
-  // });
+  // Used to keep track of current filters
+  const [pitchFilters, changePitchFilters] = useState<{}>(
+    {"へいばん": false, "なかだか": false, "あたまだか": false, "おだか": false}
+  );
 
+  // function updatePitchFilter
 
+  let key: number = 0;
 
-
-  // const flagSelector: JSX.Element = (
-  //   <InputAdornment className="h-1/2" position="start">
-  //     <FormControl sx={{ m: 1, minWidth: 80 }}>
-  //     <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
-  //     <Select
-  //       labelId="demo-simple-select-autowidth-label"
-  //       id="demo-simple-select-autowidth"
-  //       value={currentFlag[1]}
-  //       // onChange={setCurrentFlag}
-  //       autoWidth
-  //     >
-  //       {menuItems}
-  //     </Select>
-  //   </FormControl>
-  // </InputAdornment>
-  // );
+  const pitchFiltersCheckboxes: JSX.Element[] = patternTypes.map((patternType:string[]) => {
+    return (
+      <FormControlLabel className="select-none" key={key++} label={patternType[1]} control={<Checkbox/>}/>
+    )
+  });
 
     return (
       <form className={className}>
@@ -98,8 +77,6 @@ export default function DictionaryEntry({query, className}:input): JSX.Element {
             onChange={(event:any) => {
               updateSearchQuery(event.target.value)
             }}
-            // startAdornment={flagSelector}
-            // type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
                 {/* <Divider></Divider> */}
@@ -122,7 +99,14 @@ export default function DictionaryEntry({query, className}:input): JSX.Element {
             label="Search Dictionary"
           />
         </FormControl>
-        </form>
+        {/* <div className="w-full flex items-center">
+          <span>Pitch Accent Filters</span>
+          <Box sx={{ display: 'flex', ml: 3 }}>
+           {pitchFiltersCheckboxes}
+          </Box>
+        </div> */}
+        
+      </form>
     )
 }
 

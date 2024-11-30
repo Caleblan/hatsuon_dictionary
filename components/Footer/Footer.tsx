@@ -1,10 +1,7 @@
 // React/MUI
 import React, {useState} from "react"
 // Icons
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import FacebookIcon from '@mui/icons-material/Facebook';
 // import GithubIcon from '@mui/icons-material/Github';
 
 // Next.js
@@ -12,10 +9,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 // Custom images
-import BuyMeACoffeLogo from "./SVGs/bmc-full-logo.svg";
 import BuyMeACoffeeButton from "./SVGs/black-button.png";
 import DiscordLogo from "./SVGs/Discord-Logo+Wordmark-White.svg"
-import PatreonLogoWhite from "./SVGs/Digital-Patreon-Wordmark_White1.svg";
 
 import links from "../../links.json";
 
@@ -59,7 +54,7 @@ export default function Footer(): JSX.Element {
                     <span className={styling.columnHeader}>Social</span>
                     <ul className={styling.list}>
                         <Link className={styling.footerLink} href={links.externalLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                            <LinkedInIcon className="Icon"/>
+                            {/* <LinkedInIcon className="Icon"/> */}
                             LinkedIn
                         </Link>
                         {/* <Link className={styling.footerLink} href={links.externalLinks.facebook} target="_blank" rel="noopener noreferrer">
@@ -97,7 +92,7 @@ export default function Footer(): JSX.Element {
             
             </div>
             <span className={styling.copyright}>
-                Copywright © {date.getFullYear()} Caleb Landry. All Rights Reserved.
+                Copyright © {date.getFullYear()} Caleb Landry. All Rights Reserved.
             </span>
         </footer>
     );

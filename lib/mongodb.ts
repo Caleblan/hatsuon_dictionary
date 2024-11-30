@@ -1,12 +1,14 @@
-import { Db, MongoClient } from "mongodb";
+// import { Db, MongoClient } from "mongodb";
+
+const { Db, MongoClient } = require("mongodb");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const MONGODB_DB = process.env.MONGODB_DB;
 
-let cachedClient: MongoClient;
-let cachedDb: Db;
+let cachedClient: typeof MongoClient;
+let cachedDb: typeof Db;
 
-export default async function clientPromise() {
+async function clientPromise() {
   // check the cached.
   if (cachedClient && cachedDb) {
     // load from cache
@@ -45,3 +47,5 @@ export default async function clientPromise() {
     db: cachedDb,
   };
 }
+
+export {clientPromise};

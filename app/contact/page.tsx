@@ -1,3 +1,5 @@
+"use client"
+
 // React/MUI
 import React, {useState, useEffect} from "react"
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,7 +30,7 @@ import SubjectIcon from '@mui/icons-material/Subject';
 import SendIcon from '@mui/icons-material/Send';
 
 
-export default function Contact() {
+export default function ContactPage() {
   
 
       //ONly here so that when back button pressed, the query is also set as the previous one
@@ -158,7 +160,7 @@ export default function Contact() {
 
         </form>
     </main>
-    )
+    );
 }
 
 

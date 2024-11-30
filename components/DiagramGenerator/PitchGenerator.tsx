@@ -1,3 +1,5 @@
+"use client"
+
 // React/MUI
 import React, { useState , useRef, useMemo} from "react"
 import * as ReactDOMServer from 'react-dom/server';
@@ -161,7 +163,10 @@ export default function PitchGenerator(): JSX.Element {
                 {/* Input textfield */}
                 <TextField className="grow-[2]" label="Input text" autoComplete='off' type='text'
                 placeholder="Ex. はつおん" InputLabelProps={{ shrink: true }} autoFocus={true}
-                onChange={event => changeText(event.target.value)} />
+                onChange={event => {
+                    console.log(diagramText)
+                    changeText(event.target.value)
+                }}/>
             
                 {/* Pitch Pattern textfield */}
                 <TextField className="grow-[2]" label="Pitch Pattern" autoComplete='off' type='text'

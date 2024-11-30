@@ -1,5 +1,5 @@
 //Used by toMora function to check if any characters are digraphs.
-//っ and ッ omitted on purpose due as they are considered seperate mora
+//っ and ッ omitted on purpose as they are considered seperate mora.
 const hiriDigraphs: string[] = ['ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ', 'ゃ', 'ゅ', 'ょ', 'ゎ', 'ゕ', 'ゖ'];
 const kataDigraphs: string[] = ['ァ', 'ィ', 'ゥ', 'ェ', 'ォ', 'ャ', 'ュ', 'ョ', 'ヮ', 'ヵ', 'ヶ'];
 
@@ -7,7 +7,8 @@ const kataDigraphs: string[] = ['ァ', 'ィ', 'ゥ', 'ェ', 'ォ', 'ャ', 'ュ',
 const digraphs: Set<string> = new Set<string>(hiriDigraphs.concat(kataDigraphs));
 
 /**
- * Parses a string and breaks it up into Japanese mora. *Note that っ/ッ are assumed as 1 mora.*
+ * Parses a string and breaks it up into Japanese mora. 
+ * *Note that っ/ッ are considered as 1 mora.*
  * @param {string} inputText - The string to be broken up into mora.
  * @returns {string[]} A list containing parsed mora from input text.
  */

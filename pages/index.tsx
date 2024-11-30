@@ -1,24 +1,17 @@
-import Head from 'next/head'
+import { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'Pitch Accent Dictionary | Hatsuon',
+  description: "A Japanese Web Dictionary with Pitch Accents"
+}
 
-export default function Home() {
-  return (
-    <>
-      <Head>
-        <title>Pitch Accent Dictionary | Hatsuon</title>
-        <meta name="description" content="A Japanese Web Dictionary with Pitch Accents" />
-      </Head>
 
-      {/* className={styles.main} */}
-      <main>
-        {/* <div>
-          <TextField/>
-          <IconButton>
-            <SearchIcon/>
-          </IconButton>
-        </div> */}
 
-        UNDER CONSTRUCTION
-      </main>
-    </>
-  )
+
+export default function HomePage() {
+    return (
+          <main>
+            UNDER CONSTRUCTION
+          </main>
+      );
 }

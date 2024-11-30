@@ -1,27 +1,28 @@
-// React/MUI
-import {useState} from "react"
-import MenuIcon from '@mui/icons-material/Menu';
+"use client"
+
 // Next.js
 import Image from 'next/image'
 import Link from 'next/link'
-import {useRouter} from 'next/router';
+import {usePathname} from 'next/navigation';
 
 import links from "../../links.json"
 
+import HamburgerIcon from "./HamburgerIcon";
+
 // Used for styling
 const styling: any[string] = {
-    "header": "w-full p-4",
+    "header": "w-full py-4 px-2",
     "nav": "w-full flex items-center",
     "iconContainer": "w-1/2",
     "websiteIcon": "w-fit flex text-3xl",
-    "headerPageLinks": "w-1/2 flex justify-end gap-x-6 space-around",
+    "headerPageLinks": "w-1/2 h-max flex justify-end gap-x-6 space-around items-stretch",
     "headerLink": "hidden md:inline",
-    "menuButton": "inline md:hidden px-4"
+    "hamburger": "inline md:hidden m-4",
 };
 
-export default function Header() {
+export default function Header(): JSX.Element  {
     
-    const router = useRouter(); 
+    const pathname: string = usePathname() || ""; 
 
     return (
         <header className={styling.header}>
@@ -34,24 +35,41 @@ export default function Header() {
                 </span>
 
                 {/* Header Page Links */}
-                <div className={styling.headerPageLinks}>
+                <ul className={styling.headerPageLinks}>
+
 
                     {/* <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.home ? "underline" : ""}`}
                     href={links.internalLinks.home}>Home</Link> */}
+                    
+                    
+                    <li>
+                        <Link className={`${styling.headerLink} ${pathname == links.internalLinks.dictionary ? "underline" : ""}`} 
+                        href={links.internalLinks.dictionary}>Dictionary</Link>
+                    </li>
 
-                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.dictionary ? "underline" : ""}`} 
-                    href={links.internalLinks.dictionary}>Dictionary</Link>
+                    <li>
+                    
+                        <Link className={`${styling.headerLink} ${pathname == links.internalLinks.pitchGenerator ? "underline" : ""} `}
+                        href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
+                    </li>
 
-                    <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.pitchGenerator ? "underline" : ""}`}
-                    href={links.internalLinks.pitchGenerator}>Pitch Accent Diagram Generator</Link>
-
+                    <li>
                     {/* <Link className={`${styling.headerLink} ${router.asPath == links.internalLinks.contact ? "underline" : ""}`}
                     href={links.internalLinks.contact}>Contact</Link> */}
+                    </li>
                     
                     {/* Menu Button (Meant for mobile/small screens) */}
+
+                    <li>
                     {/* <IconButton className={styling.menuButton} size="large" disableRipple={true}>
                         <Menu/>
                     </IconButton> */}
+                    </li>
+                    
+                </ul>
+
+                <div className="md:hidden">
+                <HamburgerIcon className={styling.hamburger}/>
                 </div>
             </nav>
         </header>

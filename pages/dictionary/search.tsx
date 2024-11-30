@@ -1,6 +1,7 @@
 
 // Library Functions
-import clientPromise from "../../lib/mongodb";
+// import clientPromise from "../../lib/mongodb";
+const mongoDB = require("../../lib/mongodb");
 // Next.js
 import Head from 'next/head';
 import Image from 'next/image';
@@ -48,7 +49,6 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
     </div>
   )
 
-
   return (
     <>
       <Head>
@@ -93,11 +93,8 @@ export default function DictionarySearchPage({entries, entriesCount, page, query
  * @returns 
  */
 export async function getServerSideProps({query} : {query:any}) {
-
-  // try 
-  // {
-    //Connect to the database 
-    const {client, db} = await clientPromise();
+    
+    const {client, db} = await mongoDB.clientPromise();
   
     const collection: string = "JMdict";
 
@@ -160,12 +157,6 @@ export async function getServerSideProps({query} : {query:any}) {
       }
     ]}});
 
-    // let japaneseObject: any[] = japanese.map( (token:string) => {return {"kana": {"text": {regex: `.*${token}.*`}}}});
-
-    console.log(list)
-    // console.log(japaneseObject)
-
-    // $in: ["$kana", "$$kana.text"]
 
     // Breakdown all query attributes
     const {page} : {page:number} = query;
@@ -179,106 +170,70 @@ export async function getServerSideProps({query} : {query:any}) {
 
   // console.log(query.query)
 
-    const pipeline: any[] = [
+  // const databaseQueryDictionary: any = {$or: [{kanji: {$elemMatch: {text: query.query}}},{kana: {$elemMatch: {text: {$regex:`.*${query.query}.*`}}}}, ...list]};
 
-      // {$expr: databaseQueryDictionary}
+  // {$in: [`/^.*${query.query}.*/`, "$kana.text"]}
 
+  const databaseQueryDictionary: any = {$or: [{$in: [query.query, "$kanji.text"]}, ...list, ...japaneseList]};
+  // Aggregation pipeline.
+  const pipeline: any[] = [
+    {$match: {$expr: databaseQueryDictionary}},
+    {$facet: 
       {
-        $search: {
-          index: "JMdictText",
-          text: {
-            query: query.query,
-            path: ["kana.text", "kanji.text", "sense.gloss.text"]
-          }
-        
-          // "compound": {
-          //   "should": [
-          //     {
-          //       "text": {
-          //         "query": query.query,
-          //         "path": ["kana.text", "kanji.text"]
-          //       }
-          //     },
-          //     // {
-          //     //   "text": {
-          //     //     "query":　query.query,
-          //     //     "path": ["kanji.text"]
-          //     //   }
-          //     // }
-          //   ],
-
-
-
-            // "must" : [
-            //   {
-            //     "text": {
-            //       "query":　japanese.filter( (element:string) => wanakana.isKanji(element)).join(" "),
-            //       "path": ["kanji.text"]
-            //     }
-            //   }]
-          // }
-        }
-
-      },         
-      // Sort based on text relevance
-      // {$sort: { score: {$meta: "textScore"}}},
-      {$facet: 
-        {
-          "count": [{$count: 'count'}],
-          "results" :
-          [
-            {$skip: (page-1) * pageEntries},
-            {$limit: pageEntries},
-            {
-              $lookup: {
-                from: "PitchAccents",
-                let: {
-                  kanji: {
-                    $map: {
-                      input: { $ifNull: ["$kanji", []] },
-                      as: "w",
-                      in: "$$w.text"
-                    }
-                  },
-                  kana: {
-                    $map: {
-                      input: { $ifNull: ["$kana", []] },
-                      as: "k",
-                      in: "$$k.text"
-                    }
+        "count": [{$count: 'count'}],
+        "results" :
+        [
+          {$skip: (page-1) * pageEntries},
+          {$limit: pageEntries},
+          {
+            $lookup: {
+              from: "PitchAccents",
+              let: {
+                kanji: {
+                  $map: {
+                    input: { $ifNull: ["$kanji", []] },
+                    as: "w",
+                    in: "$$w.text"
                   }
                 },
-                pipeline: [
-                  {
-                    $match: {
-                      $expr: {
-                        $or: [
-                          {
-                            $and: [
-                              { $in: ["$word", "$$kanji"] },
-                              { $in: ["$kana", "$$kana"] }
-                              // TODO add check to make sure kana applies kanji
-                            ]
-                          },
-                          {
-                            $and: [
-                              {$eq: ["$kana", ""]},
-                              { $in: ["$word", "$$kana"] }
-                            ]
-                          }
-                        ]
-                      
-                      }
+                kana: {
+                  $map: {
+                    input: { $ifNull: ["$kana", []] },
+                    as: "k",
+                    in: "$$k.text"
+                  }
+                }
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $or: [
+                        {
+                          $and: [
+                            { $in: ["$word", "$$kanji"] },
+                            { $in: ["$kana", "$$kana"] }
+                            // TODO add check to make sure kana applies kanji
+                          ]
+                        },
+                        {
+                          $and: [
+                            {$eq: ["$kana", ""]},
+                            { $in: ["$word", "$$kana"] }
+                          ]
+                        }
+                      ]
+                    
                     }
                   }
-                ],
-                as: "accents"
-              }
+                }
+              ],
+              as: "accents"
             }
-          ]
-        }
-      },
-    ];
+          }
+        ]}
+      }
+  ];
 
     // We will search the JMdict where we can get definitions.
     let definitions: any[] = await db
